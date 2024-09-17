@@ -2,7 +2,7 @@ body{
     background-color: rgb(230, 229, 229);
 }
 
-.sign-up{
+.log-in{
     display: flex;
     justify-content: right;
     transform: translateY(-200px);
@@ -24,15 +24,7 @@ body{
     gap: 10px;
     width: 800px;
 }
-.confirm{
-    display: flex;
-    justify-content: left;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    gap: 10px;
-    width: 800px;
-}
-.sign-up-button{
+.log-in-button{
     display: flex;
     justify-content: center;
     margin-left: 120px;
