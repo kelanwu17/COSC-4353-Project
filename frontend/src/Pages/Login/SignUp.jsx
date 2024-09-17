@@ -1,17 +1,19 @@
 import './SignUp.css';
 
-const BackButton=()=>{
-    <div className="back-button">
-        <button type="submit">BACK</button>
-    </div>
+const Logo=()=>{
+    return(
+        <img className="logo" src="/logo512.png" alt="Logo of our page" />
+    )
 };
 
 const SignUp=()=>{
 
     return (
         <div className="sign-up">
-            <div className="top-bar"></div>
             <form>
+                <div className="back-button">
+                    <button type="submit">BACK</button>
+                </div>
                 <div className="user-name">
                     <label htmlFor="username"><strong>USERNAME</strong></label>
                     <input type="text" id="username" name="username" required placeholder="required" maxLength={15}/>
@@ -24,23 +26,18 @@ const SignUp=()=>{
                     <label htmlFor="confirm-password"><strong>CONFIRM PASSWORD</strong></label>
                     <input type="text" id="confirm-password" name="confirm-password" required placeholder="required" maxLength={25}/>
                 </div>
+                <div className="sign-up-button">
+                    <button type="submit">SIGN UP</button>
+                </div>
             </form>
         </div>
     )
 };
-
-const SignUpButton=()=>{
-    <div className="sign-up-button">
-        <button type="submit">SIGN UP</button>
-    </div>
-};
-
 function SignUpPage(){
     return(
         <div className="SignUpPage">
-            <BackButton/>
+            <Logo/>
             <SignUp/>
-            <SignUpButton/>
         </div>
 
     );

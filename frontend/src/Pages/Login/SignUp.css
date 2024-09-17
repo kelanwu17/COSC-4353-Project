@@ -2,13 +2,58 @@ body{
     background-color: rgb(230, 229, 229);
 }
 
-.top-bar{
+.sign-up{
+    display: flex;
+    justify-content: right;
+    transform: translateY(-200px);
+}
+
+.user-name{
+    display: flex;
+    justify-content: left;
+    margin-right: 50px;
+    margin-bottom: 10px;
+    gap: 10px;
+    width: 800px;
+}
+.pass-word{
+    display: flex;
+    justify-content: left;
+    margin-right: 50px;
+    margin-bottom: 10px;
+    gap: 10px;
+    width: 800px;
+}
+.confirm{
+    display: flex;
+    justify-content: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    gap: 10px;
+    width: 800px;
+}
+.sign-up-button{
+    display: flex;
+    justify-content: center;
+    margin-left: 120px;
+    gap: 10px;
+    width: 150px;
+}
+.back-button{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    margin-left: -35px;
+    width: 150px;
+}
+button{
     background-color: rgb(116, 0, 89);
-    position: fixed;
-    z-index: 1;
-    height: 60px;
-    border-radius: 2px;
-    margin-top: -125px;
-    margin-left: -20px;
-    width: 100%;
+}
+
+.logo{
+    justify-content: left;
+    margin-left: 150px;
+    width: 200;
+    height: 200;
+    transform: translateY(180px);
 }
