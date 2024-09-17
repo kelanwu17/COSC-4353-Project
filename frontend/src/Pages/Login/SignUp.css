@@ -1,0 +1,14 @@
+body{
+    background-color: rgb(230, 229, 229);
+}
+
+.top-bar{
+    background-color: rgb(116, 0, 89);
+    position: fixed;
+    z-index: 1;
+    height: 60px;
+    border-radius: 2px;
+    margin-top: -125px;
+    margin-left: -20px;
+    width: 100%;
+}
