@@ -10,8 +10,12 @@ const Home=()=>{
     return(
         <div className="home">
             <div className="volunteer-text">
-            <h1 className="main-text">Bold Purple Text</h1>
-            <p className="sub-text">Smaller subtext below the main text</p>
+            <h1 className="main-text">Volunteer Hub</h1>
+            <p className="sub-text">Find an event near you</p>
+            <div className="button-group">
+                <button className="btn1">LOG IN</button>
+                <button className="btn2">SIGN UP</button>
+            </div>
             </div>
         </div>
     )

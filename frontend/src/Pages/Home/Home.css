@@ -1,0 +1,22 @@
+.home{
+    display: flex;
+    justify-content: right;
+    transform: translateY(-280px);
+    margin-right: 400px;
+    font-size: 30px;
+}
+.main-text{
+    margin-bottom: 0px;
+}
+.sub-text{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 80px;
+}
+.button-group{
+    display: flex;
+    justify-content: center;
+}
+.btn1{
+    margin-right: 50px;
+}
