@@ -1,15 +1,12 @@
 import './App.css';
-import VolunteerPage from './Components/VolunteerPage';
-
-import React, { useState } from 'react'
+import UserProfile from './Pages/User Profile/UserProfile';
 
 function App() {
-    return (
+    return ( <
+        div className = "App" >
 
         <
-        VolunteerPage / >
-
-
+        /div>
     );
 }
 
