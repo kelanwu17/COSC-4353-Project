@@ -1,8 +1,9 @@
 import './SignUp.css';
+import myLogo from "../../Assets/logo.png";
 
 const Logo=()=>{
     return(
-        <img className="logo" src="/logo512.png" alt="Logo of our page" />
+        <img className="logo" src= {myLogo} alt="Logo of our page" />
     )
 };
 

@@ -14,7 +14,7 @@ body{
     margin-right: 50px;
     margin-bottom: 10px;
     gap: 10px;
-    width: 800px;
+    width: 100px;
 }
 .pass-word{
     display: flex;
