@@ -1,142 +1,161 @@
+
 body{
-    background-color: rgb(230, 229, 229);
+  background-color: rgb(230, 229, 229);
 }
 
 .top-bar{
-    background-color: rgb(116, 0, 89);
-    position: fixed;
-    z-index: 1;
-    height: 60px;
-    border-radius: 2px;
-    margin-top: -125px;
-    margin-left: -20px;
-    width: 100%;
+  background-color: rgb(116, 0, 89);
+  position: fixed;
+  z-index: 1;
+  height: 60px;
+  border-radius: 2px;
+  margin-top: -125px;
+  margin-left: -20px;
+  width: 100%;
 }
 .user-profile {
-    width: 100%;
-    max-width: 600px; 
-    margin-top: 100px;
-    padding: 20px;
-    
-  }
-  
-  .user-profile div {
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px; 
-  }
-  
+width: 100%;
+max-width: 600px; 
+margin-top: 100px;
+padding: 20px;
+}
 
-  label {
-    width: 150px; 
-    text-align: left;
-    font-size: 20px;
-    margin-right: 10px;
-  }
-  
- 
-  input, select, textarea {
-    flex-grow: 1; 
-    padding: 8px;
-    border-radius: 5px;
-    border: 2px solid black;
-    box-sizing: border-box; 
-    width: 100%; 
-  }
+.display-img{
+display: flex;
+justify-content: center;
+}
+.edit-profile-section {
+display: flex;
+flex-direction: column; 
+}
 
-  .profile-Preferences label {
-    font-size: 20px;
-  }
-  
-  
-  .apply-button{
-    bottom: 20px;
-    margin-left: 85%;
-    margin-bottom:300px;
-    transform: translateY(50px);
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  
-  .edit-button{
-    display: flex;
-    justify-content: center;
-    transform: translateY(-60px);
+.edit-profile-section div {
+display: flex;
+justify-content: flex-start; 
+margin-bottom: 30px; 
+}
 
-  }
-  
-  .user-display{
-    margin-top: 10px;
-    margin-left: 20px;
-    font-size: 18px;
-  }
-  
-  fieldset{
-    display: block;
-    margin:auto;
-    transform: translateY(-100px);
-    width:800px;
-  }
+.edit-profile-section label {
+width: 150px; 
+text-align: left;
+font-size: 18px;
+margin-right: 10px;
+}
 
-  .display-name{
-    display: flex;
-    justify-content: left;
-    margin-right: 50px;
-    gap: 10px;
-  }
+.edit-profile-section input,
+.edit-profile-section select,
+.edit-profile-section textarea {
+flex-grow: 1; 
+padding: 8px;
+border-radius: 5px;
+border: 2px solid black;
+box-sizing: border-box; 
+width: 100%; 
+}
 
-  .display-primary-address{
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-    margin-right: 50px;
-  }
+.profile-preferences label {
+font-size: 18px;
+}
 
-  .display-address2{
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-  }
 
-  .display-city{
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-  }
+.apply-button{
+  margin-left: 85%;
+  margin-bottom:300px;
+  transform: translateY(-40px);
+}
 
-  .display-state{
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-  }
+.edit-button button{
+  padding: 8px 16px;
+  background-color: #8c007e;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-  .display-zip-code{
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-  }
+.apply-button button{
+  padding: 8px 16px;
+  background-color: #8c007e;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-  .display-skills{
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-  }
+button:hover {
+  background-color: #6c005a;
+}
 
-  .display-preferences{
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-  }
+
+.edit-button{
+  display: flex;
+  justify-content: center;
+  transform: translateY(-160px)
+
+}
+
+.user-display{
+  margin-top: 2px;
+  margin-left: 20px;
+  font-size: 18px;
+}
+.display-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; 
+  margin-bottom: 35px; 
+  transform: translate(50px,-20px);
+}
+
+.display-section p {
+  color: rgba(64, 64, 64, 0.841);
+  margin: 6px;
+  flex:10px;
+}
+
+.display-section label {
+  font-weight: bold;
+}
+
+
+.display-city-value, 
+.display-skills-value, 
+.display-preferences-value {
+display: flex;
+gap: 1px; 
+}
+
+.upcoming-event-display{
+  font-size: 20px;
+  display: flex;
+  justify-content: right;
+  transform: translate(-95px,5px);
+}
+
+.volunteer-section1{
+  width: 190px;
+  height: auto;
+  display: flex;
+  transform: translate(490px,-380px);
+}
+.volunteer-section2{
+  width: 190px;
+  height: auto;
+  display: flex;
+  transform: translate(490px,-370px);
+}
+
+.user-display-fieldset{
+  margin:auto;
+  transform: translateY(-100px);
+  width:800px;
+  height: 650px;
+}
+
+.user-display-fieldset legend{
+
+  display:"flex";
+  justify-content: "center";
+}
