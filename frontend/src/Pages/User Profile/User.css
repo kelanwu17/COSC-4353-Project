@@ -64,7 +64,17 @@ font-size: 18px;
   transform: translateY(-40px);
 }
 
-button {
+.edit-button button{
+  padding: 8px 16px;
+  background-color: #8c007e;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.apply-button button{
   padding: 8px 16px;
   background-color: #8c007e;
   color: white;
@@ -113,8 +123,8 @@ button:hover {
 .display-city-value, 
 .display-skills-value, 
 .display-preferences-value {
-  display: flex;
-  gap: 1px; 
+display: flex;
+gap: 1px; 
 }
 
 .upcoming-event-display{

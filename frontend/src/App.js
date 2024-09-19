@@ -1,16 +1,16 @@
 import './App.css';
 import UserProfile from './Pages/User Profile/UserProfile';
-import UserDisplay from './Pages/User Profile/UserDisplay';
+import SignUpPage from './Pages/Login/SignUp';
+import LogInPage from './Pages/Login/LogIn';
+import HomePage from './Pages/Home/Home';
 
+function App() {
+    return ( 
+      <div>
+        <HomePage/>
+      </div>
+    )
 
-
- function App() {
-  return (
-    <div className="App">
-      <UserProfile/>
-      <UserDisplay/>
-    </div>
-  );
 }
 
 export default App;
