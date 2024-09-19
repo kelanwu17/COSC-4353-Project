@@ -84,13 +84,6 @@ const ProfileDisplay=()=>{
       )
     }
 
-  function App() {
-    return (
-      <div classNameName="App">
-       <ProfileDisplay/>
-       <EditProfile/>
-      </div>
-    );
-  }
+  
 
-export default App;
+export default ProfileDisplay;
