@@ -1,11 +1,11 @@
 import React from 'react';
 import './VolunteerItem.css';
-import Modal from './Modal';
+
 import { useState } from 'react';
 import AdminModal from './AdminModal';
 
 
-function VolunteerItem({ title, imgUrl, description, urgency, skills, date, location }) {
+function AdminVolunteerItem({ title, imgUrl, description, urgency, skills, date, location }) {
   
 
    
@@ -31,12 +31,9 @@ function VolunteerItem({ title, imgUrl, description, urgency, skills, date, loca
                    
                 </p>
             </div>
-            <div className="fixed bottom-1 right-3">
-                <button className="bg-blue-400  rounded-xl  border-blue-400 text-white">Register</button>
-            </div>
-            <Modal open={isOpen} onClose={()=>setIsOpen(false)} title={title} description={description} urgency={urgency} skills={skills} date={date} location={location}></Modal>
+            <AdminModal open={isOpen} onClose={()=>setIsOpen(false)} title={title} description={description} urgency={urgency} skills={skills} date={date} location={location}></AdminModal>
         </a>
     );
 }
 
-export default VolunteerItem;
+export default AdminVolunteerItem;
