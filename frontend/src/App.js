@@ -6,6 +6,7 @@ import Home from './Pages/Home/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogInPage from './Pages/Login/LogIn.jsx';
 import SignUpPage from './Pages/Login/SignUp.jsx';
+import VolunteerPage from './Components/VolunteerPage.jsx';
 function App() {
   return (
     <div className="App">
@@ -16,7 +17,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage/>}/>
           <Route path="/createevent" element={<CreateEvent/>}/>
           <Route path="/userprofile" element={<UserProfile/>}/>
-          <Route path="/uservolunteer" element={<UserVolunteer />}/>
+          <Route path="/uservolunteer" element={<VolunteerPage />}/>
           
         </Routes>
       </Router>
