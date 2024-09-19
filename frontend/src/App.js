@@ -1,4 +1,3 @@
-
 import './App.css';
 import CreateEvent from './Pages/Create Event/CreateEvent';
 import UserProfile from './Pages/User Profile/UserProfile.jsx';
@@ -8,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogInPage from './Pages/Login/LogIn.jsx';
 import SignUpPage from './Pages/Login/SignUp.jsx';
 function App() {
+<<<<<<< HEAD
   return (
     <div className="App">
       <Router>
@@ -28,3 +28,17 @@ function App() {
 }
 
 export default App;
+=======
+    return ( <
+        div className = "App" >
+
+        <
+        HomePage / >
+        <
+        /div>
+    )
+
+}
+
+export default App;
+>>>>>>> 39ba1993a70888b243ddb0f962332e814d8cf024
