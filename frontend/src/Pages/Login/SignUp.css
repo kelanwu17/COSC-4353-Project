@@ -37,18 +37,18 @@ body{
     justify-content: center;
     margin-left: 120px;
     gap: 10px;
-    width: 150px;
+    width: 100px;
+    background-color: rgb(116, 0, 89);
 }
 .back-button{
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
     margin-left: -35px;
-    width: 150px;
-}
-button{
+    width: 60px;
     background-color: rgb(116, 0, 89);
 }
+
 
 .logo{
     justify-content: left;

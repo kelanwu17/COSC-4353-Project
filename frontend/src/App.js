@@ -9,13 +9,6 @@ import LogInPage from './Pages/Login/LogIn.jsx';
 import SignUpPage from './Pages/Login/SignUp.jsx';
 import VolunteerPage from './Components/VolunteerPage.jsx';
 function App() {
-<<<<<<< HEAD
- return ( 
-      <HomePage/>
-        
-    )
-
-=======
   return (
     <div className="App">
       <Router>
@@ -33,7 +26,6 @@ function App() {
       
     </div>
   );
->>>>>>> 01fe11bc6e49a49e629430d50e8ba29b63cae1fc
 }
 
 export default App;
