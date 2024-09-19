@@ -1,7 +1,8 @@
 import './App.css';
 import CreateEvent from './Pages/Create Event/CreateEvent';
 import UserProfile from './Pages/User Profile/UserProfile.jsx';
-import UserVolunteer from './Pages/User Volunteer/UserVolunteer.jsx';
+
+import ProfileDisplay from './Pages/User Profile/UserDisplay.jsx';
 import Home from './Pages/Home/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogInPage from './Pages/Login/LogIn.jsx';
@@ -18,7 +19,7 @@ function App() {
           <Route path="/createevent" element={<CreateEvent/>}/>
           <Route path="/userprofile" element={<UserProfile/>}/>
           <Route path="/uservolunteer" element={<VolunteerPage />}/>
-          
+          <Route path="/userdisplay" element={<ProfileDisplay />}/>
         </Routes>
       </Router>
       
