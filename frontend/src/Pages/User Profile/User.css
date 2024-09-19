@@ -3,7 +3,7 @@ body{
   background-color: rgb(230, 229, 229);
 }
 
-.top-bar{
+ /* .top-bar{
   background-color: rgb(116, 0, 89);
   position: fixed;
   z-index: 1;
@@ -12,7 +12,7 @@ body{
   margin-top: -125px;
   margin-left: -20px;
   width: 100%;
-}
+} */
 .user-profile {
 width: 100%;
 max-width: 600px; 
@@ -23,6 +23,8 @@ padding: 20px;
 .display-img{
 display: flex;
 justify-content: center;
+
+
 }
 .edit-profile-section {
 display: flex;
@@ -92,14 +94,15 @@ button:hover {
 .edit-button{
   display: flex;
   justify-content: center;
-  transform: translateY(-160px)
+  transform: translate(-490px,-360px)
 
 }
+/* //-------------------------------------------------------// */
 
 .user-display{
   margin-top: 2px;
   margin-left: 20px;
-  font-size: 18px;
+  font-size: 20px;
 }
 .display-section {
   display: flex;
@@ -110,8 +113,9 @@ button:hover {
 }
 
 .display-section p {
-  color: rgba(64, 64, 64, 0.841);
+  color: rgba(64, 64, 64, 0.701);
   margin: 6px;
+  font-size: 18px;
   flex:10px;
 }
 
@@ -131,31 +135,21 @@ gap: 1px;
   font-size: 20px;
   display: flex;
   justify-content: right;
-  transform: translate(-95px,5px);
+  transform: translate(-35px,5px);
 }
 
 .volunteer-section1{
-  width: 190px;
-  height: auto;
   display: flex;
-  transform: translate(490px,-380px);
+  transform: translate(620px,-440px);
 }
-.volunteer-section2{
-  width: 190px;
-  height: auto;
+
+/* .volunteer-section2{
   display: flex;
   transform: translate(490px,-370px);
-}
+} */
 
 .user-display-fieldset{
   margin:auto;
-  transform: translateY(-100px);
-  width:800px;
-  height: 650px;
-}
-
-.user-display-fieldset legend{
-
-  display:"flex";
-  justify-content: "center";
+  width:1200px;
+  height:350px;
 }
