@@ -2,7 +2,7 @@ import './App.css';
 import CreateEvent from './Pages/Create Event/CreateEvent';
 import UserProfile from './Pages/User Profile/UserProfile';
 import ProfileDisplay from './Pages/User Profile/UserDisplay.jsx';
-// import Home from './Pages/Home/Home';
+import Home from './Pages/Home/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogInPage from './Pages/Login/LogIn';
 import SignUpPage from './Pages/Login/SignUp';
@@ -13,7 +13,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-           {/* <Route path="/" element={<Home/>}/>  */}
+            <Route path="/" element={<Home/>}/>  
             <Route path="/login" element={<LogInPage/>}/> 
             <Route path="/signup" element={<SignUpPage/>}/>
             <Route path="/createevent" element={<CreateEvent/>}/> 

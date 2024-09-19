@@ -3,7 +3,7 @@ body{
   background-color: rgb(230, 229, 229);
 }
 
- /* .top-bar{
+  .top-bar{
   background-color: rgb(116, 0, 89);
   position: fixed;
   z-index: 1;
@@ -12,7 +12,7 @@ body{
   margin-top: -125px;
   margin-left: -20px;
   width: 100%;
-} */
+} 
 .user-profile {
 width: 100%;
 max-width: 600px; 
