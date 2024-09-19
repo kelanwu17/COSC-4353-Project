@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import React from 'react'
-
-function Home() {
-  return (
-    <div>Home</div>
-  )
-}
-
-export default Home
-=======
 import './Home.css';
 import myLogo from "../../Assets/logo.png";
 
@@ -45,4 +34,3 @@ function HomePage(){
 
 
 export default HomePage;
->>>>>>> 84bb4d364169174134aa6a2b3289b7094bbfe966
