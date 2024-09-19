@@ -1,17 +1,11 @@
 .description {
     overflow-wrap: break-word;
-    /* Ensures long words break onto the next line */
     word-wrap: break-word;
-    /* Fallback for older browsers */
     max-height: 6em;
-    /* Adjust height as needed */
     overflow: hidden;
-    /* Hides overflowed text */
     text-overflow: ellipsis;
-    /* Adds ellipsis for overflowed text */
 }
 
 .hr-line {
     border-top: 1px solid #000;
-    /* Example style for the horizontal line */
 }

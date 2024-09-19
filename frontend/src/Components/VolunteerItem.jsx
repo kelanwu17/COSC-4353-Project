@@ -32,7 +32,7 @@ function VolunteerItem({ title, imgUrl, description, urgency, skills, date, loca
                 </p>
             </div>
             <div className="fixed bottom-1 right-3">
-                <button className="bg-blue-400  rounded-xl border border-4 border-blue-400 text-white">Register</button>
+                <button className="bg-blue-400  rounded-xl  border-blue-400 text-white">Register</button>
             </div>
             <AdminModal open={isOpen} onClose={()=>setIsOpen(false)} title={title} description={description} urgency={urgency} skills={skills} date={date} location={location}></AdminModal>
         </a>
