@@ -5,13 +5,11 @@ import LogInPage from './Pages/Login/LogIn';
 import HomePage from './Pages/Home/Home';
 
 function App() {
-    return ( <
-        div className = "App" >
+    return ( 
+      <div>
+        <HomePage/>
 
-        <
-        HomePage / >
-        <
-        /div>
+      </div>
     )
 
 }
