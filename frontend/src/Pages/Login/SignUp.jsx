@@ -1,15 +1,70 @@
-import './SignUp.css';
+//import './SignUp.css';
 import myLogo from "../../Assets/logo.png";
+import Textfield from "@mui/material/TextField";
+import {
+    Box,
+    Button,
+    Grid2,
+    TextField,
+    InputLabel,
+    MenuItem,
+    Select,
+  } from "@mui/material";
 
+/*
 const Logo=()=>{
     return(
         <img className="logo" src= {myLogo} alt="Logo of our page" />
     )
 };
+*/
 
 const SignUp=()=>{
 
     return (
+        <div>
+        <Grid2 container spacing={2} alignItems = "center">
+
+            <Grid2 item size = {6}>
+            <img
+                className="logo" 
+                src= {myLogo}
+                alt="Logo of our page"
+                style={{
+                    transform: 'translateY(200px)',
+                    width: '600px',
+                    height: 'auto'
+                }}
+              />
+            </Grid2>
+            
+            <Grid2 item size = {6}>
+                <Grid2 item size = {6}>
+                    <Button varient = "outlined">Back</Button>
+                </Grid2>
+                <Grid2 item size={3}>
+          <p>
+            <strong>Location: </strong>
+          </p>
+        </Grid2>
+        <Grid2 item size={9}>
+          <Textfield
+            fullWidth
+            label="City, State"
+            variant="outlined"
+            sx={{ backgroundColor: "white" }}
+          />
+        </Grid2>
+
+            </Grid2>
+            
+
+        </Grid2>
+
+
+    </div>
+
+        /*
         <div className="sign-up">
             <form>
                 <div className="back-button">
@@ -32,12 +87,21 @@ const SignUp=()=>{
                 </div>
             </form>
         </div>
+        */
     )
 };
 function SignUpPage(){
+    /*
     return(
         <div className="SignUpPage">
             <Logo/>
+            <SignUp/>
+        </div>
+
+    );
+    */
+    return(
+        <div className="SignUpPage">
             <SignUp/>
         </div>
 
