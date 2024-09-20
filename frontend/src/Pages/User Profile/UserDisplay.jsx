@@ -7,8 +7,8 @@ import UserVolunteerItem from './UserVolunteerItem';
 const ProfileDisplay=()=>{
   return(
     <fieldset className="user-display-fieldset">
-        <div className="display-img">
-        <img src={logo} alt="profile picture" style={{ width: '200px', height: 'auto' }}/>
+        <div className="display-img" style={{width: '200px'}}>
+        <img src={logo} alt="profile picture"></img>
         </div>
         <div className="upcoming-event-display">
           <label className="display-event"><strong>Your Upcoming Events</strong></label>
@@ -58,7 +58,11 @@ const ProfileDisplay=()=>{
               />
             </div>
 
-            <div className="volunteer-section2">
+            <div className="edit-button">
+              <button type="submit">Edit Profile</button>
+            </div>
+
+            {/* <div className="volunteer-section2">
               <UserVolunteerItem
                 title="Beach Cleanup"
                 imgUrl="https://example.com/beach.jpg"
@@ -68,19 +72,10 @@ const ProfileDisplay=()=>{
                 date="2024-09-25"
                 location="Santa Monica Beach"
               />
-            </div>
+            </div> */}
 
         </div>
   </fieldset>
-      )
-    }
-  
-  const EditProfile=()=>{
-    return(
-      <div className="edit-button">
-        <button type="submit">Edit Profile</button>
-      </div>
-      
       )
     }
 
