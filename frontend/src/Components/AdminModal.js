@@ -44,7 +44,7 @@ const skillsList = [
     "Technical Support",
     "Customer Service",
     "Grant Writing",
-    "Advocacy"
+    "Advocacy",
 ];
 
 const urgencyLevels = ["High", "Medium", "Low"];
