@@ -32,6 +32,7 @@ const SignUp=()=>{
                 alt="Logo of our page"
                 style={{
                     transform: 'translateY(200px)',
+                    marginLeft: '150px',
                     width: '600px',
                     height: 'auto'
                 }}

@@ -27,6 +27,7 @@ const Home=()=>{
                 alt="Logo of our page"
                 style={{
                     transform: 'translateY(200px)',
+                    marginLeft: '200px',
                     width: '600px',
                     height: 'auto'
                 }}
