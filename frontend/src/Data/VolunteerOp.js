@@ -8,8 +8,7 @@ export default [{
         urgency: "medium",
         skills: [
             "Teamwork",
-            "Organizational Skills",
-            "Environmental Conservation"
+            "Organizational Skills"
         ],
         date: "October 1, 2024",
         location: "Local Parks"
@@ -119,7 +118,6 @@ export default [{
         link: '',
         urgency: "medium",
         skills: [
-            "Environmental Conservation",
             "Teamwork",
             "Organizational Skills"
         ],

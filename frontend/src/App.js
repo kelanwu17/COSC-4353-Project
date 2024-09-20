@@ -40,7 +40,18 @@ function App() {
         element = { < ProfileDisplay / > }
         /> <
         Route path = "/adminvolunteer"
-        element = { < AdminVolunteerPage / > }
+        element = { < AdminVolunteerPage
+
+
+
+
+
+
+
+
+            /
+            >
+        }
         /> <
         /Routes> <
         /Router>
