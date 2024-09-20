@@ -23,7 +23,7 @@ function NavBar() {
               sx={{ mr: 2 }}
             >
             
-              <a href="/"><img src={volunteerLogo} alt="logo" height="50"/></a>
+              <a href="/"><img src={volunteerLogo} alt="logo" style={{height: "50px"}}/></a>
             </IconButton>
             
             
