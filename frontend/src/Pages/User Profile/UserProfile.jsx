@@ -34,7 +34,7 @@ const UserProfile=()=>{
           maxLength={50}/>
         </div> 
         <div className="profile-address1">
-          <label htmlFor="address1"><strong>Primary Address</strong></label>
+          <label htmlFor="address1"><strong>Address</strong></label>
           <input type="text" id="address1" name="address1" required
           placeholder='required'
           maxLength={100}/>
