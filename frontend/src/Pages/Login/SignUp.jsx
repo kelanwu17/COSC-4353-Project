@@ -1,6 +1,9 @@
 //import './SignUp.css';
 import myLogo from "../../Assets/logo.png";
 import Textfield from "@mui/material/TextField";
+import axios from "axios"
+import {useNavigate, Link} from "react-router-dom"
+import {useState} from 'react'
 import {
   Box,
   Button,
@@ -20,6 +23,25 @@ const Logo=()=>{
 */
 
 const SignUp = () => {
+
+  const history=useNavigate();
+  const[email, setEmail] = useState('')
+  const[password,setPassword]=useState('')
+
+  async function submit(e) {
+    e.preventDefault();
+
+    axios.post('http://localhost:3001/createprofile', {
+      email, password
+    })
+    .then((response) => {
+      console.log(response);
+    }, (error) => {
+      console.log(error);
+    });
+
+  }
+
   return (
     <div>
       <Grid2 container spacing={2} alignItems="center">
@@ -71,6 +93,7 @@ const SignUp = () => {
                 variant="outlined"
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
+                onChange={(e)=> {setEmail(e.target.value)}}
               />
             </Grid2>
           </Grid2>
@@ -93,6 +116,7 @@ const SignUp = () => {
                 variant="outlined"
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
+                onChange={(e)=> {setPassword(e.target.value)}}
               />
             </Grid2>
           </Grid2>
@@ -128,7 +152,7 @@ const SignUp = () => {
               marginRight: "180px",
             }}
           >
-            <Button variant="contained">Confirm</Button>
+            <Button variant="contained" onClick={submit}>Confirm</Button>
           </Grid2>
         </Grid2>
       </Grid2>

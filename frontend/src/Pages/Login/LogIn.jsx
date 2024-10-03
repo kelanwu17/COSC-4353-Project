@@ -1,6 +1,9 @@
 //import './LogIn.css';
 import myLogo from "../../Assets/logo.png";
 import Textfield from "@mui/material/TextField";
+import axios from "axios"
+import {useNavigate, Link} from "react-router-dom"
+import {useState} from 'react'
 import {
   Box,
   Button,
@@ -18,6 +21,8 @@ const Logo=()=>{
 };
 */
 const LogIn = () => {
+ 
+
   return (
     <div>
       <Grid2 container spacing={2} alignItems="center">
@@ -69,6 +74,7 @@ const LogIn = () => {
                 variant="outlined"
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
+                
               />
             </Grid2>
           </Grid2>
@@ -91,6 +97,7 @@ const LogIn = () => {
                 variant="outlined"
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
+                
               />
             </Grid2>
           </Grid2>
@@ -105,7 +112,7 @@ const LogIn = () => {
               marginRight: "180px",
             }}
           >
-            <Button variant="contained">Confirm</Button>
+            
           </Grid2>
         </Grid2>
       </Grid2>
