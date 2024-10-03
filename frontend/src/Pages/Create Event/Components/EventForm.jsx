@@ -18,7 +18,6 @@ import { DateTimeRangePicker } from "@mui/x-date-pickers-pro/DateTimeRangePicker
 function EventForm() {
   const [inputValue, setInputValue] = useState("");
   const maxChars = 300;
-
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -57,6 +56,34 @@ function EventForm() {
 
   const [selectedSkills, setSelectedSkills] = useState([]);
 
+  const [formValues, setFormValues] = useState({
+    eventName: "",
+    description: "",
+    location: "",
+    urgency: "",
+    skills: [],
+    timeRange: [null,null]
+  })
+
+  const handleUserInputChange = (e) => {
+    const {name, value} = e.target;
+    setFormValues ({
+      ...formValues,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formValues.eventName === "" || formValues.description === "" || formValues.location === "" || formValues.urgency === "" || formValues.skills.length === 0 || formValues.timeRange.length === 0)  {
+      console.log("Error")
+      return;
+
+    }
+    console.log("Form Values: ", formValues)
+  }
+  
+
   return (
     <div>
       <Grid2 container rowSpacing={3}>
@@ -71,6 +98,9 @@ function EventForm() {
         <Grid2 item size={9}>
           <Textfield
             label="Enter event name"
+            name="eventName"
+            value={formValues.eventName}
+            onChange={handleUserInputChange}
             variant="outlined"
             fullWidth
             sx={{ backgroundColor: "white" }}
@@ -86,12 +116,15 @@ function EventForm() {
           <Textfield
             multiline
             fullWidth
+            onChange={handleUserInputChange}
+            value = {formValues.description}
+            name="description"
             label="Enter Description"
             variant="outlined"
             rows="7"
             inputProps={{ maxLength: maxChars }}
-            value={inputValue}
-            onChange={handleInputChange}
+            // value={inputValue}
+            // onChange={handleInputChange}
             sx={{ backgroundColor: "white" }}
           />
           <p>{`${maxChars - inputValue.length} characters remaining`}</p>
@@ -105,6 +138,9 @@ function EventForm() {
         <Grid2 item size={9}>
           <Textfield
             fullWidth
+            onChange={handleUserInputChange}
+            value = {formValues.location}
+            name="location"
             label="City, State"
             variant="outlined"
             sx={{ backgroundColor: "white" }}
@@ -120,16 +156,19 @@ function EventForm() {
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Select</InputLabel>
             <Select
+              name="urgency"
+              value={formValues.urgency}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              onChange={handleUserInputChange}
               // value={age}
               label="Select"
               // onChange={handleChange}
               sx={{ backgroundColor: "white" }}
             >
-              <MenuItem value={10}>Low</MenuItem>
-              <MenuItem value={20}>Medium</MenuItem>
-              <MenuItem value={30}>High</MenuItem>
+              <MenuItem value={"Low"}>Low</MenuItem>
+              <MenuItem value={"Medium"}>Medium</MenuItem>
+              <MenuItem value={"High"}>High</MenuItem>
             </Select>
           </FormControl>
         </Grid2>
@@ -141,11 +180,17 @@ function EventForm() {
         </Grid2>
         <Grid2 item size={9}>
           <Autocomplete
+            name="skills"
+            value={formValues.skills}
             multiple
             options={skillsList}
-            value={selectedSkills}
+            // onChange={handleUserInputChange}
+            // value={selectedSkills}
             onChange={(event, newValue) => {
-              setSelectedSkills(newValue);
+              setFormValues({
+                ...formValues,
+                skills: newValue
+              });
             }}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
@@ -173,13 +218,20 @@ function EventForm() {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimeRangePicker
               localeText={{ start: "Start", end: "End" }}
+              name="timeRange"
+              value={formValues.timeRange}
+              onChange={(e) => {
+                setFormValues((prevValues) => ({
+                  ...prevValues,
+                  timeRange:e
+                }))
+              }}
               sx={{ backgroundColor: "white" }}
             />
           </LocalizationProvider>
         </Grid2>
         <Grid2 item size={12}>
-          {/* Upload Photo
-          <AddPhotoAlternateIcon /> */}
+
           <Box sx={{ textAlign: "center" }}>
             <input
               type="file"
@@ -211,7 +263,7 @@ function EventForm() {
           size={12}
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
-          <Button variant="contained">Create Event</Button>
+          <Button variant="contained" onClick={handleSubmit}>Create Event</Button>
         </Grid2>
       </Grid2>
     </div>
