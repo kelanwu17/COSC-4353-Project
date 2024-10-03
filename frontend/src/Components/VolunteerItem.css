@@ -1,11 +1,14 @@
 .description {
     overflow-wrap: break-word;
+  
     word-wrap: break-word;
-    max-height: 6em;
-    overflow: hidden;
+      max-height: 6em;
+     overflow: hidden;
     text-overflow: ellipsis;
+  
 }
 
 .hr-line {
     border-top: 1px solid #000;
+   
 }

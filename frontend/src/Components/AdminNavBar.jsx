@@ -16,7 +16,7 @@ function AdminNavBar() {
               sx={{ mr: 2 }}
             >
             
-              <a href="/"><img src={volunteerLogo} alt="logo" height="50"/></a>
+              <a href="/"><img src={volunteerLogo} alt="logo" style={{height: "50px"}}/></a>
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             

@@ -1,11 +1,15 @@
 import './User.css'
 import logo from '../../Assets/logo.png';
 import UserVolunteerItem from './UserVolunteerItem';
+import UserNavBar from '../../Components/UserNavBar';
 
 
 
 const ProfileDisplay=()=>{
   return(
+    <div>
+      <UserNavBar/>
+    
     <fieldset className="user-display-fieldset">
         <div className="display-img" style={{width: '200px'}}>
         <img src={logo} alt="profile picture"></img>
@@ -76,6 +80,7 @@ const ProfileDisplay=()=>{
 
         </div>
   </fieldset>
+  </div>
       )
     }
 

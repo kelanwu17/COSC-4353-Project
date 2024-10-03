@@ -1,11 +1,11 @@
 import React from "react";
-import VolunteerItem from "./VolunteerItem";
+import VolunteerItem from "./AdminVolunteerItem";
 import VolunteerOp from "../Data/VolunteerOp";
-import UserNavBar from "./UserNavBar";
-function VolunteerPage() {
+import AdminNavBar from "./AdminNavBar";
+function AdminVolunteerPage() {
   return (
     <div>
-      <UserNavBar/>
+      <AdminNavBar />
       <div className="flex flex-col md:flex-row items-center justify-center p-8 mb-20">
         {" "}
         {/* Added mb-20 for bottom margin */}
@@ -28,4 +28,4 @@ function VolunteerPage() {
   );
 }
 
-export default VolunteerPage;
+export default AdminVolunteerPage;
