@@ -26,7 +26,7 @@ const LogIn = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    axios.post('http://localhost:3001/createprofile',{
+    axios.post('http://localhost:3001/logIn',{
       username, password
     })
     .then((response) => {
