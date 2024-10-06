@@ -36,24 +36,6 @@ const LogIn = () => {
     });
   }
 
-  try{
-    //send a POST
-    const response = axios.post("http://localhost:3001/", {
-      username: username,
-      password: password,
-    })
-
-    //Handling Response
-    console.log("Log in working:", response.data);
-    // Example: Save token to localStorage and redirect
-      // localStorage.setItem("token", response.data.token);
-      // window.location.href = "/dashboard";
-    }  catch(error){
-console.error("Log in trippin:", error);
-      }
-  };
-
-
 
   return (
     <div>
