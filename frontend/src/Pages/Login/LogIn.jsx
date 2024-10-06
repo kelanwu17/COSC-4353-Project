@@ -1,4 +1,6 @@
 //import './LogIn.css';
+import React, {useState} from "react";
+import axios from "axios";
 import myLogo from "../../Assets/logo.png";
 import Textfield from "@mui/material/TextField";
 import {
@@ -10,14 +12,46 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-/*
-const Logo=()=>{
-    return(
-        <img className="logo" src= {myLogo} alt="Logo of our page" />
-    )
-};
-*/
+
 const LogIn = () => {
+
+  //store username and password
+  const [username, setUsername] = useState("");
+  const [password, setPasword] = useState("");
+
+  //login form subbmision
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    axios.post('http://localhost:3001/createprofile',{
+      username, password
+    })
+    .then((response) => {
+      console.long(response);
+    }, (error)=>{
+      console.log(error);
+    });
+  }
+
+  try{
+    //send a POST
+    const response = axios.post("http://localhost:3001/", {
+      username: username,
+      password: password,
+    })
+
+    //Handling Response
+    console.log("Log in working:", response.data);
+    // Example: Save token to localStorage and redirect
+      // localStorage.setItem("token", response.data.token);
+      // window.location.href = "/dashboard";
+    }  catch(error){
+console.error("Log in trippin:", error);
+      }
+  };
+
+
+
   return (
     <div>
       <Grid2 container spacing={2} alignItems="center">
@@ -46,8 +80,9 @@ const LogIn = () => {
             <Button variant="text">Back</Button>
           </Grid2>
 
+          <form onSubmit={handleLogin}>
+
           <Grid2
-            
             item
             xs={12}
             alignItems="center"
@@ -64,11 +99,15 @@ const LogIn = () => {
             </Grid2>
             <Grid2 item>
               <Textfield
+              required
                 width="800px"
                 label="required"
                 variant="outlined"
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
+                value = {username}
+                //updating username state
+                onChange = {(e) => setUsername(e.target.value)}
               />
             </Grid2>
           </Grid2>
@@ -87,10 +126,15 @@ const LogIn = () => {
             <Grid2 item>
               <Textfield
                 fullWidth
+                required
+                type = "password"
+                value = {password}
                 label="required"
                 variant="outlined"
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
+                //update password state
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid2>
           </Grid2>
@@ -105,31 +149,13 @@ const LogIn = () => {
               marginRight: "180px",
             }}
           >
-            <Button variant="contained">Confirm</Button>
+            <Button variant="submit">Confirm</Button>
           </Grid2>
+          </form>
         </Grid2>
       </Grid2>
     </div>
-    /*
-        <div className="log-in">
-            <form>
-                <div className="back-button">
-                    <button type="submit">BACK</button>
-                </div>
-                <div className="user-name">
-                    <label htmlFor="username"><strong>USERNAME</strong></label>
-                    <input type="text" id="username" name="username" required placeholder="required" maxLength={15}/>
-                </div>
-                <div className="pass-word">
-                    <label htmlFor="password"><strong>PASSWORD</strong></label>
-                    <input type="text" id="password" name="password" required placeholder="required" maxLength={25}/>
-                </div>
-                <div className="log-in-button">
-                    <button type="submit">LOG IN</button>
-                </div>
-            </form>
-        </div>
-        */
+    
   );
 };
 function LogInPage() {
