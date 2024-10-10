@@ -3,9 +3,8 @@ import React, {useState} from "react";
 import axios from "axios";
 import myLogo from "../../Assets/logo.png";
 import Textfield from "@mui/material/TextField";
-import axios from "axios"
 import {useNavigate, Link} from "react-router-dom"
-import {useState} from 'react'
+
 import {
   Box,
   Button,
@@ -20,21 +19,30 @@ const LogIn = () => {
 
   //store username and password
   const [username, setUsername] = useState("");
-  const [password, setPasword] = useState("");
+  const [password, setPassword] = useState("");
 
   //login form subbmision
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    axios.post('http://localhost:3001/logIn',{
-      username, password
+    axios.post('http://localhost:3001/logIn', {
+        username, password,
     })
     .then((response) => {
-      console.long(response);
-    }, (error)=>{
-      console.log(error);
+        console.log(response.data); 
+      
+        if (response.data.sessionId) {
+          sessionStorage.setItem('sessionId', response.data.sessionId);
+            console.log('Session ID:', response.data.sessionId);
+        }
+    }, (error) => {
+        console.log(error);
     });
-  }
+
+    sessionStorage.setItem('username', username); 
+
+}
+
 
 
   return (
@@ -65,7 +73,7 @@ const LogIn = () => {
             <Button variant="text">Back</Button>
           </Grid2>
 
-          <form onSubmit={handleLogin}>
+          
 
           <Grid2
             item
@@ -134,7 +142,7 @@ const LogIn = () => {
               marginRight: "180px",
             }}
           >
-            <Button variant="submit">Confirm</Button>
+            <Button variant="submit" onClick={handleLogin}>Confirm</Button>
           </Grid2>
           </form>
         </Grid2>
