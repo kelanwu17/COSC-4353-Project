@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EventForm from "./Components/EventForm";
+import EventForm from "./Components/EventFormDos";
 import NavBar from "../../Components/NavBar";
 import { Grid2 } from "@mui/material";
 import AdminNavBar from "../../Components/AdminNavBar";

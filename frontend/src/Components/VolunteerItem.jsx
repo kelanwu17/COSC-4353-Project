@@ -7,6 +7,9 @@ import AdminModal from './AdminModal';
 
 function VolunteerItem({ title, imgUrl, description, urgency, skills, date, location }) {
   
+
+   
+
   
     const [isOpen, setIsOpen] = useState(false)
     return (

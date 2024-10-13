@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Textfield from "@mui/material/TextField";
+import dayjs from 'dayjs';
 import {
   Box,
   Button,
@@ -16,21 +17,46 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimeRangePicker } from "@mui/x-date-pickers-pro/DateTimeRangePicker";
 import axios from "axios"
+
 function EventForm() {
   const [inputValue, setInputValue] = useState("");
   const maxChars = 300;
 
   const [title, changeTitle] = useState("");
+  const [location, setLocation] = useState("");
+  const [urgency, setUrgency] = useState("");
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [timeRange, setTimeRange] = useState([null, null]); 
+  const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  
   async function submit(e) {
     e.preventDefault();
 
-    axios.post('http://localhost:3001/createevent', { title
-      
+    let urgencyDisplay;
+  switch (urgency) {
+    case 10: urgencyDisplay = 'Low';
+      break;
+    case 20: urgencyDisplay = 'Medium';
+      break;
+    case 30: urgencyDisplay = 'High';
+      break;
+    default:
+      urgencyDisplay = '';
+  }
+
+    axios.post( 'http://localhost:3001/api/createevent', { title,
+    description: inputValue, 
+    location,
+    urgency: urgencyDisplay,
+    skills: selectedSkills,
+    timeRange
     })
     .then((response) => {
-      console.log(response);
+      console.log(response.data);
+      fetchEvents()
     }, (error) => {
-      console.log(error);
+      console.error('Error:', error.response.data.message);
     });
 
   }
@@ -50,6 +76,63 @@ function EventForm() {
       reader.readAsDataURL(file);
     }
   };
+
+  const fetchEvents = () => {
+    axios.get('http://localhost:3001/api/events')
+    .then((response) => {
+      console.log('Stored Events:', response.data); 
+      setEvents(response.data);  
+    })
+    .catch((error) => {
+      console.error('Error fetching events:', error);
+    });
+};
+
+const deleteEvent = (id) => {
+  axios.delete(`http://localhost:3001/api/events/${id}`)
+    .then((response) => {
+      console.log('Event deleted:', response.data);
+      fetchEvents(); 
+    })
+    .catch((error) => {
+      console.error('Error deleting event:', error);
+    });
+};
+
+const editEvent = (event) => {
+  setSelectedEvent(event);  
+  changeTitle(event.title);  
+  setInputValue(event.description); 
+  setLocation(event.location);
+  setUrgency(event.urgency);
+  setSelectedSkills(event.skills || []);  
+  const startDate = dayjs(event.timeRange[0]);
+  const endDate = dayjs(event.timeRange[1]);
+  setTimeRange([startDate, endDate]);
+};
+
+const updateEvent = () => {
+  if (!selectedEvent) return;
+  
+  const updatedEvent = { 
+    title, 
+    description: inputValue,  
+    location, 
+    urgency,
+    skills: selectedSkills, 
+    timeRange
+  };
+  axios.patch(`http://localhost:3001/api/events/${selectedEvent.id}`, updatedEvent)
+    .then((response) => {
+      console.log('Event updated:', response.data);
+      setSelectedEvent(null);  
+      fetchEvents(); 
+    })
+    .catch((error) => {
+      console.error('Error updating event:', error);
+    });
+};
+
   const skillsList = [
     "Communication",
     "Teamwork",
@@ -71,7 +154,7 @@ function EventForm() {
     "Advocacy",
   ];
 
-  const [selectedSkills, setSelectedSkills] = useState([]);
+  
 
   return (
     <div>
@@ -122,9 +205,11 @@ function EventForm() {
         <Grid2 item size={9}>
           <Textfield
             fullWidth
-            label="City, State"
+            label="Address"
             variant="outlined"
             sx={{ backgroundColor: "white" }}
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
           />
         </Grid2>
 
@@ -139,9 +224,9 @@ function EventForm() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              // value={age}
+              value={urgency}
               label="Select"
-              // onChange={handleChange}
+              onChange={(e) => setUrgency(e.target.value)} 
               sx={{ backgroundColor: "white" }}
             >
               <MenuItem value={10}>Low</MenuItem>
@@ -190,6 +275,8 @@ function EventForm() {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimeRangePicker
               localeText={{ start: "Start", end: "End" }}
+              value={timeRange}
+              onChange={(newValue) => setTimeRange(newValue)} 
               sx={{ backgroundColor: "white" }}
             />
           </LocalizationProvider>
@@ -230,6 +317,120 @@ function EventForm() {
         >
           <Button variant="contained"  onClick={submit}>Create Event</Button>
         </Grid2>
+
+        <Grid2 item size={12}>
+  <ul>
+    {events.map((event, index) => (
+      <li key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div>
+          <strong>{event.title}</strong> - {event.description} ({event.location})
+        </div>
+        <div>
+          <Button 
+            variant="contained" 
+            onClick={() => editEvent(event)} 
+            color="primary"
+            style={{ marginRight: '10px' }}  // Add some space between the buttons
+          >
+            Edit
+          </Button>
+          <Button 
+            variant="contained" 
+            color="error" 
+            onClick={() => deleteEvent(event.id)}
+          >Delete
+          </Button>
+        </div>
+      </li>
+    ))}
+  </ul>
+</Grid2>
+
+
+      {selectedEvent && (
+  <div>
+    <h3>Editing: {selectedEvent.title}</h3>
+
+    {/* Title */}
+    <TextField
+      label="Title"
+      value={title}
+      onChange={(e) => changeTitle(e.target.value)} 
+      sx={{ backgroundColor: "white" }}
+      fullWidth
+    />
+
+    {/* Description */}
+    <TextField
+      label="Description"
+      value={inputValue}  
+      onChange={(e) => setInputValue(e.target.value)} 
+      sx={{ backgroundColor: "white" }} 
+      fullWidth
+    />
+
+    {/* Location */}
+    <TextField
+      label="Location"
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
+      sx={{ backgroundColor: "white" }}
+      fullWidth
+    />
+
+   {/* Urgency */}
+   <FormControl fullWidth>
+      <InputLabel id="urgency-select-label">Urgency</InputLabel>
+      <Select
+        labelId="urgency-select-label"
+        value={urgency}
+        onChange={(e) => setUrgency(e.target.value)} 
+        label="Urgency"
+        sx={{ backgroundColor: "white" }}
+      >
+        <MenuItem value="Low">Low</MenuItem>
+        <MenuItem value="Medium">Medium</MenuItem>
+        <MenuItem value="High">High</MenuItem>
+      </Select>
+    </FormControl>
+
+    {/* Skills */}
+    <Autocomplete
+      multiple
+      options={skillsList}  
+      value={selectedSkills}  
+      onChange={(event, newValue) => setSelectedSkills(newValue)}  
+      renderTags={(value, getTagProps) =>
+        value.map((option, index) => (
+          <Chip key={index} label={option} {...getTagProps({ index })} />
+        ))
+      }
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="outlined"
+          label="Select Skill(s)"
+          placeholder="Start typing..."
+          fullWidth
+        />
+      )}
+      sx={{ backgroundColor: "white" }}
+    />
+
+    {/* Time Range */}
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DateTimeRangePicker
+        localeText={{ start: "Start", end: "End" }}
+        value={timeRange}
+        onChange={(newValue) => setTimeRange(newValue)}  // Update time range on change
+        sx={{ backgroundColor: "white" }}
+      />
+    </LocalizationProvider>
+
+    {/* Update Button */}
+    <Button variant="contained" onClick={updateEvent}>Update Event</Button>
+  </div>
+)}
       </Grid2>
     </div>
   );
