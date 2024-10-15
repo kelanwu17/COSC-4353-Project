@@ -16,6 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimeRangePicker } from "@mui/x-date-pickers-pro/DateTimeRangePicker";
 import axios from "axios"
+import axios from "axios"
 function EventForm() {
   const [inputValue, setInputValue] = useState("");
   const maxChars = 300;
@@ -89,6 +90,7 @@ function EventForm() {
             variant="outlined"
             fullWidth
             sx={{ backgroundColor: "white" }}
+            onChange={(e)=> changeTitle(e.target.value)}
             onChange={(e)=> changeTitle(e.target.value)}
           />
         </Grid2>
@@ -227,6 +229,7 @@ function EventForm() {
           size={12}
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
+          <Button variant="contained"  onClick={submit}>Create Event</Button>
           <Button variant="contained"  onClick={submit}>Create Event</Button>
         </Grid2>
       </Grid2>

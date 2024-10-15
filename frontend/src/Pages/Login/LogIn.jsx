@@ -1,9 +1,10 @@
 //import './LogIn.css';
+import React, {useState} from "react";
+import axios from "axios";
 import myLogo from "../../Assets/logo.png";
 import Textfield from "@mui/material/TextField";
-import axios from "axios"
 import {useNavigate, Link} from "react-router-dom"
-import {useState} from 'react'
+
 import {
   Box,
   Button,
@@ -15,7 +16,34 @@ import {
 } from "@mui/material";
 
 const LogIn = () => {
- 
+
+  //store username and password
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  //login form subbmision
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    axios.post('http://localhost:3001/logIn', {
+        username, password,
+    })
+    .then((response) => {
+        console.log(response.data); 
+      
+        if (response.data.sessionId) {
+          sessionStorage.setItem('sessionId', response.data.sessionId);
+            console.log('Session ID:', response.data.sessionId);
+        }
+    }, (error) => {
+        console.log(error);
+    });
+
+    sessionStorage.setItem('username', username); 
+
+}
+
+
 
   return (
     <div>
@@ -45,8 +73,9 @@ const LogIn = () => {
             <Button variant="text">Back</Button>
           </Grid2>
 
+          
+
           <Grid2
-            
             item
             xs={12}
             alignItems="center"
@@ -63,12 +92,15 @@ const LogIn = () => {
             </Grid2>
             <Grid2 item>
               <Textfield
+              required
                 width="800px"
                 label="required"
                 variant="outlined"
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
-                
+                value = {username}
+                //updating username state
+                onChange = {(e) => setUsername(e.target.value)}
               />
             </Grid2>
           </Grid2>
@@ -87,11 +119,15 @@ const LogIn = () => {
             <Grid2 item>
               <Textfield
                 fullWidth
+                required
+                type = "password"
+                value = {password}
                 label="required"
                 variant="outlined"
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
-                
+                //update password state
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid2>
           </Grid2>
@@ -106,7 +142,7 @@ const LogIn = () => {
               marginRight: "180px",
             }}
           >
-            
+            <Button variant="submit" onClick={handleLogin}>Confirm</Button>
           </Grid2>
         </Grid2>
       </Grid2>
