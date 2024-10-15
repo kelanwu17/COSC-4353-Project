@@ -1,20 +1,22 @@
-// routes/createProfile.js
 const express = require('express');
 const router = express.Router();
 
-// POST /createprofile route
-router.post('/', (req, res) => {
-    const { email, password } = req.body;
-    console.log("Received signup request:", req.body);
+router.post('/createprofile', (req, res) => {
+    const { fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime } = req.body; 
 
-    // Simple validation
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required.' });
+    try {
+        if (!email || !password) {
+            throw new Error('Email and password are required.'); 
+        }
+
+        console.log('Profile created:', { fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime }); 
+
+
+        res.status(201).json({ message: 'Profile created successfully', user: { email } });
+    } catch (error) {
+        console.error('Error creating profile:', error.message);
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
-
-    // Simulate saving the profile (e.g., to a database)
-    // For now, just respond with a success message
-    res.status(201).json({ message: 'Profile created successfully!', email });
 });
 
 module.exports = router;

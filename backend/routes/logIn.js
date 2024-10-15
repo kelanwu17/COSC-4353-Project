@@ -1,38 +1,32 @@
 const express = require('express');
 const router = express.Router();
+const { v4: uuidv4 } = require('uuid'); // Fixed import to destructure properly
 
-const user = {
-    email: 'user@project.com', // New phone who
-    password: 'password'  // New phone who dis
-
-};
-
+const sessions = {};
 router.post('/logIn', (req, res) => {
-    const { email, password} = req.body; 
-
+    const { username, password } = req.body; 
+   
     try {
-        if (!email || !password) {
-            throw new Error('Email and password are required.'); 
+        if (!username || !password) {
+            throw new Error('Username and password are required.');
         }
 
-        if(email !== user.email){
-            return res.status(401).json({message: 'Invalid Email'});
+        if (username === "admin" && password === "admin") {
+            const sessionId = uuidv4();
+            sessions[sessionId] = { username, userId: 1 };
+
+            // Send sessionId and success message
+            return res.status(200).json({ message: 'Login successful', sessionId });
         }
-        
-        if(password !== user.password){
-            return res.status(401).json({message: 'Invalid Password'});
-        }
 
-        req.session.user = {email};
+        // If username and password don't match, send 401 error
+        return res.status(401).json({ message: 'Invalid username or password.' });
 
-        console.log('Logged In Successfully ', { email }); 
-
-
-        res.status(200).json({ message: 'Logged In Successfully ', user: { email } });
     } catch (error) {
-        console.error('Error logging in:', error.message);
-        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+        console.error('Error during login:', error.message);
+        return res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 });
 
-module.exports = router;
+
+module.exports = { router, sessions };
