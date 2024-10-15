@@ -1,10 +1,12 @@
 let events = [];
-let eventsId = 1;
+let eventsId = 1; 
 
-const getNextEventId = () => eventsId++;
+function incrementEventsId() {
+  return eventsId++;
+}
 
 module.exports = {
-    events,
-    getNextEventId,
+  events,
+  incrementEventsId,
 };
 

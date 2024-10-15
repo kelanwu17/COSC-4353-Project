@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Textfield from "@mui/material/TextField";
 import dayjs from 'dayjs';
@@ -45,7 +46,7 @@ function EventForm() {
       urgencyDisplay = '';
   }
 
-    axios.post( 'http://localhost:3001/api/createevent', { title,
+    axios.post('http://localhost:3001/api/createevent', { title,
     description: inputValue, 
     location,
     urgency: urgencyDisplay,
@@ -318,117 +319,11 @@ const updateEvent = () => {
           <Button variant="contained"  onClick={submit}>Create Event</Button>
         </Grid2>
 
-        <Grid2 item size={12}>
-  <ul>
-    {events.map((event, index) => (
-      <li key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div>
-          <strong>{event.title}</strong> - {event.description} ({event.location})
-        </div>
-        <div>
-          <Button 
-            variant="contained" 
-            onClick={() => editEvent(event)} 
-            color="primary"
-            style={{ marginRight: '10px' }}  // Add some space between the buttons
-          >
-            Edit
-          </Button>
-          <Button 
-            variant="contained" 
-            color="error" 
-            onClick={() => deleteEvent(event.id)}
-          >Delete
-          </Button>
-        </div>
-      </li>
-    ))}
-  </ul>
-</Grid2>
-
 
       {selectedEvent && (
   <div>
-    <h3>Editing: {selectedEvent.title}</h3>
+    <h3>Editing Event: {selectedEvent.title}</h3>
 
-    {/* Title */}
-    <TextField
-      label="Title"
-      value={title}
-      onChange={(e) => changeTitle(e.target.value)} 
-      sx={{ backgroundColor: "white" }}
-      fullWidth
-    />
-
-    {/* Description */}
-    <TextField
-      label="Description"
-      value={inputValue}  
-      onChange={(e) => setInputValue(e.target.value)} 
-      sx={{ backgroundColor: "white" }} 
-      fullWidth
-    />
-
-    {/* Location */}
-    <TextField
-      label="Location"
-      value={location}
-      onChange={(e) => setLocation(e.target.value)}
-      sx={{ backgroundColor: "white" }}
-      fullWidth
-    />
-
-   {/* Urgency */}
-   <FormControl fullWidth>
-      <InputLabel id="urgency-select-label">Urgency</InputLabel>
-      <Select
-        labelId="urgency-select-label"
-        value={urgency}
-        onChange={(e) => setUrgency(e.target.value)} 
-        label="Urgency"
-        sx={{ backgroundColor: "white" }}
-      >
-        <MenuItem value="Low">Low</MenuItem>
-        <MenuItem value="Medium">Medium</MenuItem>
-        <MenuItem value="High">High</MenuItem>
-      </Select>
-    </FormControl>
-
-    {/* Skills */}
-    <Autocomplete
-      multiple
-      options={skillsList}  
-      value={selectedSkills}  
-      onChange={(event, newValue) => setSelectedSkills(newValue)}  
-      renderTags={(value, getTagProps) =>
-        value.map((option, index) => (
-          <Chip key={index} label={option} {...getTagProps({ index })} />
-        ))
-      }
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          variant="outlined"
-          label="Select Skill(s)"
-          placeholder="Start typing..."
-          fullWidth
-        />
-      )}
-      sx={{ backgroundColor: "white" }}
-    />
-
-    {/* Time Range */}
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateTimeRangePicker
-        localeText={{ start: "Start", end: "End" }}
-        value={timeRange}
-        onChange={(newValue) => setTimeRange(newValue)}  // Update time range on change
-        sx={{ backgroundColor: "white" }}
-      />
-    </LocalizationProvider>
-
-    {/* Update Button */}
-    <Button variant="contained" onClick={updateEvent}>Update Event</Button>
   </div>
 )}
       </Grid2>

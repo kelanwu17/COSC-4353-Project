@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { events } = require('./eventsData'); // Import shared events data
+const { events } = require('./eventsData'); 
 
 router.delete('/events/:id', (req, res) => {
     const eventId = parseInt(req.params.id);
@@ -16,3 +16,4 @@ router.delete('/events/:id', (req, res) => {
 });
 
 module.exports = router;
+

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 const modalStyle = {
     position: 'fixed',
@@ -49,7 +50,7 @@ const skillsList = [
 
 const urgencyLevels = ["High", "Medium", "Low"];
 
-export default function AdminModal({ open, onClose, title, description, urgency, skills, location, date }) {
+export default function AdminModal({ open, onClose, title, description, urgency, skills, location, date, eventId, onSave }) {
     const modalRef = useRef(null);
 
   
@@ -71,7 +72,45 @@ export default function AdminModal({ open, onClose, title, description, urgency,
     }
     };
 
+    const handleSave = () => {
+        
+        console.log('Event ID to update:', eventId); 
+        const updatedEventData = {
+            title: newTitle,
+            description: newDesc,
+            urgency: newUrg,
+            skills: newSk,
+            location: newLoc,
+            date: newDate
+        };
+
+        axios.patch(`http://localhost:3001/api/events/${eventId}`, updatedEventData)
+        .then(response => {
+            console.log('Event updated successfully:', response.data);
+            console.log(`Event with ID ${eventId} has been updated:`, updatedEventData);
+            onSave(); 
+            onClose(); 
+        })
+        .catch(error => {
+            console.error('Error updating event:', error);
+        });
+};
+
+const handleDelete = () => {
+    axios.delete(`http://localhost:3001/api/events/${eventId}`)
+    .then(response => {
+        console.log('Event deleted successfully:', response.data);
+        onSave(); 
+        onClose();
+    })
+    .catch(error => {
+        console.error('Error deleting event:', error);
+    });
+};
+
     if (!open) return null;
+
+
 
     return ReactDOM.createPortal(
         <div style={entireStyle}>
@@ -126,8 +165,19 @@ export default function AdminModal({ open, onClose, title, description, urgency,
                     </div>
                 </div>
                  <div className="flex justify-end space-x-2 absolute right-2">
-                <button className="rounded-md bg-blue-400 text-white border border-black right-0" onClick={(temp) => { temp.stopPropagation(); onClose(); }}>
+                <button className="rounded-md bg-blue-400 text-white border border-black right-0" onClick={handleSave}>
                     Save
+                </button>
+                </div>
+
+                <div className="flex justify-end space-x-2 absolute right-14">
+                <button className="rounded-md bg-blue-400 text-white border border-black left-10" onClick={() => {}}>
+                    Submit
+                </button>
+                </div>
+                <div className="flex justify-end space-x-2 absolute right-100">
+                <button className="rounded-md bg-red-400 text-white border border-black left-0" onClick={handleDelete}>
+                    delete
                 </button>
                 </div>
             </div>

@@ -21,12 +21,11 @@ function EventForm() {
   const maxChars = 300;
 
   const [title, changeTitle] = useState("");
+  
   async function submit(e) {
     e.preventDefault();
 
-    axios.post('http://localhost:3001/createevent', { title
-      
-    })
+    axios.post('http://localhost:3001/createevent', { title })
     .then((response) => {
       console.log(response);
     }, (error) => {

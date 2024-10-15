@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const dayjs = require('dayjs');
-const { events } = require('./eventsData'); // Import shared events data
+const { events } = require('./eventsData'); 
 
 router.patch('/events/:id', (req, res) => {
     const eventId = parseInt(req.params.id);
@@ -19,6 +19,7 @@ router.patch('/events/:id', (req, res) => {
             return res.status(400).json({ message: 'Invalid location: Location should only contain letters, numbers, spaces, dashes, and commas.' });
         }
 
+        // Update the existing event
         const currentEvent = events[eventIndex];
         const updatedEvent = {
             ...currentEvent,
@@ -31,6 +32,15 @@ router.patch('/events/:id', (req, res) => {
         };
 
         events[eventIndex] = updatedEvent;
+
+        let formattedTimeRange = "No Time Range Provided";
+        if (updatedEvent.timeRange && updatedEvent.timeRange.length === 2) {
+            const formattedStartDate = dayjs(updatedEvent.timeRange[0]).format('MM-DD-YYYY');
+            const formattedEndDate = dayjs(updatedEvent.timeRange[1]).format('MM-DD-YYYY');
+            const startTime = dayjs(updatedEvent.timeRange[0]).format('hh:mm A');
+            const endTime = dayjs(updatedEvent.timeRange[1]).format('hh:mm A');
+            formattedTimeRange = `From ${formattedStartDate} starting at ${startTime}. To ${formattedEndDate} ending at ${endTime}`;
+        }
 
         console.log('Event updated:', updatedEvent);
         res.status(200).json({ message: 'Event Updated Successfully', event: updatedEvent });

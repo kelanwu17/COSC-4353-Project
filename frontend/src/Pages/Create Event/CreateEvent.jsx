@@ -8,11 +8,6 @@ import UserNavBar from "../../Components/UserNavBar";
 
 function CreateEvent() {
 
-  
-
-
-
-
   return (
     <div style={{backgroundColor:"#E5E5E5"}}>
       <NavBar/>
