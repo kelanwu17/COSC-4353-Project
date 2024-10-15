@@ -20,10 +20,12 @@ const LogIn = () => {
   //store username and password
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // New state for error messages
 
   //login form subbmision
   const handleLogin = async (event) => {
     event.preventDefault();
+    setErrorMessage(""); // Clear previous error
 
     axios.post('http://localhost:3001/logIn', {
         username, password,
@@ -35,8 +37,14 @@ const LogIn = () => {
           sessionStorage.setItem('sessionId', response.data.sessionId);
             console.log('Session ID:', response.data.sessionId);
         }
-    }, (error) => {
-        console.log(error);
+    })
+    .catch((error) => {
+      // Set the error message based on the response from the server
+      if (error.response && error.response.data) {
+        setErrorMessage(error.response.data.message); // Update error message state
+      } else {
+        setErrorMessage("An unexpected error occurred."); // Generic error message
+      }
     });
 
     sessionStorage.setItem('username', username); 
@@ -131,7 +139,12 @@ const LogIn = () => {
               />
             </Grid2>
           </Grid2>
-
+{/* Error message display */}
+{errorMessage && (
+    <Grid2 item xs={12} style={{ color: "red", marginTop: "10px", marginLeft: "10px" }}>
+        <strong>{errorMessage}</strong>
+    </Grid2>
+)}
           <Grid2
             item
             size={6}
