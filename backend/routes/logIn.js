@@ -18,7 +18,11 @@ router.post('/logIn', (req, res) => {
             // Send sessionId and success message
             return res.status(200).json({ message: 'Login successful', sessionId });
         }
-
+        
+        if(password !== "admin")
+        {
+            
+        }
         // If username and password don't match, send 401 error
         return res.status(401).json({ message: 'Invalid username or password.' });
 
