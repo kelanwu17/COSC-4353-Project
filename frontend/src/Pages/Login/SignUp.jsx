@@ -49,6 +49,7 @@ const SignUp = () => {
   const history=useNavigate();
   const[email, setEmail] = useState('')
   const[password,setPassword] = useState('')
+  const[confirmPassword, setConfirmPassword] = useState('');
   const[address, setAddress] = useState('')
   const[address2, setAddress2] = useState('')
   const[city, setCity] = useState('')
@@ -76,7 +77,10 @@ const SignUp = () => {
   if (!fullName) newErrorMessages.fullName = "Full Name is required.";
   if (!email) newErrorMessages.email = "Email is required.";
   if (!password) newErrorMessages.password = "Password is required.";
-  //if (!confirmPassword) newErrorMessages.password = "You must confirm password.";
+  if (!confirmPassword) newErrorMessages.password = "You must confirm password.";
+  if(password !== confirmPassword){
+    newErrorMessages.confirmPassword = "Passwords do not match.";
+  }
   if (!address) newErrorMessages.address = "Address is required.";
   if (!city) newErrorMessages.city = "City is required.";
   if (!zipcode) newErrorMessages.zipcode = "Zipcode is required.";
@@ -232,6 +236,9 @@ try {
                 variant="outlined"
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
+                onChange={(e) => {setConfirmPassword(e.target.value)}}
+                error ={!!errorMessages.confirmPassword}
+                helperText={errorMessages.confirmPassword}
                 //error={!!errorMessages.confirmPassword}
               //helperText={errorMessages.confirmPassword}
                  type="password"

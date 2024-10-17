@@ -27,6 +27,20 @@ const LogIn = () => {
     event.preventDefault();
     setErrorMessage(""); // Clear previous error
 
+    if(!username && !password)
+    {
+      setErrorMessage("Username and Password are required.");
+      return;
+    }
+    if(!username){
+      setErrorMessage("Username is required.");
+      return;
+    }
+    if(!password){
+      setErrorMessage("Password is required.");
+      return;
+    }
+
     axios.post('http://localhost:3001/logIn', {
         username, password,
     })
