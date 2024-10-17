@@ -136,7 +136,9 @@ try {
           }}
         >
           <Grid2 item size={6}>
+            <Link to="/">
             <Button variant="text">Back</Button>
+            </Link>
           </Grid2>
          
           <Grid2

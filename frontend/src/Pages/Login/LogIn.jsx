@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import myLogo from "../../Assets/logo.png";
 import Textfield from "@mui/material/TextField";
-import {useNavigate, Link} from "react-router-dom"
+import {useNavigate, Link, Navigate} from "react-router-dom"
 
 import {
   Box,
@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 
 const LogIn = () => {
-
+  const navigate = useNavigate();
   //store username and password
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -35,6 +35,7 @@ const LogIn = () => {
       
         if (response.data.sessionId) {
           sessionStorage.setItem('sessionId', response.data.sessionId);
+          navigate('/uservolunteer'); 
             console.log('Session ID:', response.data.sessionId);
         }
     })
@@ -78,7 +79,9 @@ const LogIn = () => {
           }}
         >
           <Grid2 item size={6}>
+            <Link to ="/">
             <Button variant="text">Back</Button>
+            </Link>
           </Grid2>
 
           
