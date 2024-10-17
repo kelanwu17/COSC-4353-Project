@@ -66,18 +66,6 @@ const ProfileDisplay=()=>{
               <button type="submit">Edit Profile</button>
             </div>
 
-            {/* <div className="volunteer-section2">
-              <UserVolunteerItem
-                title="Beach Cleanup"
-                imgUrl="https://example.com/beach.jpg"
-                description="Join us for a beach cleanup event to protect marine life."
-                urgency="High"
-                skills="Teamwork, Leadership"
-                date="2024-09-25"
-                location="Santa Monica Beach"
-              />
-            </div> */}
-
         </div>
   </fieldset>
   </div>

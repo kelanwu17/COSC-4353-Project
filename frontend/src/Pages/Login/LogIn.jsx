@@ -166,12 +166,7 @@ const LogIn = () => {
 };
 function LogInPage() {
   return (
-    /*
-        <div className="LogInPage">
-            <Logo/>
-            <LogIn/>
-        </div>
-        */
+   
     <div className="LogInPage">
       <LogIn />
     </div>
