@@ -1,6 +1,6 @@
 To run locally have 2 terminals one for backend, one for front end
 type in "npm install"
-in the front-end run t
+in the front-end run 
 'cd frontend'
 'npm start'
 
