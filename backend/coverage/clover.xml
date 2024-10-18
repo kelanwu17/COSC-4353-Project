@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1729198593446" clover="3.2.0">
-  <project timestamp="1729198593446" name="All files">
+<coverage generated="1729199087641" clover="3.2.0">
+  <project timestamp="1729199087642" name="All files">
     <metrics statements="90" coveredstatements="82" conditionals="63" coveredconditionals="60" methods="9" coveredmethods="9" elements="162" coveredelements="151" complexity="0" loc="90" ncloc="90" packages="1" files="5" classes="5"/>
     <file name="createEvent.js" path="C:\Users\pyrak\COSC-4353-Project\backend\routes\createEvent.js">
       <metrics statements="32" coveredstatements="29" conditionals="30" coveredconditionals="29" methods="1" coveredmethods="1"/>
