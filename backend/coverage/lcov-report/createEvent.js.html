@@ -156,11 +156,7 @@
 <a name='L91'></a><a href='#L91'>91</a>
 <a name='L92'></a><a href='#L92'>92</a>
 <a name='L93'></a><a href='#L93'>93</a>
-<a name='L94'></a><a href='#L94'>94</a>
-<a name='L95'></a><a href='#L95'>95</a>
-<a name='L96'></a><a href='#L96'>96</a>
-<a name='L97'></a><a href='#L97'>97</a>
-<a name='L98'></a><a href='#L98'>98</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L94'></a><a href='#L94'>94</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -218,12 +214,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -236,7 +229,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -261,64 +253,62 @@
 const router = express.Router();
 const dayjs = require('dayjs');
 const { events, incrementEventsId } = require('./eventsData');
-const { storeEventSkills, checkSkillMatch } = require('./eventMatching');// Import skill match function
+const { storeEventSkills, checkSkillMatch } = require('./eventMatching');
 &nbsp;
 router.post('/createevent', (req, res) =&gt; {
     const { title, description, location, urgency, skills, timeRange } = req.body;
 &nbsp;
     try {
-        // Store event-selected skills
+    
         storeEventSkills(skills);
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >        console.error('Error storing event skills:', error.message);</span>
 <span class="cstat-no" title="statement not covered" >        return res.status(500).json({ message: 'Failed to store event skills.' });</span>
     }
 &nbsp;
-    // Validation: Title
+    // Validation for length
     if (!title || typeof title !== 'string' || title.length &gt; 100) {
         return res.status(400).json({
             message: 'Invalid title: Title is required and must be less than or equal to 100 characters.'
         });
     }
 &nbsp;
-    // Validation: Description
+    // Validation for Description requirement
     if (!description || typeof description !== 'string') {
         return res.status(400).json({
-            message: 'Invalid description: Description is required.'
+            message: 'Description is required.'
         });
     }
 &nbsp;
-    // Validation: Skills
+    // Validation for Skill
     if (!Array.isArray(skills) || skills.length === 0) {
         return res.status(400).json({
-            message: 'Invalid skills: At least one skill is required.'
+            message: 'At least one skill is required.'
         });
     }
 &nbsp;
-    // Validation: Time Range
+    // Validation fro Time Range
     if (!timeRange || timeRange.length !== 2 || 
         !dayjs(timeRange[0]).isValid() || !dayjs(timeRange[1]).isValid()) {
         return res.status(400).json({
-            message: 'Invalid time range: A valid start and end date are required.'
+            message: 'A valid start and end date are required.'
         });
     }
 &nbsp;
-    // Validation: Location
+    // Validation for Location
     const locationRegex = /^[a-zA-Z0-9\s,.-]+$/;
     if (!location || typeof location !== 'string' || !locationRegex.test(location)) {
         return res.status(400).json({
-            message: 'Invalid location: Location should only contain letters, numbers, spaces, dashes, and commas.'
+            message: 'Location required should only contain letters, numbers, spaces, dashes, and commas.'
         });
     }
 &nbsp;
     try {
-        // Format the time range
+        
         const formattedTimeRange = `From ${dayjs(timeRange[0]).format('dddd, MM/DD/YYYY')} starting at ${dayjs(timeRange[0]).format('hh:mm A')}. To ${dayjs(timeRange[1]).format('dddd, MM/DD/YYYY')} ending at ${dayjs(timeRange[1]).format('hh:mm A')}`;
 &nbsp;
-        // Check for skill match using the imported function
-        const isMatch = checkSkillMatch(skills); // Logs 'Match found!' if there is a match
+        const isMatch = checkSkillMatch(skills); 
 &nbsp;
-        // Create the new event object
         const event = {
             id: incrementEventsId(),
             title,
@@ -329,12 +319,10 @@ router.post('/createevent', (req, res) =&gt; {
             timeRange: formattedTimeRange
         };
 &nbsp;
-        // Store the new event
         events.push(event);
 &nbsp;
         console.log('Event created:', event);
 &nbsp;
-        // Send success response with match message
         res.status(201).json({
             message: isMatch ? <span class="branch-0 cbranch-no" title="branch not covered" >'Match found!' </span>: 'No match found.',
             event
@@ -361,7 +349,7 @@ module.exports = router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-10-18T01:36:53.994Z
+                at 2024-10-18T17:31:19.371Z
             </div>
         <script src="prettify.js"></script>
         <script>

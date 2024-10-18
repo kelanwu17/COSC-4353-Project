@@ -1,5 +1,3 @@
-// tests/events.test.js
-
 const request = require('supertest');
 const express = require('express');
 const createEventRoutes = require('../routes/createEvent');
@@ -7,7 +5,6 @@ const updateEventRoutes = require('../routes/updateEvent');
 const getEventRoutes = require('../routes/getEvent');
 const deleteEventRoutes = require('../routes/deleteEvent');
 
-// Initialize app with all the routes
 const app = express();
 app.use(express.json());
 app.use('/', createEventRoutes);
@@ -61,7 +58,7 @@ describe('Event Routes', () => {
     const response = await request(app)
       .post('/createevent')
       .send({
-        title: 'A'.repeat(101), // More than 100 characters
+        title: 'A'.repeat(101), 
         description: 'This is a test event.',
         location: 'Test Location',
         urgency: 'High',
@@ -74,41 +71,41 @@ describe('Event Routes', () => {
     console.log('Tested for invalid long title');
   });
 
-  // POST Test (Invalid Description)
-  it('should return 400 for an invalid description', async () => {
-    const response = await request(app)
-      .post('/createevent')
-      .send({
-        title: 'Sample Event',
-        description: '', // Invalid description
-        location: 'Test Location',
-        urgency: 'High',
-        skills: ['Communication'],
-        timeRange: ['2023-10-01T10:00:00', '2023-10-01T12:00:00']
-      });
+ // POST Test (Invalid Description)
+it('should return 400 for an invalid description', async () => {
+  const response = await request(app)
+    .post('/createevent')
+    .send({
+      title: 'Sample Event',
+      description: '', 
+      location: 'Test Location',
+      urgency: 'High',
+      skills: ['Communication'],
+      timeRange: ['2023-10-01T10:00:00', '2023-10-01T12:00:00']
+    });
     
     expect(response.statusCode).toBe(400);
-    expect(response.body.message).toBe('Invalid description: Description is required.');
+    expect(response.body.message).toBe('Description is required.');
     console.log('Tested for invalid empty description');
   });
 
-  // POST Test (Invalid Skills)
-  it('should return 400 for invalid skills', async () => {
-    const response = await request(app)
-      .post('/createevent')
-      .send({
-        title: 'Sample Event',
-        description: 'This is a test event.',
-        location: 'Test Location',
-        urgency: 'High',
-        skills: [], // Invalid skills (empty array)
-        timeRange: ['2023-10-01T10:00:00', '2023-10-01T12:00:00']
-      });
-    
-    expect(response.statusCode).toBe(400);
-    expect(response.body.message).toBe('Invalid skills: At least one skill is required.');
-    console.log('Tested for invalid empty skills array');
-  });
+// POST Test (Invalid Skills)
+it('should return 400 for invalid skills', async () => {
+  const response = await request(app)
+    .post('/createevent')
+    .send({
+      title: 'Sample Event',
+      description: 'This is a test event.',
+      location: 'Test Location',
+      urgency: 'High',
+      skills: [], 
+      timeRange: ['2023-10-01T10:00:00', '2023-10-01T12:00:00']
+    });
+
+  expect(response.statusCode).toBe(400);
+  expect(response.body.message).toBe('At least one skill is required.'); // Match actual message
+  console.log('Tested for invalid empty skills array');
+});
 
   // POST Test (Invalid Time Range)
   it('should return 400 for an invalid time range', async () => {
@@ -120,11 +117,11 @@ describe('Event Routes', () => {
         location: 'Test Location',
         urgency: 'High',
         skills: ['Communication'],
-        timeRange: ['InvalidDate', '2023-10-01T12:00:00'] // Invalid time range
+        timeRange: ['InvalidDate', '2023-10-01T12:00:00'] 
       });
     
     expect(response.statusCode).toBe(400);
-    expect(response.body.message).toBe('Invalid time range: A valid start and end date are required.');
+    expect(response.body.message).toBe('A valid start and end date are required.');
     console.log('Tested for invalid time range');
   });
 
@@ -135,14 +132,14 @@ describe('Event Routes', () => {
       .send({
         title: 'Sample Event',
         description: 'This is a test event.',
-        location: 'Invalid!Location@With#Special$Characters', // Invalid location
+        location: 'Invalid!Location@With#Special$Characters', 
         urgency: 'High',
         skills: ['Communication'],
         timeRange: ['2023-10-01T10:00:00', '2023-10-01T12:00:00']
       });
     
     expect(response.statusCode).toBe(400);
-    expect(response.body.message).toBe('Invalid location: Location is required and should only contain letters, numbers, spaces, dashes, and commas.');
+    expect(response.body.message).toBe('Location required should only contain letters, numbers, spaces, dashes, and commas.');
     console.log('Tested for invalid location');
   });
 
@@ -151,7 +148,7 @@ describe('Event Routes', () => {
     const response = await request(app).get('/events');
     expect(response.statusCode).toBe(200);
     expect(Array.isArray(response.body)).toBeTruthy();
-    expect(response.body.length).toBeGreaterThan(0); // Make sure there's at least one event
+    expect(response.body.length).toBeGreaterThan(0); 
     console.log('Retrieved all events successfully');
   });
 
@@ -160,13 +157,13 @@ describe('Event Routes', () => {
     const response = await request(app).get(`/events/${eventId}`);
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty('id', eventId);
-    expect(response.body).toHaveProperty('title', 'Sample Event'); // Ensure the title matches
+    expect(response.body).toHaveProperty('title', 'Sample Event'); 
     console.log('Retrieved event by ID successfully');
   });
 
   // GET Test (Retrieve Non-existent Event by ID)
   it('should return 404 when retrieving a non-existent event', async () => {
-    const nonExistentEventId = 9999; // Use an ID that doesn't exist
+    const nonExistentEventId = 9999; 
     const response = await request(app).get(`/events/${nonExistentEventId}`);
     expect(response.statusCode).toBe(404);
     expect(response.body.message).toBe('Event Not Found');
@@ -175,7 +172,7 @@ describe('Event Routes', () => {
 
   // GET Test (Retrieve Event with Invalid ID)
   it('should return 400 when retrieving an event with an invalid ID', async () => {
-    const invalidEventId = 'abc'; // Use an invalid non-numeric ID
+    const invalidEventId = 'abc'; 
     const response = await request(app).get(`/events/${invalidEventId}`);
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toBe('Invalid event ID');
@@ -209,7 +206,7 @@ describe('Event Routes', () => {
     
     expect(response.statusCode).toBe(200);
     expect(response.body.event.title).toBe('Partially Updated Title');
-    expect(response.body.event.description).toBe('This is an updated test event.'); // Ensure description didn't change
+    expect(response.body.event.description).toBe('This is an updated test event.'); 
     console.log('Updated event title only successfully');
   });
 
@@ -218,7 +215,7 @@ describe('Event Routes', () => {
     const response = await request(app)
       .patch(`/events/${eventId}`)
       .send({
-        title: 'A'.repeat(101), // Invalid title (more than 100 characters)
+        title: 'A'.repeat(101), 
       });
     
     expect(response.statusCode).toBe(400);
@@ -231,7 +228,7 @@ describe('Event Routes', () => {
     const response = await request(app)
       .patch(`/events/${eventId}`)
       .send({
-        location: 'Invalid!Location@With#Special$Characters' // Invalid location
+        location: 'Invalid!Location@With#Special$Characters' 
       });
     
     expect(response.statusCode).toBe(400);
@@ -241,7 +238,7 @@ describe('Event Routes', () => {
 
   // PATCH Test (Non-existent Event)
   it('should return 404 when updating a non-existent event', async () => {
-    const nonExistentEventId = 9999; // Use an ID that doesn't exist
+    const nonExistentEventId = 9999;
     const response = await request(app)
       .patch(`/events/${nonExistentEventId}`)
       .send({
@@ -263,7 +260,7 @@ describe('Event Routes', () => {
 
   // DELETE Test (Non-existent Event, should return 404)
   it('should return 404 when trying to delete a non-existent event', async () => {
-    const nonExistentEventId = 9999; // Use an ID that doesn't exist
+    const nonExistentEventId = 9999; 
     const response = await request(app).delete(`/events/${nonExistentEventId}`);
     expect(response.statusCode).toBe(404);
     expect(response.body.message).toBe('Event Not Found');

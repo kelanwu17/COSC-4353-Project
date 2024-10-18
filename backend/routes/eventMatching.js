@@ -1,6 +1,3 @@
-// /routes/eventMatching.js
-
-// Hardcoded array of skills to match against
 const skillsList = [
     "Communication",
     "Teamwork",
@@ -25,7 +22,7 @@ const skillsList = [
   let userSelectedSkills = [];
   let eventSelectedSkills = [];
   
-  // Function to check if skills match between users and events
+  // check if skills match between users and events
   const checkSkillMatch = () => {
     const match = userSelectedSkills.some(skill => eventSelectedSkills.includes(skill));
     if (match) {
@@ -34,12 +31,10 @@ const skillsList = [
     return match;
   };
   
-  // Store user skills
   const storeUserSkills = (skills) => {
     userSelectedSkills = skills;
   };
   
-  // Store event skills
   const storeEventSkills = (skills) => {
     eventSelectedSkills = skills;
   };

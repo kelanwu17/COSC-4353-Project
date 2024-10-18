@@ -70,9 +70,19 @@ export default function AdminModal({ open, onClose, title, description, urgency,
     } else {
         changeSk(prevSkills => [...prevSkills, skill].sort());
     }
-    };
+};
+const handleSubmit = () => {
+    axios
+      .patch(`http://localhost:3001/api/createRegisteredEvents/${eventId}`)
+      .then((response) => {
+        console.log('Event published successfully:', response.data);
+        onSave(); // Refresh event list
+        onClose(); // Close modal
+      })
+      .catch((error) => console.error('Error publishing event:', error));
+};
 
-    const handleSave = () => {
+const handleSave = () => {
         
         console.log('Event ID to update:', eventId); 
         const updatedEventData = {
@@ -84,18 +94,19 @@ export default function AdminModal({ open, onClose, title, description, urgency,
             date: newDate
         };
 
+        
         axios.patch(`http://localhost:3001/api/events/${eventId}`, updatedEventData)
         .then(response => {
             console.log('Event updated successfully:', response.data);
-            console.log(`Event with ID ${eventId} has been updated:`, updatedEventData);
+            console.log(`Event with id:${eventId} has been updated:`, updatedEventData);
             onSave(); 
             onClose(); 
         })
         .catch(error => {
             console.error('Error updating event:', error);
         });
-};
-
+    };
+    
 const handleDelete = () => {
     axios.delete(`http://localhost:3001/api/events/${eventId}`)
     .then(response => {
@@ -171,7 +182,7 @@ const handleDelete = () => {
                 </div>
 
                 <div className="flex justify-end space-x-2 absolute right-14">
-                <button className="rounded-md bg-blue-400 text-white border border-black left-10" onClick={() => {}}>
+                <button className="rounded-md bg-blue-400 text-white border border-black left-10"  onClick={handleSubmit}>
                     Submit
                 </button>
                 </div>
