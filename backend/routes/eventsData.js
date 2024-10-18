@@ -1,3 +1,4 @@
+// store data in an array for admin events
 let events = [];
 let eventsId = 1; 
 

@@ -66,8 +66,6 @@ const LogIn = () => {
 
 }
 
-
-
   return (
     <div>
       <Grid2 container spacing={2} alignItems="center">
