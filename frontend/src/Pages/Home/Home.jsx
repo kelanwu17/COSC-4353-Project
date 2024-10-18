@@ -8,6 +8,7 @@ import {
     MenuItem,
     Select,
   } from "@mui/material";
+import {Link} from "react-router-dom";
 /*
 const Logo=()=>{
     return(
@@ -56,12 +57,15 @@ const Home=()=>{
                 >Find an event near you</p>
             </Grid2>
             <Grid2 item size = {6}>
+            <Link to="/signup">
             <Button variant="contained"
                 style={{
                     marginRight: '50px'
                 }}
-                >Sign Up</Button>
+                >Sign Up</Button></Link>
+            <Link to="/login">
             <Button variant="contained">Log In</Button>
+            </Link>
             </Grid2>
             </Grid2>
             
