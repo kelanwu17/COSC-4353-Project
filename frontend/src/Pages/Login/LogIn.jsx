@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import myLogo from "../../Assets/logo.png";
 import Textfield from "@mui/material/TextField";
-import {useNavigate, Link} from "react-router-dom"
+import {useNavigate, Link, Navigate} from "react-router-dom"
 
 import {
   Box,
@@ -16,14 +16,30 @@ import {
 } from "@mui/material";
 
 const LogIn = () => {
-
+  const navigate = useNavigate();
   //store username and password
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // New state for error messages
 
   //login form subbmision
   const handleLogin = async (event) => {
     event.preventDefault();
+    setErrorMessage(""); // Clear previous error
+
+    if(!username && !password)
+    {
+      setErrorMessage("Username and Password are required.");
+      return;
+    }
+    if(!username){
+      setErrorMessage("Username is required.");
+      return;
+    }
+    if(!password){
+      setErrorMessage("Password is required.");
+      return;
+    }
 
     axios.post('http://localhost:3001/logIn', {
         username, password,
@@ -33,10 +49,17 @@ const LogIn = () => {
       
         if (response.data.sessionId) {
           sessionStorage.setItem('sessionId', response.data.sessionId);
+          navigate('/uservolunteer'); 
             console.log('Session ID:', response.data.sessionId);
         }
-    }, (error) => {
-        console.log(error);
+    })
+    .catch((error) => {
+      // Set the error message based on the response from the server
+      if (error.response && error.response.data) {
+        setErrorMessage(error.response.data.message); // Update error message state
+      } else {
+        setErrorMessage("An unexpected error occurred."); // Generic error message
+      }
     });
 
     sessionStorage.setItem('username', username); 
@@ -68,7 +91,9 @@ const LogIn = () => {
           }}
         >
           <Grid2 item size={6}>
+            <Link to ="/">
             <Button variant="text">Back</Button>
+            </Link>
           </Grid2>
 
           
@@ -129,7 +154,12 @@ const LogIn = () => {
               />
             </Grid2>
           </Grid2>
-
+{/* Error message display */}
+{errorMessage && (
+    <Grid2 item xs={12} style={{ color: "red", marginTop: "10px", marginLeft: "10px" }}>
+        <strong>{errorMessage}</strong>
+    </Grid2>
+)}
           <Grid2
             item
             size={6}
@@ -142,6 +172,7 @@ const LogIn = () => {
           >
             <Button variant="submit" onClick={handleLogin}>Confirm</Button>
           </Grid2>
+          
         </Grid2>
       </Grid2>
     </div>

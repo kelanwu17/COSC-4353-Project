@@ -19,13 +19,7 @@ import {
   Select,
 } from "@mui/material";
 
-/*
-const Logo=()=>{
-    return(
-        <img className="logo" src= {myLogo} alt="Logo of our page" />
-    )
-};
-*/
+
 
 const SignUp = () => {
 
@@ -55,6 +49,7 @@ const SignUp = () => {
   const history=useNavigate();
   const[email, setEmail] = useState('')
   const[password,setPassword] = useState('')
+  const[confirmPassword, setConfirmPassword] = useState('');
   const[address, setAddress] = useState('')
   const[address2, setAddress2] = useState('')
   const[city, setCity] = useState('')
@@ -62,9 +57,39 @@ const SignUp = () => {
   const[availableTime, setAvailableTime] = useState('')
   const[fullName, setFullName] = useState('')
 
+  const [errorMessages, setErrorMessages] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    address: "",
+    city: "",
+    zipcode: "",
+  });
+
+  
+
   async function submit(e) {
     e.preventDefault();
 
+    // Validate fields
+  const newErrorMessages = {};
+  if (!fullName) newErrorMessages.fullName = "Full Name is required.";
+  if (!email) newErrorMessages.email = "Email is required.";
+  if (!password) newErrorMessages.password = "Password is required.";
+  if (!confirmPassword) newErrorMessages.password = "You must confirm password.";
+  if(password !== confirmPassword){
+    newErrorMessages.confirmPassword = "Passwords do not match.";
+  }
+  if (!address) newErrorMessages.address = "Address is required.";
+  if (!city) newErrorMessages.city = "City is required.";
+  if (!zipcode) newErrorMessages.zipcode = "Zipcode is required.";
+
+  if (Object.keys(newErrorMessages).length > 0) {
+    setErrorMessages(newErrorMessages); // Set error messages and return
+    return;
+  }
+/*
     axios.post('http://localhost:3001/createprofile', {
       fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime
     })
@@ -75,7 +100,18 @@ const SignUp = () => {
     });
 
   }
-
+*/
+// Proceed with form submission
+try {
+  const response = await axios.post('http://localhost:3001/createprofile', {
+    fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime
+  });
+  console.log(response);
+  // Redirect or show success message here
+} catch (error) {
+  console.log(error);
+}
+}
   return (
     <div>
       <Grid2 container spacing={2} alignItems="start">
@@ -104,7 +140,9 @@ const SignUp = () => {
           }}
         >
           <Grid2 item size={6}>
+            <Link to="/">
             <Button variant="text">Back</Button>
+            </Link>
           </Grid2>
          
           <Grid2
@@ -131,6 +169,8 @@ const SignUp = () => {
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
                 onChange={(e)=> {setFullName(e.target.value)}}
+                error={!!errorMessages.fullName}
+              helperText={errorMessages.fullName}
               />
             </Grid2>
         
@@ -170,6 +210,8 @@ const SignUp = () => {
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
                 onChange={(e)=> {setPassword(e.target.value)}}
+                error={!!errorMessages.password}
+              helperText={errorMessages.password}
                 type="password"
               />
             </Grid2>
@@ -194,6 +236,11 @@ const SignUp = () => {
                 variant="outlined"
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
+                onChange={(e) => {setConfirmPassword(e.target.value)}}
+                error ={!!errorMessages.confirmPassword}
+                helperText={errorMessages.confirmPassword}
+                //error={!!errorMessages.confirmPassword}
+              //helperText={errorMessages.confirmPassword}
                  type="password"
               />
             </Grid2>
@@ -210,6 +257,8 @@ const SignUp = () => {
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
                 onChange={(e)=> {setAddress(e.target.value)}}
+                error={!!errorMessages.address}
+              helperText={errorMessages.address}
                 required
               />
             </Grid2>
@@ -242,6 +291,8 @@ const SignUp = () => {
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
                 onChange={(e)=> {setCity(e.target.value)}}
+                error={!!errorMessages.city}
+              helperText={errorMessages.city}
                 required
               />
             </Grid2>
@@ -258,6 +309,8 @@ const SignUp = () => {
                 sx={{ backgroundColor: "white" }}
                 style={{ width: 500, marginLeft: 10, marginRight: 180 }}
                 onChange={(e)=> {setZipCode(e.target.value)}}
+                error={!!errorMessages.zipcode}
+              helperText={errorMessages.zipcode}
                 required
               />
             </Grid2>
@@ -333,42 +386,10 @@ const SignUp = () => {
       </Grid2>
     </div>
 
-    /*
-        <div className="sign-up">
-            <form>
-                <div className="back-button">
-                    <button type="submit">BACK</button>
-                </div>
-                <div className="user-name">
-                    <label htmlFor="username"><strong>USERNAME</strong></label>
-                    <input type="text" id="username" name="username" required placeholder="required" maxLength={15}/>
-                </div>
-                <div className="pass-word">
-                    <label htmlFor="password"><strong>PASSWORD</strong></label>
-                    <input type="text" id="password" name="password" required placeholder="required" maxLength={25}/>
-                </div>
-                <div className="confirm">
-                    <label htmlFor="confirm-password"><strong>CONFIRM PASSWORD</strong></label>
-                    <input type="text" id="confirm-password" name="confirm-password" required placeholder="required" maxLength={25}/>
-                </div>
-                <div className="sign-up-button">
-                    <button type="submit">SIGN UP</button>
-                </div>
-            </form>
-        </div>
-        */
+    
   );
 };
 function SignUpPage() {
-  /*
-    return(
-        <div className="SignUpPage">
-            <Logo/>
-            <SignUp/>
-        </div>
-
-    );
-    */
   return (
     <div className="SignUpPage">
       <SignUp />
