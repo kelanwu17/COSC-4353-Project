@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { useState } from 'react';
+import axios from 'axios';
 
 const modalStyle = {
     position: 'fixed',
@@ -27,25 +28,51 @@ const overlayStyle = {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
 };
 
+export default function Modal({ 
+    open, 
+    onClose, 
+    title, 
+    description, 
+    urgency, 
+    skills, 
+    location, 
+    date, 
+    onRemove
+}) {
 
-export default function Modal({ open, children, onClose, title, description, urgency, skills, location, date}) {
-    const [isTrueReg, setIsTrueReg] = useState(false);
+    const [isTrueReg, setIsTrueReg] = useState(false); // Initialize state
     const modalRef = useRef(null);
+
     
-    function handleReg(e)
-    {
+    const handleDelete = (e) => {
+        e.stopPropagation();
+
+        axios.delete('http://localhost:3001/api/deleteRegisteredEvent', { data: { title } })
+            .then((response) => {
+                console.log(`User removed registered event "${title}" successfully.`);
+                onRemove(); 
+                onClose(); 
+            })
+            .catch((error) => {
+                console.error('Error removing registered event:', error);
+            });
+    };
+
+    
+    const handleReg = (e) => {
         e.stopPropagation(); 
-        onClose();
-            if (isTrueReg == false)
-            {
-                setIsTrueReg(true)
-            }
-            else
-            {
-                setIsTrueReg(false)
-            }
-            
-    }
+        const eventData = { title, description, location, urgency, skills, date };
+
+        axios.post('http://localhost:3001/api/registerEvent', eventData)
+            .then((response) => {
+                console.log(`User has registered for the event: ${title}`);
+                setIsTrueReg(true); 
+                onClose(); 
+            })
+            .catch((error) => {
+                console.error('Error registering event:', error);
+            });
+    };
 
     useEffect(() => {
         if (!open) return;
@@ -82,6 +109,13 @@ export default function Modal({ open, children, onClose, title, description, urg
                 <div>Date: {date}</div>
                 <button className="rounded-sm border border-black bg-blue-400 text-white absolute bottom-2 right-18 " onClick={(e) => { e.stopPropagation(); onClose(); }}>Close</button>
                 <button className="rounded-sm border border-black bg-blue-400 text-white absolute bottom-2 right-2" onClick={handleReg}>Register</button>
+                <button
+  className="rounded-sm border border-black bg-red-400 text-white absolute bottom-2 left-13"
+  onClick={(e) => handleDelete(e)}
+>
+  Remove
+</button>
+ 
 
 
             </div>
