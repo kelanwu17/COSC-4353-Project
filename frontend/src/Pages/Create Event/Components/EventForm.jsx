@@ -91,7 +91,6 @@ function EventForm() {
             fullWidth
             sx={{ backgroundColor: "white" }}
             onChange={(e)=> changeTitle(e.target.value)}
-            onChange={(e)=> changeTitle(e.target.value)}
           />
         </Grid2>
 
@@ -229,7 +228,6 @@ function EventForm() {
           size={12}
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
-          <Button variant="contained"  onClick={submit}>Create Event</Button>
           <Button variant="contained"  onClick={submit}>Create Event</Button>
         </Grid2>
       </Grid2>
