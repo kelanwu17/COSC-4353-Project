@@ -17,6 +17,7 @@ const createRegisteredEvents = require('./routes/createRegisteredEvents'); // Cr
 const deleteRegisteredEvent = require('./routes/deleteRegisteredEvents'); // Delete Registered event route
 const getRegisteredEvents = require('./routes/getRegisteredEvents'); // Get Registered event route
 const registerEvent = require('./routes/registerEvent'); 
+const getNotificationsRoute = require('./routes/getNotifications'); 
 
 const app = express();
 const port = 3001;
@@ -35,6 +36,7 @@ app.get('/', (req, res) => {
 app.use('/', createProfileRoute); 
 app.use('/', loginRoute); 
 app.use('/', getProfileRoute);
+app.use('/', getNotificationsRoute );
 
 // Event-related routes
 app.use('/api', createEventRoutes);
@@ -51,4 +53,5 @@ app.use('/api', registerEvent);
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
+module.exports = app;
 
