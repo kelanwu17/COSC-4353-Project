@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
-const createProfileRoute = require('./routes/CreateProfile'); // Profile routes
+const createProfileRoute = require('./routes/createProfile'); // Profile routes
 const createEventRoutes = require('./routes/createEvent'); // Event creation routes
 const { router: loginRoute } = require('./routes/logIn'); // Login routes
 const getProfileRoute = require('./routes/getProfile'); // Get profile routes
@@ -20,7 +20,7 @@ const registerEvent = require('./routes/registerEvent');
 const getNotificationsRoute = require('./routes/getNotifications'); 
 
 const app = express();
-const port = 3001;
+const port = 3002;
 
 // Middlewares
 app.use(express.json());
