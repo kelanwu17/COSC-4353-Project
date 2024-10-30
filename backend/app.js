@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
+const db = require('./config/db');
+
 const createProfileRoute = require('./routes/CreateProfile'); // Profile routes
 const createEventRoutes = require('./routes/createEvent'); // Event creation routes
 const { router: loginRoute } = require('./routes/logIn'); // Login routes
@@ -16,10 +18,11 @@ const publishEventRoutes = require('./routes/createRegisteredEvents'); // Publis
 const createRegisteredEvents = require('./routes/createRegisteredEvents'); // Create Registered event route
 const deleteRegisteredEvent = require('./routes/deleteRegisteredEvents'); // Delete Registered event route
 const getRegisteredEvents = require('./routes/getRegisteredEvents'); // Get Registered event route
-const registerEvent = require('./routes/registerEvent'); 
+const registerEvent = require('./routes/registerEvent');
+const getNotificationsRoute = require('./routes/getNotifications');
 
 const app = express();
-const port = 3001;
+const port = 3002;
 
 // Middlewares
 app.use(express.json());
@@ -35,6 +38,7 @@ app.get('/', (req, res) => {
 app.use('/', createProfileRoute); 
 app.use('/', loginRoute); 
 app.use('/', getProfileRoute);
+app.use('/', getNotificationsRoute );
 
 // Event-related routes
 app.use('/api', createEventRoutes);
