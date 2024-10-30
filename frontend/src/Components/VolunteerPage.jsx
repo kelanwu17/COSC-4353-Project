@@ -52,6 +52,19 @@ const removeEvent = (eventTitle) => {
   setEvents((prevEvents) => 
     prevEvents.filter((event) => event.title !== eventTitle));
 };
+axios.get(`http://localhost:3001/getNotifications/${sessionStorage.getItem('sessionId')}`)
+  .then((response) => {
+      console.log(response.data);
+
+      if (response.data.sessionId) {
+        sessionStorage.setItem('sessionId', response.data.sessionId);
+        console.log('Session ID:', response.data.sessionId);
+      }
+  })
+  .catch((error) => {
+      console.log('Error:', error.response ? error.response.data : error.message);
+  });
+
 
 return (
   <div>

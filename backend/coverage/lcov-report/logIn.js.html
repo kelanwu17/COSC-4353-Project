@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for getEvent.js</title>
+    <title>Code coverage report for logIn.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> getEvent.js</h1>
+        <h1><a href="index.html">All files</a> logIn.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
@@ -92,64 +92,73 @@
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require('express');
 const router = express.Router();
-const { events } = require('./eventsData'); 
+const { v4: uuidv4 } = require('uuid'); // Fixed import to destructure properly
 &nbsp;
-// Route to get all events
-router.get('/events', (req, res) =&gt; {
-    res.status(200).json(events); 
+const sessions = {};
+router.post('/logIn', (req, res) =&gt; {
+    const { username, password } = req.body; 
+   
+    try {
+        if (!username || !password) {
+            throw new Error('Username and password are required.');
+        }
+&nbsp;
+        if (username === "admin" &amp;&amp; password === "admin") {
+            const sessionId = uuidv4();
+            sessions[sessionId] = { username, userId: 1 };
+&nbsp;
+            // Send sessionId and success message
+            return res.status(200).json({ message: 'Login successful', sessionId });
+        }
+&nbsp;
+        // If username and password don't match, send 401 error
+        return res.status(401).json({ message: 'Invalid username or password.' });
+&nbsp;
+    } catch (error) {
+        console.error('Error during login:', error.message);
+        return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
 });
 &nbsp;
-// Route to get a specific event by ID
-router.get('/events/:id', (req, res) =&gt; {
-    const eventId = parseInt(req.params.id);
 &nbsp;
-    if (isNaN(eventId)) {
-        return res.status(400).json({ message: 'Invalid event ID' });
-    }
-&nbsp;
-    const event = events.find(event =&gt; event.id === eventId);
-&nbsp;
-    if (!event) {
-        return res.status(404).json({ message: 'Event Not Found' });
-    }
-&nbsp;
-    res.status(200).json(event);
-});
-&nbsp;
-module.exports = router;
-&nbsp;
-&nbsp;
+module.exports = { router, sessions };
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
