@@ -106,6 +106,7 @@ try {
   const response = await axios.post('http://localhost:3001/createprofile', {
     fullName, email, password, address, address2, city, zipcode, selectedSkills: selectedSkills.join(", ")
   });
+  history('/')
   console.log(response);
   // Redirect or show success message here
 } catch (error) {

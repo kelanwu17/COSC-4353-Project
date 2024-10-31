@@ -47,11 +47,7 @@ const LogIn = () => {
     .then((response) => {
         console.log(response.data); 
       
-        if (response.data.sessionId) {
-          sessionStorage.setItem('sessionId', response.data.sessionId);
-          navigate('/uservolunteer'); 
-            console.log('Session ID:', response.data.sessionId);
-        }
+        navigate('/uservolunteer');
     })
     .catch((error) => {
       // Set the error message based on the response from the server
