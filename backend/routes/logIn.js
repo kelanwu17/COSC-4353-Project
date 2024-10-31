@@ -20,26 +20,23 @@ router.post('/logIn', (req, res) => {
                 return res.status(500).json({ message: 'Internal Server Error', error: err.message });
             }
 
-           
             if (results.length > 0) {
                 const user = results[0];
-
-               
-                userDetails.userID = user.id; 
-                userDetails.fullName = user.fullName;
-                userDetails.email = user.email;
-                userDetails.password = user.password; 
-                userDetails.address = user.address;
-                userDetails.address2 = user.address2;
-                userDetails.city = user.city;
-                userDetails.zipcode = user.zipcode;
-                userDetails.selectedSkills = user.selectedSkills; 
-
+                const userDetails = {
+                    userID: user.userID, // Ensure this matches the actual column name in your DB
+                    fullName: user.fullName,
+                    email: user.email,
+                    address: user.address,
+                    address2: user.address2,
+                    city: user.city,
+                    zipcode: user.zipcode,
+                    selectedSkills: user.selectedSkills,
+                    state: user.state
+                };
                 
+                console.log('User details sent:', userDetails); // Log user details being sent
                 return res.status(200).json({ message: 'Login successful', userDetails });
             }
-
-            
             return res.status(401).json({ message: 'Invalid username or password.' });
         });
 
@@ -48,5 +45,6 @@ router.post('/logIn', (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 });
+
 
 module.exports = { router, userDetails };
