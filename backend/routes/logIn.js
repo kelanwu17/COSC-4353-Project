@@ -13,7 +13,7 @@ router.post('/logIn', (req, res) => {
             throw new Error('Username and password are required.');
         }
 
-        const sql = "SELECT * FROM user WHERE username = ? AND password = ?";
+        const sql = "SELECT * FROM User WHERE email = ? AND password = ?";
         db.query(sql, [username, password], (err, results) => {
             if (err) {
                 console.error('Database query error:', err.message);
