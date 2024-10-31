@@ -3,10 +3,37 @@ const router = express.Router();
 const dayjs = require('dayjs');
 const { events, incrementEventsId } = require('./eventsData');
 const { storeEventSkills, checkSkillMatch } = require('./eventMatching');
+const db = require("../config/dj");
 
 router.post('/createevent', (req, res) => {
     const { title, description, location, urgency, skills, timeRange } = req.body;
 
+    const checkExists = "SELECT * FROM Events WHERE title = ?";
+    const insertSQL = `INSERT INTO Events (title, location, urgency, skills, startTime, endTime, adminID)
+        VALUES(?,?, ?, ?, ?, ?, ?)`;
+
+    db.query(checkExists, [title], (checkErr, checkResult) => {
+        if(checkErr){
+            console.error("Error checking event title:", checkErr);
+            return res.status(500).json({error: "DB error checking event title"});
+        }
+        if(checkExists.length > 0){
+            return res.status(400).json({ error: "Event title exists"});
+        }
+
+        db.query(insertSQL, [title, description, location, urgency, skills, timeRange], (err, result) => {
+            if(err){
+                console.error("Database insertion error for: ", err);
+                return res.status(500).json({error: "Database error while creating event"});
+            }
+            res.status(201).json({
+                message: "Created event successfully",
+                eventsID: result.insertId,
+            });
+        });
+    });
+});
+/*
     try {
     
         storeEventSkills(skills);
@@ -88,6 +115,6 @@ router.post('/createevent', (req, res) => {
         });
     }
 });
-
+*/
 module.exports = router;
 
