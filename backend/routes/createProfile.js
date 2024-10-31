@@ -1,22 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const { storeUserSkills, checkSkillMatch } = require('./eventMatching'); 
+const db = require("../config/dj");
 
 router.post('/createprofile', (req, res) => {
-    const { fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime } = req.body; 
+    const { fullName, email, password, address, address2, city, zipcode, selectedSkills } = req.body; 
 
     try {
         if (!email || !password) {
             throw new Error('Email and password are required.'); 
         }
 
-         storeUserSkills(selectedSkills);
+        const sql = "INSERT INTO User (fullName, email, password, address, address2, city, zipcode, selectedSkills ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        db.query(sql, [fullName, email, password, address, address2, city, zipcode, selectedSkills], (err, results) => {
+            if (err) {
+                console.error('Database insert error:', err.message);
+                return res.status(500).json({ message: 'Internal Server Error', error: err.message });
+            }
 
-        console.log('Profile created:', { fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime }); 
+            const userID = results.insertId;
+          
 
-        checkSkillMatch();
+            console.log('Profile created:', { userID, fullName, email, address, address2, city, zipcode, selectedSkills }); 
+
+            
+
+            res.status(201).json({ message: 'Profile created successfully', user: { userID, email } });
+        });
         
-        res.status(201).json({ message: 'Profile created successfully', user: { email } });
     } catch (error) {
         console.error('Error creating profile:', error.message);
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
