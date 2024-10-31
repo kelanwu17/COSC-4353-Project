@@ -20,7 +20,7 @@ const registerEvent = require('./routes/registerEvent');
 const getNotificationsRoute = require('./routes/getNotifications'); 
 
 const app = express();
-const port = 3002;
+const port = 3001;
 
 // Middlewares
 app.use(express.json());
