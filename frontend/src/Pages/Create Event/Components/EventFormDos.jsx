@@ -45,6 +45,17 @@ function EventForm() {
     default:
       urgencyDisplay = '';
   }
+  const combinedSkills = selectedSkills.join(", ");
+  const startTime = timeRange[0].format("YYYY-MM-DD HH:mm:ss");
+  const endTime = timeRange[1].format("YYYY-MM-DD HH:mm:ss");
+  console.log({ title,
+    description: inputValue, 
+    location,
+    urgency: urgencyDisplay,
+    skills: combinedSkills,
+    startTime, 
+    endTime
+    })
 
     axios.post('http://localhost:3001/api/createevent', { title,
     description: inputValue, 
