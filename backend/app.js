@@ -21,6 +21,9 @@ const getRegisteredEvents = require('./routes/getRegisteredEvents'); // Get Regi
 const registerEvent = require('./routes/registerEvent'); 
 const getNotificationsRoute = require('./routes/getNotifications'); 
 
+const adminRoute = require('./routes/admin')
+
+
 const app = express();
 const port = 3001;
 
@@ -41,7 +44,7 @@ app.use('/', getProfileRoute);
 app.use('/', getNotificationsRoute );
 app.use('/', updateProfileRoute)
 app.use('/', deleteProfileRoute)
-
+app.use('/admin', adminRoute);
 // Event-related routes
 app.use('/api', createEventRoutes);
 app.use('/api', updateEventRoutes);
