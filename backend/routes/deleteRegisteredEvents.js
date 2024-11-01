@@ -1,24 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const { registeredEvents } = require('./registeredEvents'); 
+const db = require("../config/dj"); 
 
-// Route to delete a registered event 
-router.delete('/deleteRegisteredEvent', (req, res) => {
-    const { title } = req.body; 
 
-    const eventIndex = registeredEvents.findIndex((e) => e.title === title);
+router.delete('/deleteRegisteredEvent/:id', (req, res) => {
+    const id = req.params.id; 
+    const sql = `DELETE FROM RegisterEvents WHERE rEventsID = ?`
 
-    if (eventIndex === -1) {
-        return res.status(404).json({ message: 'Registered event not found.' });
-    }
+    db.query(sql, [id], (err) => {
+        if (err) {
+            console.error("Error deleting registered event:", err);
+            return res.status(500).json({ message: "Error in DB" });
+        }
 
-    registeredEvents.splice(eventIndex, 1); 
-
-    console.log(`User removed registered event "${title}" successfully.`);
-    res.status(200).json({ message: 'Registered event deleted successfully.' });
+        console.log(`Registered event with ID ${id} deleted successfully.`);
+        res.status(200).json({ message: 'Registered event deleted successfully.' });
+    });
 });
 
 module.exports = router;
+
 
 
 

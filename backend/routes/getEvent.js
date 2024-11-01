@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { events } = require('./eventsData'); 
+const db = require ('../config/dj');
 
 // Route to get all events
 router.get('/events', (req, res) => {
