@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const { events } = require('./eventsData'); 
+const db = require('../config/dj');
 
 router.delete('/events/:id', (req, res) => {
-    const eventId = parseInt(req.params.id);
-    const eventIndex = events.findIndex(event => event.id === eventId);
-
-    if (eventIndex !== -1) {
-        const deletedEvent = events.splice(eventIndex, 1);
-        console.log('Deleted Event:', deletedEvent[0]);
-        res.status(200).json({ message: 'Event Deleted Successfully', event: deletedEvent[0] });
-    } else {
-        res.status(404).json({ message: 'Event Not Found' });
-    }
+    const {id} = req.params.id;
+    const sql = "DELETE FROM Events WHERE eventsId = ?"
+    db.query(sql, [id], (err) => {
+        if (err) {
+            console.error("Error deleting event", err);
+            res.status(500).send("Error")
+        }
+        res.status(200).send("Deleted")
+    })
 });
 
 module.exports = router;

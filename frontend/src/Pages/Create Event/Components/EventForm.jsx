@@ -15,30 +15,40 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimeRangePicker } from "@mui/x-date-pickers-pro/DateTimeRangePicker";
-import axios from "axios"
-import axios from "axios"
+import axios from "axios";
+
+const skillsList = [
+  "Communication",
+  "Teamwork",
+  "Leadership",
+  "Problem-Solving",
+  "Time Management",
+  "Adaptability",
+  "Organizational Skills",
+  "Empathy",
+  "Fundraising",
+  "Event Planning",
+  "Public Speaking",
+  "Project Management",
+  "Mentoring",
+  "Crisis Management",
+  "Technical Support",
+  "Customer Service",
+  "Grant Writing",
+  "Advocacy",
+];
+
 function EventForm() {
-  const [inputValue, setInputValue] = useState("");
-  const maxChars = 300;
 
-  const [title, changeTitle] = useState("");
-  
-  async function submit(e) {
-    e.preventDefault();
-
-    axios.post('http://localhost:3001/createevent', { title })
-    .then((response) => {
-      console.log(response);
-    }, (error) => {
-      console.log(error);
-    });
-
-  }
-
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
+  const [selectedSkills, setSelectedSkills] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [urgency, setUrgency] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [image, setImage] = useState(null);
+
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -50,28 +60,8 @@ function EventForm() {
       reader.readAsDataURL(file);
     }
   };
-  const skillsList = [
-    "Communication",
-    "Teamwork",
-    "Leadership",
-    "Problem-Solving",
-    "Time Management",
-    "Adaptability",
-    "Organizational Skills",
-    "Empathy",
-    "Fundraising",
-    "Event Planning",
-    "Public Speaking",
-    "Project Management",
-    "Mentoring",
-    "Crisis Management",
-    "Technical Support",
-    "Customer Service",
-    "Grant Writing",
-    "Advocacy",
-  ];
 
-  const [selectedSkills, setSelectedSkills] = useState([]);
+
 
   return (
     <div>
@@ -90,7 +80,8 @@ function EventForm() {
             variant="outlined"
             fullWidth
             sx={{ backgroundColor: "white" }}
-            onChange={(e)=> changeTitle(e.target.value)}
+            value = {title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </Grid2>
 
@@ -106,12 +97,12 @@ function EventForm() {
             label="Enter Description"
             variant="outlined"
             rows="7"
-            inputProps={{ maxLength: maxChars }}
-            value={inputValue}
-            onChange={handleInputChange}
+            
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             sx={{ backgroundColor: "white" }}
           />
-          <p>{`${maxChars - inputValue.length} characters remaining`}</p>
+   
         </Grid2>
 
         <Grid2 item size={3}>
@@ -125,6 +116,8 @@ function EventForm() {
             label="City, State"
             variant="outlined"
             sx={{ backgroundColor: "white" }}
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
           />
         </Grid2>
 
@@ -139,9 +132,9 @@ function EventForm() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              // value={age}
+              value={urgency}
               label="Select"
-              // onChange={handleChange}
+              onChange={(e) => setUrgency(e.target.value)}
               sx={{ backgroundColor: "white" }}
             >
               <MenuItem value={10}>Low</MenuItem>
@@ -228,7 +221,9 @@ function EventForm() {
           size={12}
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
-          <Button variant="contained"  onClick={submit}>Create Event</Button>
+          <Button variant="contained" onClick={submit}>
+            Create Event
+          </Button>
         </Grid2>
       </Grid2>
     </div>
