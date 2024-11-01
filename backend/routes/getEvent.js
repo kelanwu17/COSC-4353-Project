@@ -4,24 +4,27 @@ const { events } = require('./eventsData');
 
 // Route to get all events
 router.get('/events', (req, res) => {
-    res.status(200).json(events); 
+    const sql = "SELECT * FROM Events";
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Error getting events", err);
+            return res.status(500).send("Error getting events from db.")
+        }
+        res.status(200).json(result);
+    })
 });
 
 // Route to get a specific event by ID
 router.get('/events/:id', (req, res) => {
-    const eventId = parseInt(req.params.id);
-
-    if (isNaN(eventId)) {
-        return res.status(400).json({ message: 'Invalid event ID' });
-    }
-
-    const event = events.find(event => event.id === eventId);
-
-    if (!event) {
-        return res.status(404).json({ message: 'Event Not Found' });
-    }
-
-    res.status(200).json(event);
+    const id = req.params.id;
+    const sql = "SELECT * FROM Events WHERE eventsId = ?";
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("Error getting events", err);
+            return res.status(500).send("Error getting events from db.")
+        }
+        res.status(200).json(result);
+    })
 });
 
 module.exports = router;
