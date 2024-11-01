@@ -58,10 +58,20 @@ export default function AdminModal({ open, onClose, title, description, urgency,
     const [newTitle, changeTitle] = useState(title);
     const [newDesc, changeDesc] = useState(description);
     const [newUrg, changeUrg] = useState(urgency);
-    const [newSk, changeSk] = useState(skills);
     const [newLoc, changeLoc] = useState(location);
     const [newDate, changeDate] = useState(date);
     const [cuSkills, setAvailableSkills] = useState(skillsList);
+    const [newSk, changeSk] = useState(() => {
+    if (typeof skills === 'string') {
+        try {
+            return JSON.parse(skills); 
+        } catch (e) {
+            console.error("Error parsing skills:", e);
+            return [];
+        }
+    }
+});
+
 
     const handleSkillChange = (skill) => {
     
