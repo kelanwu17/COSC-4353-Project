@@ -104,7 +104,7 @@ const SignUp = () => {
 // Proceed with form submission
 try {
   const response = await axios.post('http://localhost:3001/createprofile', {
-    fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime
+    fullName, email, password, address, address2, city, zipcode, selectedSkills: selectedSkills.join(", ")
   });
   console.log(response);
   // Redirect or show success message here
@@ -351,21 +351,7 @@ try {
         </Grid2>
         </div>
         <div>
-            <Grid2 item size={3}>
-          <p className="translate-x-2">
-            <strong>Available Time: </strong>
-          </p>
-        </Grid2>
-        <Grid2 item size={9} full width style={{width:"500px"}}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimeRangePicker
-              localeText={{ start: "Start", end: "End" }}
-              sx={{ backgroundColor: "white" }}
-              className="translate-x-2"
-              onChange={(e)=> setAvailableTime(e)}
-            />
-          </LocalizationProvider>
-        </Grid2>
+           
         </div>
           <Grid2
             item

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { events } = require('./eventsData'); 
+const db = require('../config/dj');
 
 router.delete('/events/:id', (req, res) => {
     const id = req.params.id;
