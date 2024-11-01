@@ -1,66 +1,62 @@
-const request = require('supertest');
 const express = require('express');
-const { router, sessions } = require('../routes/logIn'); // Assuming logIn is in routes directory
+const router = express.Router();
 
-const app = express();
-app.use(express.json());
-app.use('/', router); // Using the login route
+// Simulated sessions and notifications (for testing purposes)
+const sessions = {}; // Store user sessions in memory for this example
 
-describe('Login Route', () => {
-  // POST Test (Successful Login)
-  it('should log in successfully with valid credentials', async () => {
-    const response = await request(app)
-      .post('/logIn')
-      .send({
-        username: 'admin',
-        password: 'admin',
-      });
-    
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty('sessionId'); // Check if sessionId is returned
-    expect(response.body.message).toBe('Login successful');
-    console.log('Logged in successfully with admin credentials');
-  });
+// Function to simulate storing user skills (replace with your implementation later)
+const storeUserSkills = (skills) => {
+    console.log('Storing user skills:', skills);
+};
 
-  // POST Test (Missing Username)
-  it('should return 400 for missing username', async () => {
-    const response = await request(app)
-      .post('/logIn')
-      .send({
-        username: '', 
-        password: 'admin',
-      });
-    
-    expect(response.statusCode).toBe(500);
-    expect(response.body.message).toBe('Username and password are required.');
-    console.log('Tested login with missing username');
-  });
+// Function to check skill match (replace with your implementation later)
+const checkSkillMatch = () => {
+    console.log('Checking skill match...');
+};
 
-  // POST Test (Missing Password)
-  it('should return 400 for missing password', async () => {
-    const response = await request(app)
-      .post('/logIn')
-      .send({
-        username: 'admin',
-        password: '',
-      });
-    
-    expect(response.statusCode).toBe(500);
-    expect(response.body.message).toBe('Username and password are required.');
-    console.log('Tested login with missing password');
-  });
+// Profile creation route
+router.post('/createprofile', (req, res) => {
+    const { fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime } = req.body; 
 
-  // POST Test (Invalid Credentials)
-  it('should return 401 for invalid credentials', async () => {
-    const response = await request(app)
-      .post('/logIn')
-      .send({
-        username: 'admin',
-        password: 'wrongpassword',
-      });
-    
-    expect(response.statusCode).toBe(401);
-    expect(response.body.message).toBe('Invalid username or password.');
-    console.log('Tested login with invalid credentials');
-  });
+    try {
+        if (!email || !password) {
+            throw new Error('Email and password are required.'); 
+        }
+
+        storeUserSkills(selectedSkills);
+
+        console.log('Profile created:', { fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime }); 
+
+        // Simulating creating a user session for notifications
+        const sessionId = Math.random().toString(36).substring(2, 15); // Generate a random session ID
+        sessions[sessionId] = { email }; // Store user session
+
+        checkSkillMatch();
+        
+        res.status(201).json({ message: 'Profile created successfully', user: { email }, sessionId });
+    } catch (error) {
+        console.error('Error creating profile:', error.message);
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
 });
+
+// Route to fetch notifications for a given session ID
+router.get('/getNotifications/:sessionId', (req, res) => {
+    const sessionId = req.params.sessionId; 
+    const userSession = sessions[sessionId]; 
+
+    console.log(`Session ID received: ${sessionId}`);
+
+    if (userSession) {
+        // Simulate sending notifications when a valid session exists
+        res.status(200).send([
+            { message: 'You have logged in successfully.' },
+            { message: 'New message from the system.' }
+        ]);
+    } else {
+        // Return error if session not found
+        res.status(404).send({ error: 'User not found for the given session ID.' });
+    }
+});
+
+module.exports = router;
