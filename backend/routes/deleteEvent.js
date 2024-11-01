@@ -4,7 +4,7 @@ const { events } = require('./eventsData');
 const db = require('../config/dj');
 
 router.delete('/events/:id', (req, res) => {
-    const {id} = req.params.id;
+    const id = req.params.id;
     const sql = "DELETE FROM Events WHERE eventsId = ?"
     db.query(sql, [id], (err) => {
         if (err) {
