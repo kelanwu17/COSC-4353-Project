@@ -6,6 +6,8 @@ const createProfileRoute = require('./routes/createProfile'); // Profile routes
 const createEventRoutes = require('./routes/createEvent'); // Event creation routes
 const { router: loginRoute } = require('./routes/logIn'); // Login routes
 const getProfileRoute = require('./routes/getProfile'); // Get profile routes
+const updateProfileRoute = require('./routes/updateprofile'); 
+const deleteProfileRoute = require('./routes/deleteprofile');
 
 
 // Event Routes
@@ -37,6 +39,8 @@ app.use('/', createProfileRoute);
 app.use('/', loginRoute); 
 app.use('/', getProfileRoute);
 app.use('/', getNotificationsRoute );
+app.use('/', updateProfileRoute)
+app.use('/', deleteProfileRoute)
 
 // Event-related routes
 app.use('/api', createEventRoutes);

@@ -41,28 +41,29 @@ const LogIn = () => {
       return;
     }
 
-    axios.post('http://localhost:3001/logIn', {
-        username, password,
-    })
+    axios.post('http://localhost:3001/logIn', { username, password })
     .then((response) => {
         console.log(response.data); 
-      
-        if (response.data.sessionId) {
-          sessionStorage.setItem('sessionId', response.data.sessionId);
-          navigate('/uservolunteer'); 
-            console.log('Session ID:', response.data.sessionId);
+        // Check if userDetails and userID are present in the response
+        if (response.data.userDetails && response.data.userDetails.userID) {
+            sessionStorage.setItem('username', response.data.userDetails.userID); 
+            navigate('/uservolunteer');
+        } else {
+            // Handle unexpected successful responses without user details
+            setErrorMessage("Login was successful, but user details are missing.");
         }
     })
     .catch((error) => {
-      // Set the error message based on the response from the server
-      if (error.response && error.response.data) {
-        setErrorMessage(error.response.data.message); // Update error message state
-      } else {
-        setErrorMessage("An unexpected error occurred."); // Generic error message
-      }
+        // Display the error message from the server, if available
+        if (error.response && error.response.data) {
+            setErrorMessage(error.response.data.message); 
+        } else {
+            setErrorMessage("An unexpected error occurred.");
+        }
     });
 
-    sessionStorage.setItem('username', username); 
+
+  
 
 }
 

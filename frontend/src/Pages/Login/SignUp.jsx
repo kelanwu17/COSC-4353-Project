@@ -56,6 +56,7 @@ const SignUp = () => {
   const[zipcode, setZipCode] = useState('')
   const[availableTime, setAvailableTime] = useState('')
   const[fullName, setFullName] = useState('')
+  const[state, setState] = useState('')
 
   const [errorMessages, setErrorMessages] = useState({
     fullName: "",
@@ -104,11 +105,13 @@ const SignUp = () => {
 // Proceed with form submission
 try {
   const response = await axios.post('http://localhost:3001/createprofile', {
-    fullName, email, password, address, address2, city, zipcode, selectedSkills: selectedSkills.join(", ")
+    fullName, email, password, address, address2, city, zipcode, selectedSkills: selectedSkills.join(", "), state
   });
+  history('/')
   console.log(response);
   // Redirect or show success message here
 } catch (error) {
+  console.log(state)
   console.log(error);
 }
 }
@@ -296,6 +299,18 @@ try {
                 required
               />
             </Grid2>
+            <div className="mt-2 ml-2">
+              <label htmlFor="state">
+                <strong className=''> State</strong>
+              </label>
+              <select    onChange={(e) => setState(e.target.value)} className='ml-3'id="state" name="state" placeholder="requred" required>
+                <option value="">Choose a State</option>
+                <option value="TX">TX</option>
+                <option value="NY">NY</option>
+                <option value="CO">CO</option>
+                <option value="HI">HI</option>
+              </select>
+            </div>
             <Grid2 item>
             <p style={{paddingLeft:"10px", marginTop:"5px"}}>
                 <strong>Zipcode: </strong>
