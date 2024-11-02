@@ -9,6 +9,7 @@ import SignUpPage from './Pages/Login/SignUp';
 import VolunteerPage from './Components/VolunteerPage.jsx';
 
 import AdminVolunteerPage from './Components/AdminVolunteerPage.jsx';
+import CreateAdmin from './Pages/Create Admin/CreateAdmin.jsx';
 
 
 
@@ -27,7 +28,8 @@ function App() {
           <Route path="/userdisplay" element={<ProfileDisplay />}/>
           
           <Route path="/adminvolunteer" element={<AdminVolunteerPage/>}/>
-
+          
+          <Route path="/createadmin" element={<CreateAdmin/>}/>
         </Routes>
       </Router>
     </div>
