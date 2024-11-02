@@ -16,6 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimeRangePicker } from "@mui/x-date-pickers-pro/DateTimeRangePicker";
 import axios from "axios";
+import dayjs from "dayjs";
 
 const skillsList = [
   "Communication",
@@ -45,6 +46,7 @@ function EventForm() {
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [urgency, setUrgency] = useState("");
+  const [timeRange, setTimeRange] = useState([null, null]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [image, setImage] = useState(null);
@@ -61,6 +63,22 @@ function EventForm() {
     }
   };
 
+  const submit = () => {
+    const formattedSkills = JSON.stringify(selectedSkills); // Convert skills to JSON format
+    const submit = () => {
+      const startTimeFormatted = startTime ? dayjs(startTime).format("YYYY-MM-DD HH:mm:ss") : null;
+      const endTimeFormatted = endTime ? dayjs(endTime).format("YYYY-MM-DD HH:mm:ss") : null;
+    
+      const eventData = {
+      title,
+      description,
+      location,
+      urgency,
+      skills: formattedSkills,
+      startTime: startTimeFormatted,
+      endTime: endTimeFormatted,
+      adminID: 1
+    };
 
 
   return (
