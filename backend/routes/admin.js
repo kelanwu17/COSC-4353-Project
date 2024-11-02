@@ -12,17 +12,29 @@ router.get('/',  (req, res)=> {
         res.status(200).json(result);
     })
 })
-router.post('/createAdmin',  (req, res)=> {
-    const { email, password} = req.body;
-    const sql = "INSERT INTO Admin (email, password) VALUES (?, ?";
-    db.query(sql, [email,password] ,(err, result) => {
-        if (err) {
-            console.error("Error insert admin", err);
-            return res.status(500).send("Error insert admins to db.")
-        }
-        res.status(200).json({message: "Success"});
-    })
-})
+const bcrypt = require('bcrypt');
+
+router.post('/createAdmin', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Encrypt the password
+        const hashedPassword = await bcrypt.hash(password, 10); // Adjust salt rounds as desired
+
+        const sql = "INSERT INTO Admin (email, password) VALUES (?, ?)";
+        db.query(sql, [email, hashedPassword], (err, result) => {
+            if (err) {
+                console.error("Error inserting admin", err);
+                return res.status(500).send("Error inserting admin into the database.");
+            }
+            res.status(200).json({ message: "Success" });
+        });
+    } catch (err) {
+        console.error("Encryption error", err);
+        res.status(500).send("Error encrypting password.");
+    }
+});
+
 router.put('/updateAdmin/:id',  (req, res)=> {
     const id = req.params.id;
     const {email, password} = req.body;
