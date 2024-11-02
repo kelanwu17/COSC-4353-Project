@@ -48,8 +48,8 @@ export default function Modal({
 
     const handleDelete = (e) => {
         e.stopPropagation();
-
-        axios.delete('http://localhost:3001/api/deleteRegisteredEvent', { data: { title } })
+        const userID = sessionStorage.getItem('username');
+        axios.delete(`http://localhost:3001/api/deleteRegisteredEvent/${userID}`, { data: { title } })
             .then((response) => {
                 console.log(`User removed registered event "${title}" successfully.`);
                 onRemove(); 
