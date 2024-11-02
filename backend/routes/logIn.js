@@ -1,32 +1,37 @@
 const express = require('express');
+const bcrypt = require('bcrypt'); // Ensure bcrypt is imported
 const router = express.Router();
-const { v4: uuidv4 } = require('uuid'); // Fixed import to destructure properly
 const db = require("../config/dj");
 
-const userDetails = {}; // Object to store user details
-
-router.post('/logIn', (req, res) => {
-    const { username, password } = req.body; 
+router.post('/logIn', async (req, res) => {
+    const { username, password } = req.body; // Changed email to username
 
     try {
         if (!username || !password) {
-            throw new Error('Username and password are required.');
+            throw new Error('Username and password are required.'); // Updated error message
         }
 
-        const userSql = "SELECT * FROM User WHERE email = ? AND password = ?";
-        db.query(userSql, [username, password], (err, userResults) => {
+        // Query to find the user by username
+        const sql = "SELECT * FROM User WHERE email = ?"; // Change email to username in the query
+        db.query(sql, [username], async (err, results) => {
             if (err) {
                 console.error('Database query error:', err.message);
                 return res.status(500).json({ message: 'Internal Server Error', error: err.message });
             }
 
-            // If user is found in the User table
-            if (userResults.length > 0) {
-                const user = userResults[0];
+            if (results.length > 0) {
+                const user = results[0];
+
+                // Compare the provided password with the hashed password
+                const match = await bcrypt.compare(password, user.password);
+                if (!match) {
+                    return res.status(401).json({ message: 'Invalid username or password.' }); // Updated error message
+                }
+
                 const userDetails = {
-                    userID: user.userID,
+                    userID: user.userID, // Ensure this matches the actual column name in your DB
                     fullName: user.fullName,
-                    email: user.email,
+                    username: user.email, // Updated to include username
                     address: user.address,
                     address2: user.address2,
                     city: user.city,
@@ -35,32 +40,11 @@ router.post('/logIn', (req, res) => {
                     state: user.state
                 };
 
-                console.log('User details sent:', userDetails); 
-                return res.status(200).json({ message: 'Login successful', userDetails, userType: 'user' });
-            } 
+                console.log('User details sent:', userDetails);
+                return res.status(200).json({ message: 'Login successful', userDetails });
+            }
             
-            // If user is not found, check the Admin table
-            const adminSql = "SELECT * FROM Admin WHERE email = ? AND password = ?";
-            db.query(adminSql, [username, password], (err, adminResults) => {
-                if (err) {
-                    console.error('Database query error:', err.message);
-                    return res.status(500).json({ message: 'Internal Server Error', error: err.message });
-                }
-
-                if (adminResults.length > 0) {
-                    const admin = adminResults[0];
-                    const adminDetails = {
-                        adminID: admin.id, 
-                        email: admin.email
-                    };
-
-                    console.log('Admin details sent:', adminDetails);
-                    return res.status(200).json({ message: 'Admin login successful', adminDetails, userType: 'admin' });
-                }
-
-                // If neither user nor admin credentials match
-                return res.status(401).json({ message: 'Invalid username or password.' });
-            });
+            return res.status(401).json({ message: 'Invalid username or password.' }); // Updated error message
         });
 
     } catch (error) {
@@ -69,4 +53,4 @@ router.post('/logIn', (req, res) => {
     }
 });
 
-module.exports = { router, userDetails };
+module.exports = router;
