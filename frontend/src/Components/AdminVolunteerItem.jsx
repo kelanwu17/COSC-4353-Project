@@ -4,7 +4,7 @@ import AdminModal from './AdminModal';
 import axios from 'axios';
 
 
-function AdminVolunteerItem({ id, title, imgUrl, description, urgency, skills, date, location, onEventUpdated}) {
+function AdminVolunteerItem({ id, title, imgUrl, description, urgency, skills, date, startTime, endTime, location, onEventUpdated}) {
   
   
     const [isOpen, setIsOpen] = useState(false)
@@ -23,18 +23,19 @@ function AdminVolunteerItem({ id, title, imgUrl, description, urgency, skills, d
                 <p className="description">{description}</p>
             </div>
             {isOpen && (
-                <AdminModal
-                    open={isOpen}
-                    onClose={() => setIsOpen(false)}
-                    title={title}
-                    description={description}
-                    urgency={urgency}
-                    skills={skills}
-                    location={location}
-                    date={date}
-                    eventId={id}  
-                    onSave={onEventUpdated}  
-                />
+               <AdminModal
+               open={isOpen}
+               onClose={() => setIsOpen(false)}
+               title={title}
+               description={description}
+               urgency={urgency}
+               skills={skills}
+               location={location}
+               startTime={startTime}  
+               endTime={endTime}      
+               eventId={id}
+               onSave={onEventUpdated}
+           />
             )}
         </div>
     );

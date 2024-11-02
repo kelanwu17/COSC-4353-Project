@@ -34,6 +34,10 @@ function EventForm() {
   async function submit(e) {
     e.preventDefault();
 
+    const startTime = timeRange[0] ? dayjs(timeRange[0]).format("YYYY-MM-DD HH:mm:ss") : null;
+    const endTime = timeRange[1] ? dayjs(timeRange[1]).format("YYYY-MM-DD HH:mm:ss") : null;
+    const adminID = 1;
+
     let urgencyDisplay;
   switch (urgency) {
     case 10: urgencyDisplay = 'Low';
@@ -46,23 +50,26 @@ function EventForm() {
       urgencyDisplay = '';
   }
   const combinedSkills = selectedSkills.join(", ");
-  const startTime = timeRange[0].format("YYYY-MM-DD HH:mm:ss");
-  const endTime = timeRange[1].format("YYYY-MM-DD HH:mm:ss");
+
   console.log({ title,
     description: inputValue, 
     location,
     urgency: urgencyDisplay,
     skills: combinedSkills,
     startTime, 
-    endTime
+    endTime,
+    adminID
     })
 
-    axios.post('http://localhost:3001/api/createevent', { title,
-    description: inputValue, 
-    location,
-    urgency: urgencyDisplay,
-    skills: selectedSkills,
-    timeRange
+    axios.post('http://localhost:3001/api/createevent', {
+      title,
+      description: inputValue,
+      location,
+      urgency: urgencyDisplay,
+      skills: combinedSkills,
+      startTime,
+      endTime,
+      adminID
     })
     .then((response) => {
       console.log(response.data);
