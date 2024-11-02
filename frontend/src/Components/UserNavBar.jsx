@@ -24,11 +24,11 @@ function UserNavBar() {
   // Fetch notifications on component mount
   useEffect(() => {
     const fetchNotifications = async () => {
-      const userId = sessionStorage.getItem('userId'); // Update with actual userId key
+      const userId = sessionStorage.getItem('username'); // Update with actual userId key
 
       if (userId) {
         try {
-          const response = await axios.get(`https://your-api-url.com/api/getNotifications/${userId}`);
+          const response = await axios.get(`http://localhost:3001/api/getNotifications/${userId}`);
           setNotifications(response.data);
         } catch (error) {
           console.error("Failed to fetch notifications", error);
