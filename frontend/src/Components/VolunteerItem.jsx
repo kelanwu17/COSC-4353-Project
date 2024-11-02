@@ -5,12 +5,12 @@ import { useState } from 'react';
 import AdminModal from './AdminModal';
 
 
-function VolunteerItem({ title, imgUrl, description, urgency, skills, date, location, onRegister, onRemove }) {
+function VolunteerItem({ title, imgUrl, description, urgency, skills, date, location, onRegister, onRemove, eventId }) {
   
 
   
     const [isOpen, setIsOpen] = useState(false);
-
+    
     const handleOpen = () => {
         setIsOpen(true);
         onRegister(); // Call onRegister when opening the modal
@@ -48,6 +48,7 @@ function VolunteerItem({ title, imgUrl, description, urgency, skills, date, loca
                 date={date}
                 location={location}
                 onRemove={onRemove} 
+                
             />
         </a>
     );
