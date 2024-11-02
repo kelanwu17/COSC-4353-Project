@@ -16,28 +16,68 @@ import {
   Select,
 } from "@mui/material";
 const UserProfile = () => {
+  const [events, setEvents] = useState([]); // Stores event IDs
+  const [userEvents, setUserEvents] = useState([]); // Stores event details with names
   const navigate = useNavigate();
   const [selectedSkills, setSelectedSkills] = useState([]);
   const skillsList = [
-    "Communication",
-    "Teamwork",
-    "Leadership",
-    "Problem-Solving",
-    "Time Management",
-    "Adaptability",
-    "Organizational Skills",
-    "Empathy",
-    "Fundraising",
-    "Event Planning",
-    "Public Speaking",
-    "Project Management",
-    "Mentoring",
-    "Crisis Management",
-    "Technical Support",
-    "Customer Service",
-    "Grant Writing",
-    "Advocacy",
+    "Communication", "Teamwork", "Leadership", "Problem-Solving", "Time Management",
+    "Adaptability", "Organizational Skills", "Empathy", "Fundraising", "Event Planning",
+    "Public Speaking", "Project Management", "Mentoring", "Crisis Management", 
+    "Technical Support", "Customer Service", "Grant Writing", "Advocacy"
   ];
+  const userID = sessionStorage.getItem("username");
+
+  useEffect(() => {
+    fetchRegisteredEvents();
+  }, []);
+
+  const fetchRegisteredEvents = () => {
+    axios
+      .get(`http://localhost:3001/api/registeredEvents/${userID}`)
+      .then((response) => {
+        // Ensure response.data is an array before mapping
+        if (Array.isArray(response.data)) {
+          console.log("Registered Events:", response.data);
+          const eventIds = response.data.map(event => event.eventsID); // Use eventsID
+          setEvents(eventIds);
+          
+          // Call fetchEventNames only if eventIds is non-empty
+          if (eventIds.length > 0) {
+            fetchEventNames(eventIds);
+          } else {
+            console.warn("No events found for this user.");
+          }
+        } else {
+          console.error("Expected an array but got:", response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching registered events:", error);
+      });
+  };
+
+  const fetchEventNames = (eventIds) => {
+    // Confirm eventIds is an array and has elements before making requests
+    if (!Array.isArray(eventIds) || eventIds.length === 0) {
+      console.error("Invalid eventIds:", eventIds);
+      return;
+    }
+
+    const eventRequests = eventIds.map(eventsID =>
+      axios.get(`http://localhost:3001/api/events/${eventsID}`)
+    );
+
+    Promise.all(eventRequests)
+      .then((responses) => {
+        const eventDetails = responses.map(response => response.data);
+        setUserEvents(eventDetails);
+        console.log("Event Names:", eventDetails);
+      })
+      .catch((error) => {
+        console.error("Error fetching event names:", error);
+      });
+  };
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -55,6 +95,8 @@ const UserProfile = () => {
         console.error("No username found in session storage.");
         return;
       }
+      fetchRegisteredEvents();
+      fetchEventNames();
 
     try {
         const response = await axios.get(`http://localhost:3001/getProfile/${username}`);
@@ -254,6 +296,7 @@ const deleteProfile = async (event) => {
                 onChange={(e) => setZipCode(e.target.value)}
               />
             </div>
+            
             <div className="profile-skills">
               <label><strong>Skills:</strong></label>
               <Autocomplete
@@ -287,6 +330,20 @@ const deleteProfile = async (event) => {
   }}
 />
             </div>
+            <div className="">
+  <label htmlFor="address2">
+    <strong>Registered Events</strong>
+  </label>
+  <div className="bg-white">
+    {userEvents.flat().map((event, index) => (
+      <span key={index}>
+        <p>{event.title}</p>
+        
+      </span>
+    ))}
+  </div>
+</div>
+
           </div>
           <Button className='ml-20' onClick={deleteProfile}  variant="contained" color="primary">Delete Profile</Button>
           <div className="apply-button">
