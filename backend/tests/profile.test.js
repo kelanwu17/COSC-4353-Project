@@ -1,62 +1,77 @@
+// __tests__/createProfile.test.js
+const request = require('supertest');
 const express = require('express');
-const router = express.Router();
+const createProfileRoute =  require('./routes/createProfile');  // Adjust the path if necessary
 
-// Simulated sessions and notifications (for testing purposes)
-const sessions = {}; // Store user sessions in memory for this example
+const app = express();
+app.use(express.json()); // Middleware for parsing JSON
+app.use('/', createProfileRoute); // Mount your route
 
-// Function to simulate storing user skills (replace with your implementation later)
-const storeUserSkills = (skills) => {
-    console.log('Storing user skills:', skills);
-};
+describe('POST /createprofile', () => {
+    it('should create a new profile and return a success message', async () => {
+        const newUser = {
+            fullName: "Test User",
+            email: "test@example.com",
+            password: "password123",
+            address: "123 Test St",
+            address2: "",
+            city: "Test City",
+            zipcode: "12345",
+            selectedSkills: "JavaScript",
+            state: "Test State"
+        };
 
-// Function to check skill match (replace with your implementation later)
-const checkSkillMatch = () => {
-    console.log('Checking skill match...');
-};
+        const response = await request(app)
+            .post('/createprofile')
+            .send(newUser);
 
-// Profile creation route
-router.post('/createprofile', (req, res) => {
-    const { fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime } = req.body; 
+        expect(response.status).toBe(201);
+        expect(response.body.message).toBe('Profile created successfully');
+        expect(response.body.user).toHaveProperty('userID');
+        expect(response.body.user.email).toBe(newUser.email);
+    });
 
-    try {
-        if (!email || !password) {
-            throw new Error('Email and password are required.'); 
-        }
+    it('should return an error if email or password is missing', async () => {
+        const invalidUser = {
+            fullName: "Test User",
+            address: "123 Test St",
+            city: "Test City",
+            zipcode: "12345",
+            selectedSkills: "JavaScript",
+            state: "Test State"
+        };
 
-        storeUserSkills(selectedSkills);
+        const response = await request(app)
+            .post('/createprofile')
+            .send(invalidUser);
 
-        console.log('Profile created:', { fullName, email, password, address, address2, city, zipcode, selectedSkills, availableTime }); 
+        expect(response.status).toBe(500);
+        expect(response.body.message).toBe('Internal Server Error');
+    });
 
-        // Simulating creating a user session for notifications
-        const sessionId = Math.random().toString(36).substring(2, 15); // Generate a random session ID
-        sessions[sessionId] = { email }; // Store user session
+    it('should return an error for database insert failure', async () => {
+        // Mocking a database error if needed
+        jest.spyOn(db, 'query').mockImplementation((sql, params, callback) => {
+            callback(new Error('Database insert error'));
+        });
 
-        checkSkillMatch();
-        
-        res.status(201).json({ message: 'Profile created successfully', user: { email }, sessionId });
-    } catch (error) {
-        console.error('Error creating profile:', error.message);
-        res.status(500).json({ message: 'Internal Server Error', error: error.message });
-    }
+        const newUser = {
+            fullName: "Test User",
+            email: "test@example.com",
+            password: "password123",
+            address: "123 Test St",
+            address2: "",
+            city: "Test City",
+            zipcode: "12345",
+            selectedSkills: "JavaScript",
+            state: "Test State"
+        };
+
+        const response = await request(app)
+            .post('/createprofile')
+            .send(newUser);
+
+        expect(response.status).toBe(500);
+        expect(response.body.message).toBe('Internal Server Error');
+    });
 });
-
-// Route to fetch notifications for a given session ID
-router.get('/getNotifications/:sessionId', (req, res) => {
-    const sessionId = req.params.sessionId; 
-    const userSession = sessions[sessionId]; 
-
-    console.log(`Session ID received: ${sessionId}`);
-
-    if (userSession) {
-        // Simulate sending notifications when a valid session exists
-        res.status(200).send([
-            { message: 'You have logged in successfully.' },
-            { message: 'New message from the system.' }
-        ]);
-    } else {
-        // Return error if session not found
-        res.status(404).send({ error: 'User not found for the given session ID.' });
-    }
-});
-
-module.exports = router;

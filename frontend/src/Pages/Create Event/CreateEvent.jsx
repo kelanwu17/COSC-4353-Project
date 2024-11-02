@@ -10,7 +10,7 @@ function CreateEvent() {
 
   return (
     <div style={{backgroundColor:"#E5E5E5"}}>
-      <NavBar/>
+      <AdminNavBar/>
 
       <br></br>
       <Grid2 container justifyContent="">

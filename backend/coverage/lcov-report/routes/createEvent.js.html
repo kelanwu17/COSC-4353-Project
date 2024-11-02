@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.18% </span>
+                <span class="strong">81.81% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/22</span>
+                <span class='fraction'>18/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/6</span>
+                <span class='fraction'>3/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.18% </span>
+                <span class="strong">81.81% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/22</span>
+                <span class='fraction'>18/22</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -183,7 +183,8 @@
 <a name='L118'></a><a href='#L118'>118</a>
 <a name='L119'></a><a href='#L119'>119</a>
 <a name='L120'></a><a href='#L120'>120</a>
-<a name='L121'></a><a href='#L121'>121</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -194,8 +195,6 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
@@ -203,13 +202,16 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -311,116 +313,117 @@ const { storeEventSkills, checkSkillMatch } = require('./eventMatching');
 const db = require("../config/dj");
 &nbsp;
 router.post('/createevent', (req, res) =&gt; {
-    const { title, description, location, urgency, skills, timeRange } = req.body;
+    const { title, description, location, urgency, skills, startTime, endTime, adminID } = req.body;
 &nbsp;
     const checkExists = "SELECT * FROM Events WHERE title = ?";
-    const insertSQL = `INSERT INTO Events (title, location, urgency, skills, startTime, endTime, adminID)
-        VALUES(?,?, ?, ?, ?, ?, ?)`;
 &nbsp;
     db.query(checkExists, [title], (checkErr, checkResult) =&gt; {
-        <span class="missing-if-branch" title="if path not taken" >I</span>if(checkErr){
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (checkErr) {
 <span class="cstat-no" title="statement not covered" >            console.error("Error checking event title:", checkErr);</span>
-<span class="cstat-no" title="statement not covered" >            return res.status(500).json({error: "DB error checking event title"});</span>
+<span class="cstat-no" title="statement not covered" >            return res.status(500).json({ error: "DB error checking event title" });</span>
         }
-        <span class="missing-if-branch" title="else path not taken" >E</span>if(checkExists.length &gt; 0){
-            return res.status(400).json({ error: "Event title exists"});
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (checkResult.length &gt; 0) {
+<span class="cstat-no" title="statement not covered" >            return res.status(400).json({ error: "Event title exists" });</span>
         }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        db.query(insertSQL, [title, description, location, urgency, skills, timeRange], <span class="fstat-no" title="function not covered" >(e</span>rr, result) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >            if(err){</span>
-<span class="cstat-no" title="statement not covered" >                console.error("Database insertion error for: ", err);</span>
-<span class="cstat-no" title="statement not covered" >                return res.status(500).json({error: "Database error while creating event"});</span>
+        
+        const insertSQL = `INSERT INTO Events (title, description, location, urgency, skills, startTime, endTime, adminID)
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        
+        db.query(insertSQL, [title, description, location, urgency, skills, startTime, endTime, adminID], (err, result) =&gt; {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (err) {
+                console.error("Database insertion error: ", err);
+                return res.status(500).json({ error: "Database error while creating event" });
             }
 <span class="cstat-no" title="statement not covered" >            res.status(201).json({</span>
                 message: "Created event successfully",
-                eventsID: result.insertId,
+                eventID: result.insertId,
             });
         });
     });
 });
-/*
-    try {
+&nbsp;
+//     try {
     
-        storeEventSkills(skills);
-    } catch (error) {
-        console.error('Error storing event skills:', error.message);
-        return res.status(500).json({ message: 'Failed to store event skills.' });
-    }
+//         storeEventSkills(skills);
+//     } catch (error) {
+//         console.error('Error storing event skills:', error.message);
+//         return res.status(500).json({ message: 'Failed to store event skills.' });
+//     }
 &nbsp;
-    // Validation for length
-    if (!title || typeof title !== 'string' || title.length &gt; 100) {
-        return res.status(400).json({
-            message: 'Invalid title: Title is required and must be less than or equal to 100 characters.'
-        });
-    }
+//     // Validation for length
+//     if (!title || typeof title !== 'string' || title.length &gt; 100) {
+//         return res.status(400).json({
+//             message: 'Invalid title: Title is required and must be less than or equal to 100 characters.'
+//         });
+//     }
 &nbsp;
-    // Validation for Description requirement
-    if (!description || typeof description !== 'string') {
-        return res.status(400).json({
-            message: 'Description is required.'
-        });
-    }
+//     // Validation for Description requirement
+//     if (!description || typeof description !== 'string') {
+//         return res.status(400).json({
+//             message: 'Description is required.'
+//         });
+//     }
 &nbsp;
-    // Validation for Skill
-    if (!Array.isArray(skills) || skills.length === 0) {
-        return res.status(400).json({
-            message: 'At least one skill is required.'
-        });
-    }
+//     // Validation for Skill
+//     if (!Array.isArray(skills) || skills.length === 0) {
+//         return res.status(400).json({
+//             message: 'At least one skill is required.'
+//         });
+//     }
 &nbsp;
-    // Validation fro Time Range
-    if (!timeRange || timeRange.length !== 2 || 
-        !dayjs(timeRange[0]).isValid() || !dayjs(timeRange[1]).isValid()) {
-        return res.status(400).json({
-            message: 'A valid start and end date are required.'
-        });
-    }
+//     // Validation fro Time Range
+//     if (!timeRange || timeRange.length !== 2 || 
+//         !dayjs(timeRange[0]).isValid() || !dayjs(timeRange[1]).isValid()) {
+//         return res.status(400).json({
+//             message: 'A valid start and end date are required.'
+//         });
+//     }
 &nbsp;
-    // Validation for Location
-    const locationRegex = /^[a-zA-Z0-9\s,.-]+$/;
-    if (!location || typeof location !== 'string' || !locationRegex.test(location)) {
-        return res.status(400).json({
-            message: 'Location required should only contain letters, numbers, spaces, dashes, and commas.'
-        });
-    }
+//     // Validation for Location
+//     const locationRegex = /^[a-zA-Z0-9\s,.-]+$/;
+//     if (!location || typeof location !== 'string' || !locationRegex.test(location)) {
+//         return res.status(400).json({
+//             message: 'Location required should only contain letters, numbers, spaces, dashes, and commas.'
+//         });
+//     }
 &nbsp;
-    try {
+//     try {
         
-        const formattedTimeRange = `From ${dayjs(timeRange[0]).format('dddd, MM/DD/YYYY')} starting at ${dayjs(timeRange[0]).format('hh:mm A')}. To ${dayjs(timeRange[1]).format('dddd, MM/DD/YYYY')} ending at ${dayjs(timeRange[1]).format('hh:mm A')}`;
+//         const formattedTimeRange = `From ${dayjs(timeRange[0]).format('dddd, MM/DD/YYYY')} starting at ${dayjs(timeRange[0]).format('hh:mm A')}. To ${dayjs(timeRange[1]).format('dddd, MM/DD/YYYY')} ending at ${dayjs(timeRange[1]).format('hh:mm A')}`;
 &nbsp;
-        const isMatch = checkSkillMatch(skills); 
+//         const isMatch = checkSkillMatch(skills); 
 &nbsp;
-        const event = {
-            id: incrementEventsId(),
-            title,
-            description,
-            location,
-            urgency,
-            skills,
-            timeRange: formattedTimeRange
-        };
+//         const event = {
+//             id: incrementEventsId(),
+//             title,
+//             description,
+//             location,
+//             urgency,
+//             skills,
+//             timeRange: formattedTimeRange
+//         };
 &nbsp;
-        events.push(event);
+//         events.push(event);
 &nbsp;
-        console.log('Event created:', event);
+//         console.log('Event created:', event);
 &nbsp;
-        res.status(201).json({
-            message: isMatch ? 'Match found!' : 'No match found.',
-            event
-        });
+//         res.status(201).json({
+//             message: isMatch ? 'Match found!' : 'No match found.',
+//             event
+//         });
 &nbsp;
-        console.log(isMatch ? 'Match found between user and event!\n' : 'No match found between event and profile skills.\n');
+//         console.log(isMatch ? 'Match found between user and event!\n' : 'No match found between event and profile skills.\n');
 &nbsp;
 &nbsp;
-    } catch (error) {
-        console.error('Error creating event:', error.message);
-        res.status(500).json({
-            message: 'Internal Server Error',
-            error: error.message
-        });
-    }
-});
-*/
+//     } catch (error) {
+//         console.error('Error creating event:', error.message);
+//         res.status(500).json({
+//             message: 'Internal Server Error',
+//             error: error.message
+//         });
+//     }
+// });
+// */
 module.exports = router;
 &nbsp;
 &nbsp;</pre></td></tr></table></pre>
@@ -430,7 +433,7 @@ module.exports = router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-10-31T21:44:47.758Z
+                at 2024-11-02T01:25:17.735Z
             </div>
         <script src="../prettify.js"></script>
         <script>
