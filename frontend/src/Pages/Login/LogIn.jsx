@@ -46,12 +46,15 @@ const LogIn = () => {
         console.log(response.data); 
         // Check if userDetails and userID are present in the response
         if (response.data.userDetails && response.data.userDetails.userID) {
-            sessionStorage.setItem('username', response.data.userDetails.userID); 
-            navigate('/uservolunteer');
-        } else {
-            // Handle unexpected successful responses without user details
-            setErrorMessage("Login was successful, but user details are missing.");
-        }
+          // Logic for user login
+          sessionStorage.setItem('username', response.data.userDetails.userID); 
+          navigate('/uservolunteer');
+      } else if (response.data.adminDetails && response.data.adminDetails.adminID) {
+          // Logic for admin login
+          sessionStorage.setItem('adminID', response.data.adminDetails.adminID);
+          sessionStorage.setItem('adminEmail', response.data.adminDetails.email); // Store admin email if needed
+          navigate('/adminVolunteer'); // Redirect to the admin dashboard or appropriate route
+      } 
     })
     .catch((error) => {
         // Display the error message from the server, if available

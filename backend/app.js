@@ -4,7 +4,8 @@ const cookieParser = require('cookie-parser');
 
 const createProfileRoute = require('./routes/createProfile'); // Profile routes
 const createEventRoutes = require('./routes/createEvent'); // Event creation routes
-const { router: loginRoute } = require('./routes/logIn'); // Login routes
+const loginRoute = require('./routes/logIn'); // Login routes
+
 const getProfileRoute = require('./routes/getProfile'); // Get profile routes
 const updateProfileRoute = require('./routes/updateprofile'); 
 const deleteProfileRoute = require('./routes/deleteprofile');
