@@ -13,17 +13,18 @@ router.post('/logIn', (req, res) => {
             throw new Error('Username and password are required.');
         }
 
-        const sql = "SELECT * FROM User WHERE email = ? AND password = ?";
-        db.query(sql, [username, password], (err, results) => {
+        const userSql = "SELECT * FROM User WHERE email = ? AND password = ?";
+        db.query(userSql, [username, password], (err, userResults) => {
             if (err) {
                 console.error('Database query error:', err.message);
                 return res.status(500).json({ message: 'Internal Server Error', error: err.message });
             }
 
-            if (results.length > 0) {
-                const user = results[0];
+            // If user is found in the User table
+            if (userResults.length > 0) {
+                const user = userResults[0];
                 const userDetails = {
-                    userID: user.userID, // Ensure this matches the actual column name in your DB
+                    userID: user.userID,
                     fullName: user.fullName,
                     email: user.email,
                     address: user.address,
@@ -33,11 +34,33 @@ router.post('/logIn', (req, res) => {
                     selectedSkills: user.selectedSkills,
                     state: user.state
                 };
-                
-                console.log('User details sent:', userDetails); // Log user details being sent
-                return res.status(200).json({ message: 'Login successful', userDetails });
-            }
-            return res.status(401).json({ message: 'Invalid username or password.' });
+
+                console.log('User details sent:', userDetails); 
+                return res.status(200).json({ message: 'Login successful', userDetails, userType: 'user' });
+            } 
+            
+            // If user is not found, check the Admin table
+            const adminSql = "SELECT * FROM Admin WHERE email = ? AND password = ?";
+            db.query(adminSql, [username, password], (err, adminResults) => {
+                if (err) {
+                    console.error('Database query error:', err.message);
+                    return res.status(500).json({ message: 'Internal Server Error', error: err.message });
+                }
+
+                if (adminResults.length > 0) {
+                    const admin = adminResults[0];
+                    const adminDetails = {
+                        adminID: admin.id, 
+                        email: admin.email
+                    };
+
+                    console.log('Admin details sent:', adminDetails);
+                    return res.status(200).json({ message: 'Admin login successful', adminDetails, userType: 'admin' });
+                }
+
+                // If neither user nor admin credentials match
+                return res.status(401).json({ message: 'Invalid username or password.' });
+            });
         });
 
     } catch (error) {
@@ -45,6 +68,5 @@ router.post('/logIn', (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 });
-
 
 module.exports = { router, userDetails };
