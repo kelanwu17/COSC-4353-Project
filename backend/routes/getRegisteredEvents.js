@@ -19,7 +19,7 @@ router.get('/registeredEvents', (req, res) => {
 
 router.get('/registeredEvents/:id', (req, res) => {
     const id = req.params.id;
-    const sql = "SELECT * FROM RegisterEvents WHERE rEventsId = ?";
+    const sql = "SELECT * FROM RegisterEvents WHERE userID = ?";
     db.query(sql, [id], (err, result) => {
         if (err) {
             console.error("Error getting registered event", err);
