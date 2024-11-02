@@ -13,8 +13,9 @@ function VolunteerPage() {
     axios
       .get("http://localhost:3001/api/events")
       .then((response) => {
-        const publishedEvents = response.data.filter((event) => event.published); // Only show published events
+        const publishedEvents = response.data // Only show published events
         setEvents(publishedEvents);
+        console.log(publishedEvents)
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
