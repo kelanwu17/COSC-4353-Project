@@ -1,37 +1,38 @@
 const express = require('express');
-const bcrypt = require('bcrypt'); // Ensure bcrypt is imported
+const bcrypt = require('bcrypt'); // Make sure to import bcrypt
 const router = express.Router();
 const db = require("../config/dj");
 
 router.post('/logIn', async (req, res) => {
-    const { username, password } = req.body; // Changed email to username
+    const { username, password } = req.body; // Expecting username for both user and admin
 
     try {
         if (!username || !password) {
-            throw new Error('Username and password are required.'); // Updated error message
+            throw new Error('Username and password are required.');
         }
 
-        // Query to find the user by username
-        const sql = "SELECT * FROM User WHERE email = ?"; // Change email to username in the query
-        db.query(sql, [username], async (err, results) => {
+        // First, check if the username belongs to a user
+        const userSql = "SELECT * FROM User WHERE email = ?";
+        db.query(userSql, [username], async (err, userResults) => {
             if (err) {
-                console.error('Database query error:', err.message);
+                console.error('Database query error (User):', err.message);
                 return res.status(500).json({ message: 'Internal Server Error', error: err.message });
             }
 
-            if (results.length > 0) {
-                const user = results[0];
-
-                // Compare the provided password with the hashed password
+            // Check if a user was found
+            if (userResults.length > 0) {
+                const user = userResults[0];
                 const match = await bcrypt.compare(password, user.password);
+
                 if (!match) {
-                    return res.status(401).json({ message: 'Invalid username or password.' }); // Updated error message
+                    console.log('User login failed: Invalid password.');
+                    return res.status(401).json({ message: 'Invalid username or password.' });
                 }
 
                 const userDetails = {
-                    userID: user.userID, // Ensure this matches the actual column name in your DB
+                    userID: user.userID,
                     fullName: user.fullName,
-                    username: user.email, // Updated to include username
+                    username: user.email,
                     address: user.address,
                     address2: user.address2,
                     city: user.city,
@@ -43,8 +44,38 @@ router.post('/logIn', async (req, res) => {
                 console.log('User details sent:', userDetails);
                 return res.status(200).json({ message: 'Login successful', userDetails });
             }
-            
-            return res.status(401).json({ message: 'Invalid username or password.' }); // Updated error message
+
+            // If not a user, check if it's an admin login
+            const adminSql = "SELECT * FROM Admin WHERE email = ?";
+            db.query(adminSql, [username], async (err, adminResults) => {
+                if (err) {
+                    console.error('Database query error (Admin):', err.message);
+                    return res.status(500).json({ message: 'Internal Server Error', error: err.message });
+                }
+
+                // Check if an admin was found
+                if (adminResults.length > 0) {
+                    const admin = adminResults[0];
+                    console.log('Admin found:', admin.email); // Log found admin email
+
+                    const match = await bcrypt.compare(password, admin.password);
+                    if (!match) {
+                        console.log('Admin login failed: Invalid password.');
+                        return res.status(401).json({ message: 'Invalid username or password.' });
+                    }
+
+                    const adminDetails = {
+                        adminID: admin.adminID,
+                        email: admin.email,
+                    };
+
+                    console.log('Admin details sent:', adminDetails);
+                    return res.status(200).json({ message: 'Admin login successful', adminDetails });
+                }
+
+                // If no user or admin was found, return invalid credentials
+                return res.status(401).json({ message: 'Invalid username or password.' });
+            });
         });
 
     } catch (error) {
