@@ -13,14 +13,16 @@ const transporter = nodemailer.createTransport({
 });
 
 async function processEmailQueue() {
+    //console.log("Processing email queue...");
+
     // Select pending notifications with user email and event details
     const query = `
-        SELECT Notifications.nID, Notifications.userID, Notifications.rEventsID, 
-               Notifications.notificationStatus, User.email, User.fullName
-        FROM Notifications
-        INNER JOIN RegisterEvents ON Notifications.rEventsID = RegisterEvents.rEventsID
-        INNER JOIN User ON Notifications.userID = User.userID
-        WHERE Notifications.notificationStatus = 'pending'
+        SELECT Notification.nID, Notification.userID, Notification.rEventsID, 
+               Notification.notificationStatus, User.email, User.fullName
+        FROM Notification
+        INNER JOIN RegisterEvents ON Notification.rEventsID = RegisterEvents.rEventsID 
+        INNER JOIN User ON Notification.userID = User.userID
+        WHERE Notification.notificationStatus = 'pending'
     `;
 
     db.query(query, (error, results) => {
@@ -31,7 +33,7 @@ async function processEmailQueue() {
 
         results.forEach((notification) => {
             const mailOptions = {
-                from: '"Event Notifier" 4353project@gmail.com',
+                from: '"Event Notifier" <4353project@gmail.com>',
                 to: notification.email,
                 subject: 'Event Reminder',
                 text: `Hello ${notification.fullName},\n\nYou have an upcoming event!`
@@ -45,7 +47,7 @@ async function processEmailQueue() {
 
                     // Update the notification status to 'sent'
                     db.query(
-                        "UPDATE Notifications SET notificationStatus = 'sent' WHERE nID = ?",
+                        "UPDATE Notification SET notificationStatus = 'sent' WHERE nID = ?",
                         [notification.nID],
                         (updateErr) => {
                             if (updateErr) {
@@ -61,7 +63,7 @@ async function processEmailQueue() {
     });
 }
 
-// Run the function every 5 minutes
-setInterval(processEmailQueue, 5 * 60 * 1000); // 5 minutes
+// Run the function
+setInterval(processEmailQueue, 1 * 60 * 1000); // 1 minute
 
 module.exports = { processEmailQueue }; 
