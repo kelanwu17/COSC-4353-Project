@@ -21,6 +21,9 @@ function AdminNavBar() {
   const handleLogoClick = () => {
     navigate('/adminVolunteer');
   };
+   const handleModifyClick = () => {
+    navigate('/modifyadmin');
+  };
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,6 +78,7 @@ function AdminNavBar() {
             >
              
               <MenuItem onClick={handleCreateAdminClick}>Create Admin</MenuItem>
+              <MenuItem onClick={handleModifyClick}>Modify Admin</MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </Toolbar>
