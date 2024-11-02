@@ -31,9 +31,13 @@ function AdminNavBar() {
   };
 
   const handleLogout = () => {
-    // Logic for logging out
-    console.log('Logging out...');
-    // You may want to navigate to the login page or perform other actions here
+ 
+  sessionStorage.clear();
+  
+  
+  navigate('/');
+  
+  handleCloseMenu();
     handleCloseMenu();
   };
 
