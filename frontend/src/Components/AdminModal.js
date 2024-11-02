@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 const modalStyle = {
     position: 'fixed',
@@ -50,11 +51,12 @@ const skillsList = [
 
 const urgencyLevels = ["High", "Medium", "Low"];
 
-export default function AdminModal({ open, onClose, title, description, urgency, skills, location, date, eventId, onSave }) {
+export default function AdminModal({ open, onClose, title, description, urgency, skills, location, startTime, endTime, date, eventId, onSave }) {
     const modalRef = useRef(null);
 
   
-
+    const [newStartTime, setNewStartTime] = useState(startTime || "");  
+    const [newEndTime, setNewEndTime] = useState(endTime || ""); 
     const [newTitle, changeTitle] = useState(title);
     const [newDesc, changeDesc] = useState(description);
     const [newUrg, changeUrg] = useState(urgency);
@@ -62,62 +64,78 @@ export default function AdminModal({ open, onClose, title, description, urgency,
     const [newDate, changeDate] = useState(date);
     const [cuSkills, setAvailableSkills] = useState(skillsList);
     const [newSk, changeSk] = useState(() => {
-    if (typeof skills === 'string') {
-        try {
-            return JSON.parse(skills); 
-        } catch (e) {
-            console.error("Error parsing skills:", e);
-            return [];
+        if (Array.isArray(skills)) {
+            return skills;
+        } else if (typeof skills === 'string') {
+            try {
+                return JSON.parse(skills);
+            } catch (e) {
+                console.error("Error parsing skills:", e);
+            }
         }
-    }
-});
-
+        return [];
+    });
 
     const handleSkillChange = (skill) => {
+        if (newSk.includes(skill)) {
+            changeSk(prevSkills => prevSkills.filter(sk => sk !== skill).sort());
+        } else {
+            changeSk(prevSkills => [...prevSkills, skill].sort());
+        }
+    };
+    const handleSubmit = () => {
+        const userID = 4; 
     
-    if (newSk.includes(skill)) {
-        changeSk(prevSkills => prevSkills.filter(sk => sk !== skill).sort());
-    } else {
-        changeSk(prevSkills => [...prevSkills, skill].sort());
-    }
-};
-const handleSubmit = () => {
-    axios
-      .patch(`http://localhost:3001/api/createRegisteredEvents/${eventId}`)
-      .then((response) => {
-        console.log('Event published successfully:', response.data);
-        onSave(); // Refresh event list
-        onClose(); // Close modal
-      })
-      .catch((error) => console.error('Error publishing event:', error));
-};
+        axios
+          .post(`http://localhost:3001/api/registerEvent`, {
+            userID,
+            eventsID: eventId
+          })
+          .then((response) => {
+            console.log('Event registered successfully:', response.data);
+            onSave(); // Refresh event list
+            onClose(); // Close modal
+          })
+          .catch((error) => {
+            console.error('Error registering event:', error);
+          });
+    };
 
 const handleSave = () => {
+
+
+    
+    console.log("New Date:", newDate); //for debug
+    const startTimeFormatted = newStartTime ? dayjs(newStartTime).format("YYYY-MM-DD HH:mm:ss") : null;
+    const endTimeFormatted = newEndTime ? dayjs(newEndTime).format("YYYY-MM-DD HH:mm:ss") : null;
+    
         
         console.log('Event ID to update:', eventId); 
         const updatedEventData = {
             title: newTitle,
             description: newDesc,
             urgency: newUrg,
-            skills: newSk,
+            skills: JSON.stringify(newSk), 
             location: newLoc,
-            date: newDate
+            startTime: startTimeFormatted,
+            endTime: endTimeFormatted
         };
 
         
-        axios.patch(`http://localhost:3001/api/events/${eventId}`, updatedEventData)
+        axios.put(`http://localhost:3001/api/events/${eventId}`, updatedEventData)
         .then(response => {
             console.log('Event updated successfully:', response.data);
             console.log(`Event with id:${eventId} has been updated:`, updatedEventData);
-            onSave(); 
-            onClose(); 
+            onSave(); // Refresh event list
+            onClose(); // Close modal
         })
         .catch(error => {
             console.error('Error updating event:', error);
         });
-    };
+};
     
 const handleDelete = () => {
+    console.log(eventId);
     axios.delete(`http://localhost:3001/api/events/${eventId}`)
     .then(response => {
         console.log('Event deleted successfully:', response.data);
