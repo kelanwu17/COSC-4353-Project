@@ -26,6 +26,9 @@ function UserNavBar() {
     const fetchNotifications = async () => {
       const userId = sessionStorage.getItem('username'); // Update with actual userId key
 
+      // Test log: display userId in console
+      console.log(`Fetching notifications for userId: ${userId}`);
+
       if (userId) {
         try {
           const response = await axios.get(`http://localhost:3001/api/getNotifications/${userId}`);
