@@ -31,5 +31,17 @@ router.get('/getProfile/:userID', (req, res) => {
         });
     });
 });
+router.get('/getAllProfiles', (req, res) => {
+    const sql = "SELECT User.userID, fullName, email, Events.title, Events.startTime, Events.endTime FROM User, RegisterEvents, Events WHERE RegisterEvents.userId = User.userID AND RegisterEvents.eventsID = Events.eventsID";
+    
+    // Assuming you have a database connection, you might execute it like so:
+    db.query(sql, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
+
 
 module.exports = router;
