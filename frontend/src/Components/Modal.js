@@ -70,6 +70,12 @@ export default function Modal({
             userID: userID,
             eventsID: eventId,
         };
+
+        const notificationData = {
+            userID: userID,
+            rEventsID: eventId,
+            notificationMessage: `You have successfully registered for event ID: ${eventId}`,
+        };
     
         axios.post('http://localhost:3001/api/registerEvent', eventData)
             .then((response) => {
@@ -79,6 +85,14 @@ export default function Modal({
             })
             .catch((error) => {
                 console.error('Error registering event:', error);
+            });
+
+        axios.post('http://localhost:3001/createNotification', notificationData)
+            .then((response) => {
+                console.log(`Notification created for eventId: ${eventId} for user: ${userID}`);
+            })
+            .catch((error) => {
+                console.error(`Error creating notifcation for eventId: ${eventId} for user: ${userID} error:`, error);
             });
     };
 
