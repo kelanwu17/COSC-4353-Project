@@ -1,18 +1,28 @@
 const express = require('express');
+const { errorMonitor } = require('nodemailer/lib/xoauth2');
 const router = express.Router();
+const db = require ('../config/dj').promise();
 
-const { sessions } = require('./logIn');
+router.get('/getNotifications/:userID', async (req, res) => {
+    const userID = req.params.userID;
 
-router.get('/getNotifications/:userId', (req, res) => {
-    const userId = req.params.userId; 
-    const userSession = sessions[userId]; // Retrieve session by userId
+    try {
+        const [notifications] = await db.query(
+            `SELECT nID, rEventsID, notificationStatus, notificationMessage 
+            FROM Notification 
+            WHERE userID = ?`, 
+            [userID]
+        );
 
-    if (userSession) {
-        res.send([{
-            message: 'You have logged in'
-        }]);
-    } else {
-        res.status(404).send({ error: 'User not found for the given user ID' });
+        if (notifications.length === 0) {
+            res.status(404).send({ error: 'No notifications found for the given userID' });
+        } else {
+            res.send(notifications);
+        }
+    } catch (error) {
+        console.error('Error fetching notifications:', error.message || error);
+        console.error('Error fetching notifications', userID);
+        res.status(500).send({ error: 'An error occurred while fetching notifications' });
     }
 });
 

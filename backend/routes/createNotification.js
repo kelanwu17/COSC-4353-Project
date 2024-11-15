@@ -1,17 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const db = require('./database'); // Your database connection
+const db = require('../config/dj'); 
 
 router.post('/createNotification', async (req, res) => {
     const { userID, rEventsID, notificationMessage } = req.body;
 
     try {
-        const result = await db.query(
-            'INSERT INTO notifications (userID, rEventsID, notificationStatus, notificationMessage) VALUES (?, ?, ?, ?)',
-            [userID, rEventsID, 'pending', notificationMessage] // Set initial status as 'pending'
+       const notif= 'INSERT INTO Notification (userID, rEventsID, notificationStatus, notificationMessage) VALUES (?, ?, ?, ?)';
+        db.query(
+            notif,[userID, rEventsID, 'pending', notificationMessage] // Set initial status as 'pending'
+            , (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send("DB error")
+                }
+                res.status(201).send({ success: true, message: 'Notification added', nID: result.insertId });
+            }
         );
 
-        res.status(201).send({ success: true, message: 'Notification added', nID: result.insertId });
+        
     } catch (error) {
         console.error('Error adding notification:', error);
         res.status(500).send({ success: false, error: 'Failed to add notification' });

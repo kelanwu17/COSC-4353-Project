@@ -21,6 +21,7 @@ const deleteRegisteredEvent = require('./routes/deleteRegisteredEvents'); // Del
 const getRegisteredEvents = require('./routes/getRegisteredEvents'); // Get Registered event route
 const registerEvent = require('./routes/registerEvent'); 
 const getNotificationsRoute = require('./routes/getNotifications'); 
+const createNotificationsRoute = require('./routes/createNotification'); 
 
 const adminRoute = require('./routes/admin')
 
@@ -43,6 +44,7 @@ app.use('/', createProfileRoute);
 app.use('/', loginRoute); 
 app.use('/', getProfileRoute);
 app.use('/', getNotificationsRoute );
+app.use('/', createNotificationsRoute );
 app.use('/', updateProfileRoute)
 app.use('/', deleteProfileRoute)
 app.use('/admin', adminRoute);
