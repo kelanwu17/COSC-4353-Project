@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import VolunteerHistoryReport from "./Components/VolunteerHistoryReport";
 import AdminNavBar from "../../Components/AdminNavBar";
+import EventsReport from "./Components/EventsReport";
 function AdminReport() {
     const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +23,7 @@ function AdminReport() {
 
   const apiEndpoints = {
     volunteerHistory: baseUrl + "/getAllProfiles",
-    
+    Events: baseUrl + "/api/registeredEventsDetails"
   };
 
   const tableOptions = Object.keys(apiEndpoints).map((key) => ({
@@ -56,12 +57,12 @@ function AdminReport() {
         </Select>
       </FormControl>
       <br />
-     {selectedTable === "volunteerHistory" ? (
-       <VolunteerHistoryReport api={apiEndpoints[selectedTable]} />
-     ) :
-     (null)
+      {selectedTable === "volunteerHistory" ? (
+  <VolunteerHistoryReport api={apiEndpoints[selectedTable]} />
+) : selectedTable === "Events" ? (
+  <EventsReport api={apiEndpoints[selectedTable]} />
+) : null}
 
-}
     </div>
   )
 }
