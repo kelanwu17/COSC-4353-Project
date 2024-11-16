@@ -9,7 +9,7 @@ function VolunteerPage() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eventId, setEventId] = useState('');
-  const [isRegistered, setRegister] = useState(false)
+ 
 
   // Function to fetch published events
   const fetchEvents = () => {
@@ -28,7 +28,7 @@ function VolunteerPage() {
   // Function to fetch registered events
   const fetchRegisteredEvents = () => {
     axios
-      .get('http://localhost:3001/api/getRegisteredEvents')
+      .get(`http://localhost:3001/api/getRegisteredEvents/{userID}`)
       .then((response) => {
         console.log('Registered Events:', response.data.events);
         setEvents((prevEvents) => [...prevEvents, ...response.data.events]);
