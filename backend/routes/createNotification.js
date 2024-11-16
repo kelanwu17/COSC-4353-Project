@@ -3,12 +3,12 @@ const router = express.Router();
 const db = require('../config/dj'); 
 
 router.post('/createNotification', async (req, res) => {
-    const { userID, rEventsID, notificationMessage } = req.body;
+    const { userID, eventsID, notificationMessage } = req.body;
 
     try {
-       const notif= 'INSERT INTO Notification (userID, rEventsID, notificationStatus, notificationMessage) VALUES (?, ?, ?, ?)';
+       const notif= 'INSERT INTO Notification (userID, eventsID, notificationStatus, notificationMessage) VALUES (?, ?, ?, ?)';
         db.query(
-            notif,[userID, rEventsID, 'pending', notificationMessage] // Set initial status as 'pending'
+            notif,[userID, eventsID, 'pending', notificationMessage] // Set initial status as 'pending'
             , (err, result) => {
                 if (err) {
                     console.error(err);

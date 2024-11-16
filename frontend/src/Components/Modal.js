@@ -73,8 +73,8 @@ export default function Modal({
 
         const notificationData = {
             userID: userID,
-            rEventsID: eventId,
-            notificationMessage: `You have successfully registered for event ID: ${eventId}`,
+            eventsID: eventId,
+            notificationMessage: `You have are signed up for the event: ${title}`,
         };
     
         axios.post('http://localhost:3001/api/registerEvent', eventData)
