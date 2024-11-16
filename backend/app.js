@@ -10,6 +10,7 @@ const getProfileRoute = require('./routes/getProfile'); // Get profile routes
 const updateProfileRoute = require('./routes/updateprofile'); 
 const deleteProfileRoute = require('./routes/deleteprofile');
 
+const getCsvReportRoute = require('./routes/getcsvreport');
 
 // Event Routes
 const updateEventRoutes = require('./routes/updateEvent'); // Update event routes
@@ -39,6 +40,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+app.use('/', getCsvReportRoute);
 // Profile and login routes
 app.use('/', createProfileRoute); 
 app.use('/', loginRoute); 
