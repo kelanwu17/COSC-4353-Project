@@ -153,7 +153,7 @@ const handleDelete = () => {
 
     return ReactDOM.createPortal(
         <div style={entireStyle}>
-            <div style={modalStyle} ref={modalRef}>
+            <div style={modalStyle} ref={modalRef} className='bg-gray-400'>
                 <div className="text-xl font-bold mb-2">Edit Details</div>
                 <div className="text-xs">
                     Location:

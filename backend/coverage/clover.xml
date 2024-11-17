@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1730510717799" clover="3.2.0">
-  <project timestamp="1730510717799" name="All files">
-    <metrics statements="91" coveredstatements="69" conditionals="18" coveredconditionals="7" methods="17" coveredmethods="10" elements="126" coveredelements="86" complexity="0" loc="91" ncloc="91" packages="2" files="7" classes="7"/>
+<coverage generated="1731443341611" clover="3.2.0">
+  <project timestamp="1731443341611" name="All files">
+    <metrics statements="93" coveredstatements="70" conditionals="18" coveredconditionals="7" methods="17" coveredmethods="10" elements="128" coveredelements="87" complexity="0" loc="93" ncloc="93" packages="2" files="7" classes="7"/>
     <package name="config">
       <metrics statements="8" coveredstatements="6" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
-      <file name="dj.js" path="C:\Users\pyrak\COSC-4353-Project\backend\config\dj.js">
+      <file name="dj.js" path="/Users/osvaldomosso/Documents/GitHub/COSC-4353-Project/backend/config/dj.js">
         <metrics statements="8" coveredstatements="6" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -17,8 +17,8 @@
       </file>
     </package>
     <package name="routes">
-      <metrics statements="83" coveredstatements="63" conditionals="16" coveredconditionals="6" methods="16" coveredmethods="9"/>
-      <file name="createEvent.js" path="C:\Users\pyrak\COSC-4353-Project\backend\routes\createEvent.js">
+      <metrics statements="85" coveredstatements="64" conditionals="16" coveredconditionals="6" methods="16" coveredmethods="9"/>
+      <file name="createEvent.js" path="/Users/osvaldomosso/Documents/GitHub/COSC-4353-Project/backend/routes/createEvent.js">
         <metrics statements="22" coveredstatements="18" conditionals="6" coveredconditionals="3" methods="3" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -43,7 +43,7 @@
         <line num="30" count="0" type="stmt"/>
         <line num="120" count="1" type="stmt"/>
       </file>
-      <file name="deleteEvent.js" path="C:\Users\pyrak\COSC-4353-Project\backend\routes\deleteEvent.js">
+      <file name="deleteEvent.js" path="/Users/osvaldomosso/Documents/GitHub/COSC-4353-Project/backend/routes/deleteEvent.js">
         <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="1" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -59,7 +59,7 @@
         <line num="14" count="2" type="stmt"/>
         <line num="18" count="1" type="stmt"/>
       </file>
-      <file name="eventMatching.js" path="C:\Users\pyrak\COSC-4353-Project\backend\routes\eventMatching.js">
+      <file name="eventMatching.js" path="/Users/osvaldomosso/Documents/GitHub/COSC-4353-Project/backend/routes/eventMatching.js">
         <metrics statements="12" coveredstatements="7" conditionals="2" coveredconditionals="0" methods="4" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
@@ -74,14 +74,14 @@
         <line num="39" count="0" type="stmt"/>
         <line num="42" count="1" type="stmt"/>
       </file>
-      <file name="eventsData.js" path="C:\Users\pyrak\COSC-4353-Project\backend\routes\eventsData.js">
+      <file name="eventsData.js" path="/Users/osvaldomosso/Documents/GitHub/COSC-4353-Project/backend/routes/eventsData.js">
         <metrics statements="4" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="6" count="0" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
       </file>
-      <file name="getEvent.js" path="C:\Users\pyrak\COSC-4353-Project\backend\routes\getEvent.js">
+      <file name="getEvent.js" path="/Users/osvaldomosso/Documents/GitHub/COSC-4353-Project/backend/routes/getEvent.js">
         <metrics statements="20" coveredstatements="16" conditionals="4" coveredconditionals="2" methods="4" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -104,20 +104,22 @@
         <line num="27" count="3" type="stmt"/>
         <line num="31" count="1" type="stmt"/>
       </file>
-      <file name="updateEvent.js" path="C:\Users\pyrak\COSC-4353-Project\backend\routes\updateEvent.js">
-        <metrics statements="12" coveredstatements="6" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
+      <file name="updateEvent.js" path="/Users/osvaldomosso/Documents/GitHub/COSC-4353-Project/backend/routes/updateEvent.js">
+        <metrics statements="14" coveredstatements="7" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
         <line num="9" count="0" type="stmt"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="14" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
         <line num="15" count="0" type="stmt"/>
-        <line num="19" count="1" type="stmt"/>
+        <line num="16" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
       </file>
     </package>
   </project>

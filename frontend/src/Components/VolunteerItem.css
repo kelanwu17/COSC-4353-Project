@@ -12,3 +12,16 @@
     border-top: 1px solid #000;
    
 }
+
+.ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #6b46c1; /* Purple color */
+    color: white;
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    transform: rotate(45deg);
+    transform-origin: top right;
+  }
