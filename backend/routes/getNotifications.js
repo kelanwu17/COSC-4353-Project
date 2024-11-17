@@ -8,7 +8,7 @@ router.get('/getNotifications/:userID', async (req, res) => {
     try {
         const [notifications] = await db.query(
             `SELECT nID, rEventsID, notificationStatus, notificationMessage 
-            FROM notifications 
+            FROM Notification
             WHERE userID = ?`, 
             [userID]
         );

@@ -32,8 +32,7 @@ function VolunteerPage() {
   const fetchRegisteredEvents = () => {
     const userID = sessionStorage.getItem('username');
     if (userID) {
-      axios
-        .get(`http://localhost:3001/api/registeredEvents/${userID}`)
+      axios.get(`http://localhost:3001/api/registeredEvents/${userID}`)
         .then((response) => {
           setRegisteredEvents(response.data.map(event => event.eventsID));
         })
@@ -46,20 +45,27 @@ function VolunteerPage() {
   useEffect(() => {
     fetchEvents();
     fetchRegisteredEvents();
+  
 
-    // Fetch session ID only once on component mount
-    axios.get(`http://localhost:3001/getNotifications/${sessionStorage.getItem('sessionId')}`)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.sessionId) {
-          sessionStorage.setItem('sessionId', response.data.sessionId);
-          console.log('Session ID:', response.data.sessionId);
-        }
-      })
-      .catch((error) => {
-        console.log('Error:', error.response ? error.response.data : error.message);
-      });
-  }, []);
+   
+      // Check if sessionId exists in sessionStorage before making the request
+      const sessionId = sessionStorage.getItem('sessionId');
+      if (sessionId) {
+        axios.get(`http://localhost:3001/getNotifications/${sessionId}`)
+          .then((response) => {
+            console.log(response.data);
+            if (response.data.sessionId) {
+              sessionStorage.setItem('sessionId', response.data.sessionId);
+              console.log('Session ID:', response.data.sessionId);
+            }
+          })
+          .catch((error) => {
+            console.log('Error:', error.response ? error.response.data : error.message);
+          });
+      } else {
+        console.log('Session ID is null. Skipping notification fetch.');
+      }
+    }, []);
 
   const filteredEvents = filterOption === 'registered'
   ? events.filter(event => registeredEvents.includes(event.eventsID))

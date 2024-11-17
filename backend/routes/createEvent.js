@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const dayjs = require('dayjs');
 const { events, incrementEventsId } = require('./eventsData');
-const { storeEventSkills, checkSkillMatch } = require('./eventMatching');
+const { checkSkillMatch } = require('./eventMatching');
 const db = require("../config/dj");
 
 router.post('/createevent', (req, res) => {
@@ -50,6 +50,7 @@ router.post('/createevent', (req, res) => {
                 console.error("Database insertion error: ", err);
                 return res.status(500).json({ error: "Database error while creating event" });
             }
+
             res.status(201).json({
                 message: "Created event successfully",
                 eventID: result.insertId,

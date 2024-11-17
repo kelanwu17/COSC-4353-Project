@@ -98,7 +98,7 @@ function EventForm() {
         }
       })
       .then(response => {
-        setImage(response.data.imageUrl); // Assuming the server returns { imageUrl: 'http://example.com/image.jpg' }
+        setImage(response.data.imageUrl); 
         console.log('Image uploaded:', response.data.imageUrl);
       })
       .catch(error => {
