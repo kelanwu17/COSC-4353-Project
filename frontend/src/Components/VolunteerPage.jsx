@@ -45,9 +45,9 @@ function VolunteerPage() {
   useEffect(() => {
     fetchEvents();
     fetchRegisteredEvents();
-  
 
-   
+
+  
       // Check if sessionId exists in sessionStorage before making the request
       const sessionId = sessionStorage.getItem('sessionId');
       if (sessionId) {
