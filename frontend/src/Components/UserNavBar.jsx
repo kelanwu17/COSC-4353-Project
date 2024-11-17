@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -11,7 +11,8 @@ import {
   InputLabel,
   Select,
 } from "@mui/material";
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 import volunteerLogo from '../Assets/logo.png';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -22,7 +23,30 @@ function UserNavBar({ showFilter, filterOption, handleFilterChange }) {
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
   const [notifications, setNotifications] = useState([]);
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
+
+  // Fetch notifications on component mount
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const userId = sessionStorage.getItem('username'); // Update with actual userId key
+
+      // Test log: display userId in console
+      console.log(`Fetching notifications for userId: ${userId}`);
+
+      if (userId) {
+        try {
+          console.log(userId)
+          const response = await axios.get(`http://localhost:3001/api/getNotifications/${userId}`);
+          setNotifications(response.data);
+          console.log(response.data)
+        } catch (error) {
+          console.error("Failed to fetch notifications", error);
+        }
+      }
+    };
+
+    fetchNotifications();
+  }, []);
 
   // Handlers for Profile Menu
   const handleProfileMenuOpen = (event) => setProfileAnchorEl(event.currentTarget);
@@ -34,14 +58,13 @@ function UserNavBar({ showFilter, filterOption, handleFilterChange }) {
 
   // Logout function
   const handleLogout = () => {
-    sessionStorage.clear(); // Clear all session storage
-    navigate('/'); // Navigate to the homepage
+    sessionStorage.clear();
+    navigate('/');
   };
 
-  // Navigate based on session storage
   const handleLogoClick = () => {
-    const hasSessionData = sessionStorage.length > 0; // Check if session storage has data
-    navigate(hasSessionData ? '/uservolunteer' : '/'); // Navigate accordingly
+    const hasSessionData = sessionStorage.length > 0;
+    navigate(hasSessionData ? '/uservolunteer' : '/');
   };
 
   return (
@@ -55,7 +78,7 @@ function UserNavBar({ showFilter, filterOption, handleFilterChange }) {
             color="inherit"
             aria-label="home"
             sx={{ mr: 2 }}
-            onClick={handleLogoClick} // Call handleLogoClick on click
+            onClick={handleLogoClick}
           >
             <img src={volunteerLogo} alt="logo" style={{ height: "50px" }} />
           </IconButton>
@@ -121,7 +144,7 @@ function UserNavBar({ showFilter, filterOption, handleFilterChange }) {
           >
             {notifications.length > 0 ? (
               notifications.map((notification, index) => (
-                <MenuItem key={index}>{notification}</MenuItem>
+                <MenuItem key={index}>{notification.notificationMessage}</MenuItem>
               ))
             ) : (
               <MenuItem disabled>No new notifications</MenuItem>

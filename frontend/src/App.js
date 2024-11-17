@@ -11,7 +11,7 @@ import VolunteerPage from './Components/VolunteerPage.jsx';
 import AdminVolunteerPage from './Components/AdminVolunteerPage.jsx';
 import CreateAdmin from './Pages/Create Admin/CreateAdmin.jsx';
 import ModifyAdmin from './Pages/Modify Admin/ModifyAdmin.jsx';
-
+import AdminReport from './Pages/Admin Reports/adminReport.jsx';
 
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
           
           <Route path="/createadmin" element={<CreateAdmin/>}/>
           <Route path="/modifyadmin" element={<ModifyAdmin/>}/>
+          <Route path="/adminreports" element={<AdminReport/>}/>
         </Routes>
       </Router>
     </div>

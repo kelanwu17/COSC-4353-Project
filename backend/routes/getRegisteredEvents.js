@@ -29,6 +29,24 @@ router.get('/registeredEvents/:id', (req, res) => {
     })
 });
 
+router.get('/registeredEventsDetails', (req, res) => {
+    const sql = `
+       SELECT e.*, COUNT(r.rEventsID) AS registration_count
+FROM Events e
+LEFT JOIN RegisterEvents r ON e.eventsID = r.rEventsID
+GROUP BY e.eventsID;
+
+    `;
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Error retrieving registered events", err);
+            return res.status(500).send("Error getting registered events from db");
+        }
+        res.status(200).json(result);
+    });
+});
+
 router.get('/checkRegistration/:userID/:eventID', (req, res) => {
     const userID = req.params.userID;
     const eventID = req.params.eventID;

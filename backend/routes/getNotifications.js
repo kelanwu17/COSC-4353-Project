@@ -1,21 +1,26 @@
-// /routes/getNotifications.js
 const express = require('express');
 const router = express.Router();
+const db = require ('../config/dj');
 
-const { sessions } = require('./logIn');
+router.get('/getNotifications/:userID', async (req, res) => {
+    const userID = req.params.userID;
 
-router.get('/getNotifications/:sessionId', (req, res) => {
-    const sessionId = req.params.sessionId; 
-    const userSession = sessions[sessionId]; 
+    try {
+        const [notifications] = await db.query(
+            `SELECT nID, rEventsID, notificationStatus, notificationMessage 
+            FROM notifications 
+            WHERE userID = ?`, 
+            [userID]
+        );
 
-    console.log(sessionId);
-
-    if (userSession) {
-        res.send([{
-            message: 'You have logged in'
-        }]);
-    } else {
-        res.status(404).send({ error: 'User not found for the given session ID' });
+        if (notifications.length === 0) {
+            res.status(404).send({ error: 'No notifications found for the given userID' });
+        } else {
+            res.send(notifications);
+        }
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+        res.status(500).send({ error: 'An error occurred while fetching notifications' });
     }
 });
 
