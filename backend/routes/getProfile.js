@@ -42,6 +42,16 @@ router.get('/getAllProfiles', (req, res) => {
         res.json(results);
     });
 });
-
+router.get('/getAllUserProfiles', (req, res) => {
+    const sql = "SELECT * from User";
+    
+    // Assuming you have a database connection, you might execute it like so:
+    db.query(sql, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
 
 module.exports = router;
