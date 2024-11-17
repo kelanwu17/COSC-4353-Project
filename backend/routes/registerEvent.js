@@ -23,4 +23,5 @@ router.post('/registerEvent', (req, res) => {
     });
 });
 
+
 module.exports = router;

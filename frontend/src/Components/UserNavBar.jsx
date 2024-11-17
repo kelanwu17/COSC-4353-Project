@@ -33,10 +33,8 @@ function UserNavBar({ showFilter, filterOption, handleFilterChange }) {
 
       if (userId) {
         try {
-          console.log(userId)
-          const response = await axios.get(`http://localhost:3001/api/getNotifications/${userId}`);
+          const response = await axios.get(`http://localhost:3001/getNotifications/${userId}`);
           setNotifications(response.data);
-          console.log(response.data)
         } catch (error) {
           console.error("Failed to fetch notifications", error);
         }
