@@ -3,22 +3,25 @@ import VolunteerItem from "./VolunteerItem";
 import Modal from "./Modal";
 import UserNavBar from "./UserNavBar";
 import axios from "axios";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 function VolunteerPage() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eventId, setEventId] = useState('');
+  const [filterOption, setFilterOption] = useState('all'); 
   const [isRegistered, setRegister] = useState(false)
+  const [registeredEvents, setRegisteredEvents] = useState([]);
+  const [showOnlyRegistered, setShowOnlyRegistered] = useState(false);
+
 
   // Function to fetch published events
   const fetchEvents = () => {
     axios
       .get("http://localhost:3001/api/events")
       .then((response) => {
-        const publishedEvents = response.data; // Only show published events
-        setEvents(publishedEvents);
-        
+        setEvents(response.data);
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
@@ -27,15 +30,17 @@ function VolunteerPage() {
 
   // Function to fetch registered events
   const fetchRegisteredEvents = () => {
-    axios
-      .get('http://localhost:3001/api/getRegisteredEvents')
-      .then((response) => {
-        console.log('Registered Events:', response.data.events);
-        setEvents((prevEvents) => [...prevEvents, ...response.data.events]);
-      })
-      .catch((error) => {
-        console.error('Error fetching registered events:', error);
-      });
+    const userID = sessionStorage.getItem('username');
+    if (userID) {
+      axios
+        .get(`http://localhost:3001/api/registeredEvents/${userID}`)
+        .then((response) => {
+          setRegisteredEvents(response.data.map(event => event.eventsID));
+        })
+        .catch((error) => {
+          console.error('Error fetching registered events:', error);
+        });
+    }
   };
 
   useEffect(() => {
@@ -55,6 +60,30 @@ function VolunteerPage() {
         console.log('Error:', error.response ? error.response.data : error.message);
       });
   }, []);
+
+  const filteredEvents = filterOption === 'registered'
+  ? events.filter(event => registeredEvents.includes(event.eventsID))
+  : events;
+
+  useEffect(() => {
+    if (filterOption === 'registered') {
+      fetchRegisteredEvents();
+    } else {
+      fetchEvents();
+    }
+  }, [filterOption]);
+
+
+  const handleFilterChange = (event) => {
+    setFilterOption(event.target.value);
+  };
+  const handleRegisterEvent = (eventId) => {
+    setRegisteredEvents((prev) => [...prev, eventId]);
+  };
+  const handleUnregisterEvent = (eventId) => {
+    setRegisteredEvents((prev) => prev.filter(id => id !== eventId));
+  };
+
 
   const openModal = (event) => {
     console.log('Opening modal with event:', event); // Debug log
@@ -77,22 +106,28 @@ function VolunteerPage() {
 
   return (
     <div>
-      <UserNavBar />
-      <div className="flex flex-col md:flex-row items-center justify-center p-8 mb-20">
+    <UserNavBar 
+      showFilter={true} // This enables the filter to be shown in the nav bar
+      filterOption={filterOption}
+      handleFilterChange={handleFilterChange}
+    />
+
+<div className="flex flex-col md:flex-row items-center justify-center p-8 mb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <VolunteerItem
               key={event.id}
-              imgUrl={event.imgUrl || "/images/default.png"} // Fallback image
+              imgUrl={event.imgUrl || "/images/default.png"}
               title={event.title}
               description={event.description}
               urgency={event.urgency}
               skills={event.skills}
               date={event.timeRange}
               location={event.location}
-              event={event} // Pass the entire event object
+              event={event}
               onRegister={() => openModal(event)}
-              eventId={eventId} // You can keep this for other purposes if needed
+              eventId={eventId}
+              isRegistered={registeredEvents.includes(event.eventsID)}
             />
           ))}
         </div>
@@ -108,7 +143,9 @@ function VolunteerPage() {
           location={selectedEvent.location}
           date={selectedEvent.timeRange}
           onRemove={() => removeEvent(selectedEvent.title)}
-          eventId={eventId} // Pass eventId to Modal if needed
+          eventId={eventId}
+          onRegister={handleRegisterEvent} // Pass handler to update state
+          onUnregister={handleUnregisterEvent}
         />
       )}
     </div>

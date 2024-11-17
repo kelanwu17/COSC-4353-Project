@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const createProfileRoute = require('./routes/createProfile'); // Profile routes
 const createEventRoutes = require('./routes/createEvent'); // Event creation routes
@@ -24,6 +25,8 @@ const getNotificationsRoute = require('./routes/getNotifications');
 
 const adminRoute = require('./routes/admin')
 
+const uploadImageRoute = require('./routes/uploadImage');
+
 
 const app = express();
 const port = 3001;
@@ -32,6 +35,7 @@ const port = 3001;
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Test route
 app.get('/', (req, res) => {
@@ -56,6 +60,7 @@ app.use('/api', createRegisteredEvents);
 app.use('/api', getRegisteredEvents);
 app.use('/api', deleteRegisteredEvent);
 app.use('/api', registerEvent); 
+app.use('/api', uploadImageRoute);
 
 // Start server
 app.listen(port, () => {

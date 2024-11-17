@@ -38,7 +38,9 @@ export default function Modal({
     location, 
     date, 
     onRemove,
-    eventId 
+    eventId,
+    onRegister, 
+    onUnregister
 }) {
     const [isTrueReg, setIsTrueReg] = useState(false);
     const modalRef = useRef(null);
@@ -46,6 +48,21 @@ export default function Modal({
     // Convert skills string to an array
     const skillsArray = typeof skills === 'string' ? skills.split(',').map(skill => skill.trim()) : [];
 
+    useEffect(() => {
+        if (open) {
+            // Check if the user is already registered for the event when the modal opens
+            const userID = sessionStorage.getItem('username');
+            if (userID) {
+                axios.get(`http://localhost:3001/api/checkRegistration/${userID}/${eventId}`)
+                    .then((response) => {
+                        setIsTrueReg(response.data.isRegistered); // Set true or false based on the response
+                    })
+                    .catch((error) => {
+                        console.error('Error checking registration status:', error);
+                    });
+            }
+        }
+    }, [open, eventId]);
     const handleDelete = (e) => {
         e.stopPropagation();
         const userID = sessionStorage.getItem('username');
@@ -65,7 +82,8 @@ export default function Modal({
     
         // Fetch the user ID from session storage
         const userID = sessionStorage.getItem('username');
-        
+        console.log('Retrieved userID:', userID);
+
         const eventData = {
             userID: userID,
             eventsID: eventId,
@@ -75,12 +93,38 @@ export default function Modal({
             .then((response) => {
                 console.log(`User has registered for the event: ${title}`);
                 setIsTrueReg(true);
+                onRegister(eventId);
                 onClose();
             })
             .catch((error) => {
                 console.error('Error registering event:', error);
             });
     };
+
+    const handleUnreg = (e) => {
+        e.stopPropagation();
+    
+        // Fetch the user ID from session storage
+        const userID = sessionStorage.getItem('username');
+    
+        if (!userID) {
+            alert('User ID not found. Please log in again.');
+            return;
+        }
+    
+        axios.delete(`http://localhost:3001/api/deleteRegisteredEvent/${userID}`, { data: { eventId } })
+            .then((response) => {
+                console.log(`User unregistered from the event: ${title}`);
+                setIsTrueReg(false);
+                onUnregister(eventId);
+                onClose();  
+            })
+            .catch((error) => {
+                console.error('Error unregistering event:', error);
+            });
+    };
+    
+    
 
     useEffect(() => {
         if (!open) return;
@@ -114,13 +158,11 @@ export default function Modal({
                 </div>
                 <div>Date: {date}</div>
                 <button className="rounded-sm border border-black bg-blue-400 text-white absolute bottom-2 right-18" onClick={(e) => { e.stopPropagation(); onClose(); }}>Close</button>
-                <button className="rounded-sm border border-black bg-blue-400 text-white absolute bottom-2 right-2" onClick={handleReg}>Register</button>
-                <button
-                    className="rounded-sm border border-black bg-red-400 text-white absolute bottom-2 left-13"
-                    onClick={(e) => handleDelete(e)}
-                >
-                    Remove
-                </button>
+                {!isTrueReg ? (
+                    <button className="rounded-sm border border-black bg-blue-400 text-white absolute bottom-2 right-2" onClick={handleReg}>Register</button>
+                ) : (
+                    <button className="rounded-sm border border-black bg-red-400 text-white absolute bottom-2 right-2" onClick={handleUnreg}>Unregister</button>
+                )}
             </div>
         </div>,
         document.getElementById('portal')

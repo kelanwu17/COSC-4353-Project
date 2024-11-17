@@ -29,4 +29,24 @@ router.get('/registeredEvents/:id', (req, res) => {
     })
 });
 
+router.get('/checkRegistration/:userID/:eventID', (req, res) => {
+    const userID = req.params.userID;
+    const eventID = req.params.eventID;
+
+    const sql = "SELECT * FROM RegisterEvents WHERE userID = ? AND eventsID = ?";
+    db.query(sql, [userID, eventID], (err, result) => {
+        if (err) {
+            console.error("Error checking registration", err);
+            return res.status(500).send("Error checking registration from db.");
+        }
+        
+        // Check if a result was returned
+        if (result.length > 0) {
+            res.status(200).json({ isRegistered: true });
+        } else {
+            res.status(200).json({ isRegistered: false });
+        }
+    });
+});
+
 module.exports = router;

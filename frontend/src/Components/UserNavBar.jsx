@@ -7,13 +7,17 @@ import {
   Badge,
   Menu,
   MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import volunteerLogo from '../Assets/logo.png';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-function UserNavBar() {
+function UserNavBar({ showFilter, filterOption, handleFilterChange }) {
+
   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
   const [notifications, setNotifications] = useState([]);
@@ -56,6 +60,47 @@ function UserNavBar() {
             <img src={volunteerLogo} alt="logo" style={{ height: "50px" }} />
           </IconButton>
 
+             {/* Conditional filter dropdown */}
+             {showFilter && (
+  <FormControl variant="standard" sx={{ minWidth: '200px', marginLeft: '20px' }}>
+    <Select
+      id="filter-select"
+      value={filterOption}
+      onChange={handleFilterChange}
+      displayEmpty
+      sx={{
+        backgroundColor: 'transparent', // Transparent background for the initial box
+        color: 'white', // White text on the navbar
+        fontWeight: 'bold',// Bold text for the initial box
+        display: 'flex',
+        alignItems: 'center',
+        '& .MuiSelect-icon': {
+          color: 'white', // Arrow icon stays white
+          marginLeft: 'auto', // Ensures the icon is close to the text
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+          display: 'none', // Remove the outline
+        },
+      }}
+      MenuProps={{
+        PaperProps: {
+          sx: {
+            backgroundColor: '#ffffff', // White background for the dropdown
+            color: 'black', // Black text inside the dropdown
+            fontWeight: 'bold', // Bold text in the dropdown
+          },
+        },
+      }}
+    >
+      <MenuItem value="all" sx={{ backgroundColor: '#ffffff', color: 'black',}}>
+        Show All Events
+      </MenuItem>
+      <MenuItem value="registered" sx={{ backgroundColor: '#ffffff', color: 'black',}}>
+        Show Registered Events
+      </MenuItem>
+    </Select>
+  </FormControl>
+)}
           <Box sx={{ flexGrow: 1 }} />
 
           {/* Notifications Dropdown */}
