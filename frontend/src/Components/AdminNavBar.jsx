@@ -25,7 +25,10 @@ function AdminNavBar() {
     navigate('/modifyadmin');
   };
   const handleReportsClick = () => {
-    navigate('/reports');
+    navigate('/adminreports');
+  };
+  const handleMembersEdit = () => {
+    navigate('/managemember');
   };
 
   const handleMenuClick = (event) => {
@@ -82,7 +85,8 @@ function AdminNavBar() {
              
               <MenuItem onClick={handleCreateAdminClick}>Create Admin</MenuItem>
               <MenuItem onClick={handleModifyClick}>Modify Admin</MenuItem>
-              <MenuItem onClick={handleReportsClick}>Modify Admin</MenuItem>
+              <MenuItem onClick={handleReportsClick}>Reports</MenuItem>
+              <MenuItem onClick={handleMembersEdit}>Manage Members</MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </Toolbar>
