@@ -2,12 +2,35 @@ const express = require('express');
 const router = express.Router();
 const dayjs = require('dayjs');
 const { events, incrementEventsId } = require('./eventsData');
-const { storeEventSkills, checkSkillMatch } = require('./eventMatching');
+// const { checkSkillMatch } = require('./eventMatching');
 const db = require("../config/dj");
 
 router.post('/createevent', (req, res) => {
-    const { title, description, location, urgency, skills, startTime, endTime, adminID } = req.body;
+    const { title, description, location, urgency, skills, startTime, endTime, adminID, imgUrl} = req.body;
 
+         // Validation for length
+    if (!title || typeof title !== 'string' || title.length > 100) {
+        return res.status(400).json({
+            message: 'Invalid title: Title is required and must be less than or equal to 100 characters.'
+        });
+    }
+
+        // Validation for Description requirement
+    if (!description || typeof description !== 'string') {
+        return res.status(400).json({
+            message: 'Description is required.'
+        });
+    }
+
+        // Validation for Location
+        const locationRegex = /^[a-zA-Z0-9]+(?:[a-zA-Z0-9\s,.-]*[a-zA-Z0-9])?$/;
+        if (!location || typeof location !== 'string' || !locationRegex.test(location)) {
+            return res.status(400).json({
+                message: 'Invalid location'
+            });
+        }
+        
+    
     const checkExists = "SELECT * FROM Events WHERE title = ?";
 
     db.query(checkExists, [title], (checkErr, checkResult) => {
@@ -19,14 +42,15 @@ router.post('/createevent', (req, res) => {
             return res.status(400).json({ error: "Event title exists" });
         }
         
-        const insertSQL = `INSERT INTO Events (title, description, location, urgency, skills, startTime, endTime, adminID)
-                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        const insertSQL = `INSERT INTO Events (title, description, location, urgency, skills, startTime, endTime, adminID, imgUrl)
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
         
-        db.query(insertSQL, [title, description, location, urgency, skills, startTime, endTime, adminID], (err, result) => {
+        db.query(insertSQL, [title, description, location, urgency, skills, startTime, endTime, adminID, imgUrl], (err, result) => {
             if (err) {
                 console.error("Database insertion error: ", err);
                 return res.status(500).json({ error: "Database error while creating event" });
             }
+
             res.status(201).json({
                 message: "Created event successfully",
                 eventID: result.insertId,

@@ -69,7 +69,8 @@ function EventForm() {
       skills: combinedSkills,
       startTime,
       endTime,
-      adminID
+      adminID,
+      imgUrl: image 
     })
     .then((response) => {
       console.log(response.data);
@@ -88,13 +89,24 @@ function EventForm() {
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append("file", file);
+  
+      axios.post('http://localhost:3001/api/uploadImage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {
+        setImage(response.data.imageUrl); 
+        console.log('Image uploaded:', response.data.imageUrl);
+      })
+      .catch(error => {
+        console.error('Error uploading image:', error);
+      });
     }
   };
+  
 
   const fetchEvents = () => {
     axios.get('http://localhost:3001/api/events')
