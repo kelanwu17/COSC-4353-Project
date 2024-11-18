@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Textfield from "@mui/material/TextField";
 import dayjs from 'dayjs';
 import {
@@ -76,7 +76,8 @@ function EventForm() {
       console.log(response.data);
       fetchEvents()
     }, (error) => {
-      console.error('Error:', error.response.data.message);
+      console.error('Error:', error.response ? error.response.data : error.message);
+
     });
 
   }
@@ -89,23 +90,25 @@ function EventForm() {
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-  
-      axios.post('http://localhost:3001/api/uploadImage', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(response => {
-        setImage(response.data.imageUrl); 
-        console.log('Image uploaded:', response.data.imageUrl);
-      })
-      .catch(error => {
-        console.error('Error uploading image:', error);
-      });
+        const formData = new FormData();
+        formData.append("file", file);
+
+        axios.post('http://localhost:3001/api/uploadImage', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(response => {
+            setImage(response.data.imageUrl);
+            console.log('Image uploaded:', response.data.imageUrl);
+        })
+        .catch(error => {
+            console.error('Error uploading image:', error);
+        });
     }
-  };
+};
+
+
   
 
   const fetchEvents = () => {
