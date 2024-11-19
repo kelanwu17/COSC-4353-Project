@@ -24,6 +24,8 @@ const getRegisteredEvents = require('./routes/getRegisteredEvents'); // Get Regi
 const registerEvent = require('./routes/registerEvent'); 
 const getNotificationsRoute = require('./routes/getNotifications'); 
 const createNotificationsRoute = require('./routes/createNotification'); 
+const eventMatchingRoute = require('./routes/eventMatching');
+const forYouMatchingRoute = require('./routes/forYouMatching');
 
 const adminRoute = require('./routes/admin')
 
@@ -65,6 +67,9 @@ app.use('/api', getRegisteredEvents);
 app.use('/api', deleteRegisteredEvent);
 app.use('/api', registerEvent); 
 app.use('/api', uploadImageRoute);
+app.use('/api', forYouMatchingRoute);
+
+
 
 // Start server
 app.listen(port, () => {

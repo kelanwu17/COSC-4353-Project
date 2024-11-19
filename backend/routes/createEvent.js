@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const dayjs = require('dayjs');
 const { events, incrementEventsId } = require('./eventsData');
-// const { checkSkillMatch } = require('./eventMatching');
+const { checkSkillMatch } = require('./eventMatching');
 const db = require("../config/dj");
 
 router.post('/createevent', (req, res) => {
     const { title, description, location, urgency, skills, startTime, endTime, adminID, imgUrl} = req.body;
+    const imageBuffer = imgUrl?.type === 'Buffer' ? Buffer.from(imgUrl.data) : null;
 
          // Validation for length
     if (!title || typeof title !== 'string' || title.length > 100) {
@@ -21,7 +22,6 @@ router.post('/createevent', (req, res) => {
             message: 'Description is required.'
         });
     }
-
         // Validation for Location
         const locationRegex = /^[a-zA-Z0-9]+(?:[a-zA-Z0-9\s,.-]*[a-zA-Z0-9])?$/;
         if (!location || typeof location !== 'string' || !locationRegex.test(location)) {
@@ -42,14 +42,29 @@ router.post('/createevent', (req, res) => {
             return res.status(400).json({ error: "Event title exists" });
         }
         
-        const insertSQL = `INSERT INTO Events (title, description, location, urgency, skills, startTime, endTime, adminID, imgUrl)
+        const insertSQL = `INSERT INTO Events (title, description, location, urgency, skills, startTime, endTime, adminID, image)
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
         
-        db.query(insertSQL, [title, description, location, urgency, skills, startTime, endTime, adminID, imgUrl], (err, result) => {
+        db.query(insertSQL, [title, description, location, urgency, skills, startTime, endTime, adminID, imageBuffer], (err, result) => {
             if (err) {
                 console.error("Database insertion error: ", err);
                 return res.status(500).json({ error: "Database error while creating event" });
             }
+
+            const eventId = result.insertId;
+            const usersSQL = "SELECT userID FROM User";
+            db.query(usersSQL, async (userErr, userResult) => {
+                if (userErr) {
+                    console.error("Error fetching user IDs:", userErr);
+                    return;
+                }
+                for (const user of userResult) {
+                    const matchFound = await checkSkillMatch(user.userID, eventId);
+                    if (matchFound) {
+                        console.log(`Match found for user ${user.userID} with event ${eventId}`);
+                    }
+                }
+            });
 
             res.status(201).json({
                 message: "Created event successfully",
