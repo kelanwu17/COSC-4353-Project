@@ -48,11 +48,13 @@ const LogIn = () => {
         if (response.data.userDetails && response.data.userDetails.userID) {
           // Logic for user login
           sessionStorage.setItem('username', response.data.userDetails.userID); 
+          sessionStorage.setItem('role', 'User')
           navigate('/uservolunteer');
       } else if (response.data.adminDetails && response.data.adminDetails.adminID) {
           // Logic for admin login
           sessionStorage.setItem('adminID', response.data.adminDetails.adminID);
           sessionStorage.setItem('adminEmail', response.data.adminDetails.email); // Store admin email if needed
+          sessionStorage.setItem('role', 'Admin')
           navigate('/adminVolunteer'); // Redirect to the admin dashboard or appropriate route
       } 
     })
