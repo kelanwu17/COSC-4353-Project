@@ -14,6 +14,7 @@ function VolunteerPage() {
   const [isRegistered, setRegister] = useState(false)
   const [registeredEvents, setRegisteredEvents] = useState([]);
   const [showOnlyRegistered, setShowOnlyRegistered] = useState(false);
+  const [eventsForYou, setEventsForYou] = useState([]);
 
 
   // Function to fetch published events
@@ -42,9 +43,23 @@ function VolunteerPage() {
     }
   };
 
+  const fetchForYouEvents = () => {
+    const userID = sessionStorage.getItem('username');
+    if (userID) {
+      axios.get(`http://localhost:3001/api/forYouEvents/${userID}`)
+        .then((response) => {
+          setEventsForYou(response.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching "For You" events:', error);
+        });
+    }
+  };
+
   useEffect(() => {
     fetchEvents();
     fetchRegisteredEvents();
+    fetchForYouEvents();
 
 
   
@@ -67,9 +82,16 @@ function VolunteerPage() {
       }
     }, []);
 
-  const filteredEvents = filterOption === 'registered'
-  ? events.filter(event => registeredEvents.includes(event.eventsID))
-  : events;
+    const filteredEvents = Array.isArray(filterOption === 'registered'
+    ? events.filter(event => registeredEvents.includes(event.eventsID))
+    : filterOption === 'forYou'
+    ? eventsForYou
+    : events) ? 
+    (filterOption === 'registered'
+        ? events.filter(event => registeredEvents.includes(event.eventsID))
+        : filterOption === 'forYou'
+        ? eventsForYou
+        : events) : [];
 
   useEffect(() => {
     if (filterOption === 'registered') {
