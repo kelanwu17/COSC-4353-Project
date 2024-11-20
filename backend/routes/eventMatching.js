@@ -39,15 +39,8 @@ const checkSkillMatch = async (userId, eventId) => {
     const userSkills = await fetchUserSkills(userId);
     const eventSkills = await fetchEventSkills(eventId);
 
-    console.log('User Skills:', userSkills);
-    console.log('Event Skills:', eventSkills);
-
     const match = userSkills.some(skill => eventSkills.includes(skill));
-    if (match) {
-      console.log('Match found!');
-    } else {
-      console.log('No match found.');
-    }
+ 
     return match;
   } catch (error) {
     console.error('Error checking skill match:', error);

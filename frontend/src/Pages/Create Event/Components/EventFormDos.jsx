@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Textfield from "@mui/material/TextField";
 import dayjs from 'dayjs';
@@ -30,6 +29,7 @@ function EventForm() {
   const [timeRange, setTimeRange] = useState([null, null]); 
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [imageBuffer, setImageBuffer] = useState(null); 
   
   async function submit(e) {
     e.preventDefault();
@@ -70,7 +70,8 @@ function EventForm() {
       startTime,
       endTime,
       adminID,
-      imgUrl: image 
+      imgUrl: image,
+      imageBuffer
     })
     .then((response) => {
       console.log(response.data);
@@ -85,31 +86,33 @@ function EventForm() {
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
+  
   const [image, setImage] = useState(null);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-        const formData = new FormData();
-        formData.append("file", file);
+      const formData = new FormData();
+      formData.append("file", file);
 
-        axios.post('http://localhost:3001/api/uploadImage', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then(response => {
-            setImage(response.data.imageUrl);
-            console.log('Image uploaded:', response.data.imageUrl);
-        })
-        .catch(error => {
-            console.error('Error uploading image:', error);
-        });
+      axios.post('http://localhost:3001/api/uploadImage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {
+        setImage(response.data.imageUrl);
+        setImageBuffer(response.data.imageBlob); 
+        console.log('Image uploaded:', response.data.imageUrl);
+      })
+      .catch(error => {
+        console.error('Error uploading image:', error);
+      });
     }
-};
-
-
+  };
   
+
+
 
   const fetchEvents = () => {
     axios.get('http://localhost:3001/api/events')
