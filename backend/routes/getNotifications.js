@@ -9,11 +9,14 @@ router.get('/getNotifications/:userID', async (req, res) => {
 
     try {
         const [notifications] = await db.query(
-            `SELECT nID, eventsID, notificationStatus, notificationMessage 
-            FROM Notification 
-            WHERE userID = ?`, 
+            `SELECT DISTINCT n.nID, n.eventsID, n.notificationStatus, n.notificationMessage
+            FROM Notification n, Events e
+            WHERE n.userID = ?
+            AND n.eventsID = e.eventsID
+            AND e.startTime BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 3 DAY)`, 
             [userID]
         );
+        
 
         if (notifications.length === 0) {
             res.status(404).send({ error: 'No notifications found for the given userID' });
