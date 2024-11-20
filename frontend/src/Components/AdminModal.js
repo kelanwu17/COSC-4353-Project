@@ -54,6 +54,22 @@ const urgencyLevels = ["High", "Medium", "Low"];
 export default function AdminModal({ open, onClose, title, description, urgency, skills, location, startTime, endTime, date, eventId, onSave }) {
     const modalRef = useRef(null);
 
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                onClose();
+            }
+        }
+
+        if (open) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [open, onClose]);
+
   
     const [newStartTime, setNewStartTime] = useState(startTime || "");  
     const [newEndTime, setNewEndTime] = useState(endTime || ""); 

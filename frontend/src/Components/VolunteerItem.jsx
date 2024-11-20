@@ -29,7 +29,7 @@ function VolunteerItem({ title, imgUrl, description, urgency, skills, date, loca
         )}
             <div
                 className="w-full h-44 md:h-56 object-cover bg-cover bg-center"
-                style={{ backgroundImage: `url(data:image/png;base64,${imgUrl})` }}
+                style={{ backgroundImage: `url(${imgUrl})` }}
             />
             <div className="w-full p-4">
                 <hr className="hr-line" />
