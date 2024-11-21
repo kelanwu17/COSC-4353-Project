@@ -150,7 +150,8 @@ function VolunteerPage() {
               description={event.description}
               urgency={event.urgency}
               skills={event.skills}
-              date={event.timeRange}
+              startTime={event.startTime}
+              endTime={event.endTime}
               location={event.location}
               event={event}
               onRegister={() => openModal(event)}
