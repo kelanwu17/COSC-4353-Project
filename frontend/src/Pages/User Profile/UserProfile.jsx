@@ -56,7 +56,7 @@ const UserProfile = () => {
           console.log("Registered Events:", response.data);
           const eventIds = response.data.map((event) => event.eventsID); // Use eventsID
           setEvents(eventIds);
-          console.log(response.data);
+       
           // Call fetchEventNames only if eventIds is non-empty
           if (eventIds.length > 0) {
             fetchEventNames(eventIds);
