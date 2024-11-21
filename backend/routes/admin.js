@@ -35,18 +35,27 @@ router.post('/createAdmin', async (req, res) => {
     }
 });
 
-router.put('/updateAdmin/:id',  (req, res)=> {
+router.put('/updateAdmin/:id', (req, res) => {
     const id = req.params.id;
-    const {email, password} = req.body;
-    const sql = "UPDATE Admin SET email = ?, password= ? WHERE adminId = ?";
-    db.query(sql, [email,password,id], (err, result) => {
+    const { email, password } = req.body;
+
+    // Hash the password before updating
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
         if (err) {
-            console.error("Error updating admin", err);
-            return res.status(500).send("Error updating admins in db.")
+            console.error("Error hashing password", err);
+            return res.status(500).send("Error hashing password.");
         }
-        res.status(200).json({message: "UPDATED"});
-    })
-})
+
+        const sql = "UPDATE Admin SET email = ?, password = ? WHERE adminId = ?";
+        db.query(sql, [email, hashedPassword, id], (err, result) => {
+            if (err) {
+                console.error("Error updating admin", err);
+                return res.status(500).send("Error updating admins in db.");
+            }
+            res.status(200).json({ message: "UPDATED" });
+        });
+    });
+});
 router.delete('/deleteAdmin/:id',  (req, res)=> {
     const sql = "DELETE FROM Admin WHERE adminId = ?";
     const id = req.params.id;
