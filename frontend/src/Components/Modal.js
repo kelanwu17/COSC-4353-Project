@@ -36,7 +36,8 @@ export default function Modal({
     urgency, 
     skills, // Expecting a string with comma-separated values
     location, 
-    date, 
+    startTime,
+    endTime,
     onRemove,
     eventId,
     onRegister, 
@@ -49,6 +50,7 @@ export default function Modal({
     const skillsArray = typeof skills === 'string' ? skills.split(',').map(skill => skill.trim()) : [];
 
     useEffect(() => {
+        
         if (open) {
             // Check if the user is already registered for the event when the modal opens
             const userID = sessionStorage.getItem('username');
@@ -158,11 +160,18 @@ export default function Modal({
 
     if (!open) return null;
 
+    if (!startTime) {
+        console.warn("Start time is undefined");
+        return null; // Early return if data isn't ready
+    }
+    console.log("Start time:", startTime);
+    
+    
     return ReactDOM.createPortal(
         <div style={overlayStyle}>
             <div style={modalStyle} ref={modalRef} className='bg-gray-400'>
                 <div className="text-xl text-bold mb-2">{title}</div>
-                <div className="text-xs">Location: {location}, Date: {date}</div>
+                <div className="text-xs">Location: {location}</div>
                 <div style={{ overflowWrap: 'break-word', wordBreak: 'break-word' }}>{description}</div>
                 <div>Urgency: {urgency}</div>
                 <div style={{ overflowWrap: 'break-word', wordBreak: 'break-word' }}>Skills Required: 
@@ -170,7 +179,7 @@ export default function Modal({
                         <span style={{ overflowWrap: 'break-word', wordBreak: 'break-word' }} key={index}>{item}</span>
                     ))}
                 </div>
-                <div>Date: {date}</div>
+                <div>Date: {startTime} - {endTime}</div>
                 <button className="rounded-sm border border-black bg-blue-400 text-white absolute bottom-2 right-18" onClick={(e) => { e.stopPropagation(); onClose(); }}>Close</button>
                 {!isTrueReg ? (
                     <button className="rounded-sm border border-black bg-blue-400 text-white absolute bottom-2 right-2" onClick={handleReg}>Register</button>

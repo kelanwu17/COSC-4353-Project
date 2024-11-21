@@ -5,7 +5,7 @@ import { useState } from 'react';
 import AdminModal from './AdminModal';
 
 
-function VolunteerItem({ title, imgUrl, description, urgency, skills, date, location, onRegister, onRemove, eventId, isRegistered  }) {
+function VolunteerItem({ title, imgUrl, description, urgency, skills, startTime, endTime, location, onRegister, onRemove, eventId, isRegistered  }) {
   
     const [isOpen, setIsOpen] = useState(false);
     
@@ -45,7 +45,8 @@ function VolunteerItem({ title, imgUrl, description, urgency, skills, date, loca
           description={description}
           urgency={urgency}
           skills={skills}
-          date={date}
+          startTime={startTime}
+          endTime={endTime}
           location={location}
           eventId={eventId}
           showRegisterButton={!isRegistered}
