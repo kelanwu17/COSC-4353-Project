@@ -29,7 +29,7 @@ function UserNavBar({ showFilter, filterOption, handleFilterChange }) {
       const userId = sessionStorage.getItem('username'); // Update with actual userId key
 
       // Test log: display userId in console
-      console.log(`Fetching notifications for userId: ${userId}`);
+      //console.log(`Fetching notifications for userId: ${userId}`);
 
       if (userId) {
         try {
