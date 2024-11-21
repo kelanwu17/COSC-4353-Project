@@ -34,6 +34,8 @@ const uploadImageRoute = require('./routes/uploadImage');
 
 const app = express();
 const port = 3001;
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Middlewares
 app.use(express.json());
