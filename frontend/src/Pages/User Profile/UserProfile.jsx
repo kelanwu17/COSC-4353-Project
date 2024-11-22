@@ -6,6 +6,10 @@ import { useEffect } from "react";
 import { Autocomplete, Chip, stepButtonClasses } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+
 import {
   Box,
   Button,
@@ -17,6 +21,31 @@ import {
 } from "@mui/material";
 import VolunteerItem from "../../Components/VolunteerItem";
 const UserProfile = () => {
+  const [availabilities, setAvailabilities] = useState([]);
+
+  const addAvailability = () => {
+    setAvailabilities([...availabilities, { day: '', fromTime: null, toTime: null }]);
+  };
+  
+  // Function to handle changes to date/time values (both fromTime and toTime)
+  const handleDateChange = (index, field, newValue) => {
+    const updatedAvailabilities = [...availabilities];
+  
+    // Check if the newValue is a Day.js object (from a date picker, for example)
+    if (newValue && newValue.isDayjs) {
+      updatedAvailabilities[index][field] = newValue.format("YYYY-MM-DD HH:mm"); // Format as string
+    } else {
+      updatedAvailabilities[index][field] = newValue;
+    }
+  
+    setAvailabilities(updatedAvailabilities);
+  };
+  
+const removeAvailability = (index) => {
+  const updatedAvailabilities = availabilities.filter((_, i) => i !== index);
+  setAvailabilities(updatedAvailabilities);
+};
+
   const [events, setEvents] = useState([]); // Stores event IDs
   const [userEvents, setUserEvents] = useState([]); // Stores event details with names
   const navigate = useNavigate();
@@ -45,6 +74,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetchRegisteredEvents();
+    
   }, []);
 
   const fetchRegisteredEvents = () => {
@@ -121,6 +151,7 @@ const UserProfile = () => {
           // Assuming response.data contains the profile information
           const {
             email,
+            password,
             address,
             address2,
             city,
@@ -132,8 +163,10 @@ const UserProfile = () => {
           const skillsArray = selectedSkills
             ? selectedSkills.split(",").map((skill) => skill.trim())
             : [];
+            console.log(response.data)
           // Update state with the fetched data
           setEmail(email);
+          setPassword(password)
           setAddress(address);
           setAddress2(address2);
           setCity(city);
@@ -153,15 +186,31 @@ const UserProfile = () => {
 
   const updateProfile = async (event) => {
     event.preventDefault();
+   // Log the availabilities to check their current state
+console.log('Availabilities:', availabilities);
+
+const availabilityString = availabilities
+  .map((availability) => {
+    console.log('Checking availability:', availability); // Log each availability
+    return availability.day && availability.fromTime && availability.toTime
+      ? `${availability.day}, ${availability.fromTime} - ${availability.toTime}` 
+      : '';
+  })
+  .filter(Boolean)  // Remove empty slots
+  .join(" | "); // Join into a pipe-separated string
+
+console.log('Final availability string:', availabilityString);  
     const profileData = {
       fullName,
       email,
+      password,
       address,
       address2,
       city,
       zipcode,
       state,
       selectedSkills: selectedSkills.join(","),
+      availability: availabilityString
       // Add any other data you want to send
     };
     const username = sessionStorage.getItem("username");
@@ -176,7 +225,9 @@ const UserProfile = () => {
       }
     } catch (error) {
       console.error("Error updating profile:", error);
+      console.log(profileData)
       alert("Failed to update profile. Please try again."); // Notify user about the failure
+      
     }
   };
   const deleteProfile = async (event) => {
@@ -375,6 +426,87 @@ const UserProfile = () => {
                   />
                 </div>
               </div>
+             
+              <div
+  className="flex flex-row"
+   // White background for the whole container
+>
+<label>
+                    <strong>Availability:</strong>
+                  </label>
+  <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', marginLeft:'20px' }}>
+  {availabilities.map((availability, index) => (
+    <div
+      key={index}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        marginBottom: '10px',
+      }}
+      
+    >
+      {/* From Date Picker */}
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateTimePicker
+          label="From"
+          value={availability.from}
+          onChange={(newValue) => handleDateChange(index, newValue, 'from')}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              InputProps={{
+                ...params.InputProps,
+                style: { backgroundColor: 'white', height: '50px', width: '200px' }, // Ensure white background here
+              }}
+              variant="outlined"
+            />
+          )}
+        />
+      </LocalizationProvider>
+
+      {/* To Date Picker */}
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateTimePicker
+          label="To"
+          value={availability.to}
+          onChange={(newValue) => handleDateChange(index, newValue, 'to')}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              InputProps={{
+                ...params.InputProps,
+                style: { backgroundColor: 'white', height: '50px', width: '200px' }, // Ensure white background here
+              }}
+              variant="outlined"
+            />
+          )}
+        />
+      </LocalizationProvider>
+
+      <Button
+        variant="contained"
+        color="error"
+        style={{ marginLeft: '10px' }}
+        onClick={() => removeAvailability(index)}
+      >
+        Remove
+      </Button>
+    </div>
+  ))}
+
+  <Button
+    variant="contained"
+    color="primary"
+    onClick={addAvailability}
+    style={{ marginTop: '10px', marginBottom: '10px' }}
+  >
+    Add Availability
+  </Button>
+  </div>
+</div>
+
+
+
               <Button
                 className="ml-20"
                 onClick={deleteProfile}

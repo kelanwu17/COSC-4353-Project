@@ -5,7 +5,7 @@ const db = require("../config/dj");
 router.get('/getProfile/:userID', (req, res) => {
     const userID = req.params.userID;
 
-    const sql = "SELECT fullName, email, address, address2, city, zipcode, selectedSkills, state FROM User WHERE userID = ?";
+    const sql = "SELECT fullName, email, password, address, address2, city, zipcode, selectedSkills, state FROM User WHERE userID = ?";
 
     db.query(sql, [userID], (err, results) => {
         if (err) {
@@ -22,6 +22,7 @@ router.get('/getProfile/:userID', (req, res) => {
             id: userID,
             fullName: userProfile.fullName,
             email: userProfile.email,
+            password: userProfile.password,
             address: userProfile.address,
             address2: userProfile.address2,
             city: userProfile.city,
